@@ -1,0 +1,209 @@
+﻿@using AutodeploymentServices.Jobs
+@using TestControlTool.Web.Models
+@model IEnumerable<TestControlTool.Core.Contracts.IMachine>
+@{
+    Layout = null;
+    var addButtonDisabled = "";
+}
+@Scripts.Render("~/bundles/jqueryval")
+
+
+<div class="modal hide fade" id="DeployInstallJobModal" tabindex="-1" role="dialog" aria-labelledby="DeployInstall Job" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="DeployInstallJobLabel">Add DeployInstall Job</h3>
+    </div>
+    <div class="modal-body">
+        <div class="control-group">
+            <label class="control-label" for="DeployInstallJobName">
+                Name&nbsp;&nbsp;&nbsp;
+                <input type="text" id="DeployInstallJobName" onblur="CheckDeployInstallJobName()" onfocus="$('#DeployInstallJobNameValidation').text('');" />
+                <span class="help-inline error" id="DeployInstallJobNameValidation"></span>
+            </label>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="DeployInstallJobType">
+                Type&nbsp;&nbsp;&nbsp;&nbsp;
+                <select id="DeployInstallJobType">
+                    @foreach (var type in Enum.GetNames(typeof(AutodeployJobType)))
+                    {
+                        <option>@type</option>
+                    }
+                </select></label>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="DeployInstallJobVersion">
+                Version
+                <select id="DeployInstallJobVersion">
+                    <option>5.4.1</option>
+                    <option>5.3.3</option>
+                </select></label>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Machines:</label>
+        </div>
+        <div class="control-group">
+            <ul id="DeployInstallJobMachines" style="list-style: none;">
+                @foreach (var machine in Model)
+                {
+                    <li>
+                        <label class="control-label">
+                            <input type="checkbox" id="@machine.Id" style="margin-right:5px" onclick="CheckMachines()"/>@machine.Name</label></li>
+                }
+            </ul>
+            @if (!Model.Any())
+            {
+                <span class="help-inline error">You don't have machines. Please, at first add new machine on the Machines tab</span>
+                addButtonDisabled = "disabled";
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        $('.disabled').attr('disabled', 'true');
+                    });
+                </script>
+            }
+            <span class="help-inline error" id="DeployInstallJobMachinesValidation" style="display: none">Please, check at least one machine</span>
+        </div>
+        <input type="hidden" id="EditDeployInstallJobName" />
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <input type="submit" class="btn btn-primary @addButtonDisabled" value="Add" id="SaveDeployInstallJobButton" onclick="saveDeployInstallJob()" />
+    </div>
+</div>
+<script type="text/javascript">
+    var canSave = false;
+
+    $('#DeployInstallJobModal').on('hidden', function () {
+        $('#DeployInstallJobName').val('');
+        $('#DeployInstallJobType').val('@Enum.GetNames(typeof(AutodeployJobType)).First()');
+        $('#DeployInstallJobVersion').val('5.4.1');
+
+        $('ul#DeployInstallJobMachines li').each(function (i) {
+            var checkbox = $(this).find('input[type=checkbox]');
+            checkbox.attr('checked', false);
+        });
+
+        $('#DeployInstallJobNameValidation').hide(500);
+        $('#DeployInstallJobMachinesValidation').hide(500);
+        $('#DeployInstallJobLabel').text('Add DeployInstall Job');
+        $('#SaveDeployInstallJobButton').val('Add');
+        
+        $('#EditDeployInstallJobName').val('');
+
+        isEditDeployInstallModal = false;
+    });
+
+    function saveDeployInstallJob() {
+        if (!isEditDeployInstallModal) addDeployInstallJob();
+        else editDeplooyInstallJob();
+    }
+
+    function editDeplooyInstallJob() {
+        if (!CheckDeployInstallJobName()) {
+            return false;
+        }
+
+        var machines = GetMachines();
+
+        if (!CheckMachines()) {
+            return false;
+        }
+
+        $('#DeployInstallJobMachinesValidation').hide(500);
+
+        machines = machines.replace(/,$/, "");
+        var name = $('#EditDeployInstallJobName').val();
+
+        $('#' + name).attr('type', 'DeployInstall');
+        $('#' + name).attr('deployType', $('#DeployInstallJobType').val());
+        $('#' + name).attr('version', $('#DeployInstallJobVersion').val());
+        $('#' + name).attr('machines', machines);
+        $('#' + name).find('a').first().attr('ondblclick', "editDeployTask('" + $('#DeployInstallJobName').val() +"');");
+        $('#' + name).find('a').first().text($('#DeployInstallJobName').val());
+        $('#' + name).find('button').first().attr('onclick', "removeTask('" + $('#DeployInstallJobName').val() + "');");
+        $('#' + name).attr('id', $('#DeployInstallJobName').val());
+
+        $('#DeployInstallJobModal').modal('hide');
+    }
+
+    function addDeployInstallJob() {
+        if (!CheckDeployInstallJobName()) {
+            return false;
+        }
+
+        var machines = GetMachines();
+
+        if (!CheckMachines()) {
+            return false;
+        }
+
+        $('#DeployInstallJobMachinesValidation').hide(500);
+
+        machines = machines.replace(/,$/, "");
+
+        if ($('#currentTasks').find("br").length != 0) {
+            $('#currentTasks').text('');
+        }
+
+        $('#currentTasks').append("<li id='" + $('#DeployInstallJobName').val() + "' type='DeployInstall' deployType='" + $('#DeployInstallJobType').val() + "' version='"
+            + $('#DeployInstallJobVersion').val() + "' machines='" + machines +
+            "'><a ondblclick=\"editDeployTask('" + $('#DeployInstallJobName').val() + "')\" href='#'>" + $('#DeployInstallJobName').val() + "</a>" +
+            "<button type='button' class='close' aria-hidden='true' onclick=\"removeTask('" + $('#DeployInstallJobName').val() + "')\">×</button></li>"
+        );
+
+        $('#DeployInstallJobModal').modal('hide');
+    }
+
+    function CheckDeployInstallJobName() {
+        var name = $('#DeployInstallJobName').val();
+
+        if (name.length == 0) {
+            $('#DeployInstallJobNameValidation').text('Please, check task\'s name');
+            canSave = false;
+            return false;
+        }
+
+        var names = new Array;
+
+        $('#currentTasks li').each(function (e) {
+            names.push($(this).attr('id'));
+        });
+
+        for (var i = 0; i < names.length; i++) {
+            if (name == names[i] && name != $('#EditDeployInstallJobName').val()) {
+                $('#DeployInstallJobNameValidation').text('Such name is already presented');
+                canSave = false;
+                return false;
+            }
+        }
+
+        $('#DeployInstallJobNameValidation').text('');
+        canSave = true;
+        return true;
+    }
+
+    function CheckMachines() {
+        var machines = GetMachines();
+
+        if (machines.length == 0) {
+            $('#DeployInstallJobMachinesValidation').fadeIn(300);
+            return false;
+        }
+
+        $('#DeployInstallJobMachinesValidation').fadeOut(300);
+        return true;
+    }
+
+    function GetMachines() {
+        var machines = '';
+
+        $('ul#DeployInstallJobMachines li').each(function (i) {
+            var checkbox = $(this).find('input[type=checkbox]');
+            if (checkbox.attr('checked')) {
+                machines += checkbox.attr('id') + ';';
+            }
+        });
+
+        return machines;
+    }
+</script>

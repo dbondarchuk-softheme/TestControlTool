@@ -1,0 +1,52 @@
+﻿@using BootstrapSupport
+@using BootstrapSupport.HtmlHelpers
+@using TestControlTool.Web.Models
+@model IEnumerable<MachineModel>   
+@{
+    ViewBag.Title = "Machines list";
+}
+    <h4>Machines</h4>
+<table class="table table-striped">
+    <caption></caption>
+    <thead>
+        <tr>
+            @foreach (var property in Model.VisiblePropertiesFromList(MachineModel.ShownProperties))
+            {
+                <th>
+                    @property.GetLabel().ToSeparatedWords()
+                </th>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    @{ int index = 0; }
+    @foreach (var machineModel in Model)
+    {
+        ViewData[index.ToString()] = machineModel;
+        <tr>
+            @foreach (var property in machineModel.VisiblePropertiesFromList(MachineModel.ShownProperties))
+            {
+                <td>
+                    @Html.Link(property, property.GetValue(machineModel).ToString(), new { Id = machineModel.Id })
+                </td>                    
+            }
+            <td>
+                <a href="@Url.Action("MachineDetails", "Home", new { Id = machineModel.Id })" data-toggle="tooltip" title="Details" rel="tooltip"><i class="icon-th-list"></i></a>
+            </td>
+            <td>
+                <a href="@Url.Action("EditMachine", "Home", new { Id = machineModel.Id })" data-toggle="tooltip" title="Edit machine" rel="tooltip"><i class="icon-pencil"></i></a>
+            </td>
+            <td>
+               <button rel="tooltip" type='button' class='close' aria-hidden='true' style="float: none" onclick="deleteTask('@machineModel.Id');" title="Delete machine" data-toggle="tooltip">×</button>
+            </td>
+        </tr>
+            index++;
+    }
+
+</table>
+<p>
+    @Html.ActionLink("Create New", "CreateMachine", null, new {@class = "btn"})
+</p>
+<script type="text/javascript">
+    ShowMachines();
+</script>

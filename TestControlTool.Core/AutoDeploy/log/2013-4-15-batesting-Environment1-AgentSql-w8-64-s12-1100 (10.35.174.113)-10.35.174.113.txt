@@ -1,0 +1,21 @@
+2013-04-15 15:37:13.7532|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Connecting to vCenter
+2013-04-15 15:37:36.3775|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Template VM existing checking
+2013-04-15 15:37:36.3775|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Checking existing of virtual machine 'template-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)'
+2013-04-15 15:38:52.7208|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Target VM existing checking
+2013-04-15 15:40:44.1742|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Found 1 virtual machines for delete before deploy
+2013-04-15 15:40:44.1742|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Checking is powered off of virtual machine '2013-4-8-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)'
+2013-04-15 15:41:45.4577|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Powering off unnecessary VM: 2013-4-8-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)
+2013-04-15 15:41:45.4577|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Powering off virtual machine '2013-4-8-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)'
+2013-04-15 15:45:27.0626|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Power off virtual machine '2013-4-8-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)' successfully finished
+2013-04-15 15:45:27.0626|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Powering off unnecessary VM: 2013-4-8-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)
+2013-04-15 15:45:27.0626|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Deleting of virtual machine '2013-4-8-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)'
+2013-04-15 15:45:52.8183|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Delete VM task started, waiting it complete
+2013-04-15 15:45:55.5639|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Delete of virtual machine '2013-4-8-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)' successfully finished
+2013-04-15 15:45:55.5639|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Cloning VM
+2013-04-15 15:45:55.5639|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Cloning virtual machine 'applab/QA-Cluster VMs and vApps/batesting/template-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)' to --> applab/QA-Cluster VMs and vApps/batesting/2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113) 
+2013-04-15 15:46:42.6915|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Clone VM task started, waiting it complete
+2013-04-15 16:20:01.1210|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Clone virtual machine 'template-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)' to--> 2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113) successfully finished
+2013-04-15 16:20:01.1310|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Waiting windows start
+2013-04-15 16:20:01.1310|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Waiting boot virtual machine
+2013-04-15 16:21:50.2511|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Copy installer
+2013-04-15 16:22:45.7712|DEBUG|2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 (10.35.174.113)-10.35.174.113|Starting copy installer 'Agent-X64-5.4.1.60891.exe'

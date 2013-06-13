@@ -1,0 +1,27 @@
+2013-04-29 12:05:09.4497|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Connecting to vCenter
+2013-04-29 12:06:29.4842|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Connecting to vCenter
+2013-04-29 12:06:51.5565|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Template VM existing checking
+2013-04-29 12:06:51.5565|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Checking existing of virtual machine 'template-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)'
+2013-04-29 12:07:50.0529|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Target VM existing checking
+2013-04-29 12:09:32.4307|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Found 1 virtual machines for delete before deploy
+2013-04-29 12:09:32.4307|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Checking is powered off of virtual machine '2013-4-26-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)'
+2013-04-29 12:10:05.6846|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Powering off unnecessary VM: 2013-4-26-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)
+2013-04-29 12:10:05.6846|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Powering off virtual machine '2013-4-26-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)'
+2013-04-29 12:10:42.9947|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Power off virtual machine '2013-4-26-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)' successfully finished
+2013-04-29 12:10:42.9947|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Powering off unnecessary VM: 2013-4-26-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)
+2013-04-29 12:10:42.9947|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Deleting of virtual machine '2013-4-26-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)'
+2013-04-29 12:11:16.6037|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Delete VM task started, waiting it complete
+2013-04-29 12:11:20.8509|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Delete of virtual machine '2013-4-26-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)' successfully finished
+2013-04-29 12:11:20.8509|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Cloning VM
+2013-04-29 12:11:20.8509|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Cloning virtual machine 'applab/QA-Cluster VMs and vApps/batesting/template-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)' to --> applab/QA-Cluster VMs and vApps/batesting/2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80) 
+2013-04-29 12:13:03.0498|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Clone VM task started, waiting it complete
+2013-04-29 12:16:08.5244|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Clone virtual machine 'template-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)' to--> 2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80) successfully finished
+2013-04-29 12:16:08.5244|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Waiting windows start
+2013-04-29 12:16:08.5244|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Waiting boot virtual machine
+2013-04-29 12:21:27.3126|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Copy installer
+2013-04-29 12:22:12.7942|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Starting copy installer 'Core-X64-5.4.1.61397.exe'
+2013-04-29 12:23:12.4716|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|App installation
+2013-04-29 12:23:12.4716|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Start execute installer '\\10.35.174.80\reminst\Core-X64-5.4.1.61397.exe'
+2013-04-29 12:35:35.7101|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Installation successfully finished
+2013-04-29 12:35:35.7101|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Restart Machine
+2013-04-29 12:35:35.7101|DEBUG|2013-4-29-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Waiting App service start

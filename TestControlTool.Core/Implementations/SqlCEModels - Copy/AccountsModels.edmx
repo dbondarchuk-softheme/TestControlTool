@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AccountsModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="AccountsModelStoreContainer">
+          <EntitySet Name="Accounts" EntityType="AccountsModel.Store.Accounts" store:Type="Tables" />
+          <EntitySet Name="Machines" EntityType="AccountsModel.Store.Machines" store:Type="Tables" />
+          <EntitySet Name="Tasks" EntityType="AccountsModel.Store.Tasks" store:Type="Tables" />
+          <AssociationSet Name="Machines1" Association="AccountsModel.Store.Machines1">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Machines" EntitySet="Machines" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Accounts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Login" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="PasswordHash" Type="nvarchar" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Machines">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="InventoryPath" Type="nvarchar" MaxLength="100" />
+          <Property Name="ResourcePool" Type="nvarchar" MaxLength="100" />
+          <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Owner" Type="nvarchar" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <Association Name="Machines1">
+          <End Role="Accounts" Type="AccountsModel.Store.Accounts" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Machines" Type="AccountsModel.Store.Machines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Machines">
+              <PropertyRef Name="Owner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AccountsModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AccountsEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="AccountsModel.AccountModel" />
+          <EntitySet Name="Machines" EntityType="AccountsModel.MachineModel" />
+          <AssociationSet Name="Machines1" Association="AccountsModel.Machines1">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Machines" EntitySet="Machines" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AccountModel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Login" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="PasswordHash" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Machines" Relationship="AccountsModel.Machines1" FromRole="Accounts" ToRole="Machines" />
+        </EntityType>
+        <EntityType Name="MachineModel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="InventoryPath" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="ResourcePool" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Owner" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Account" Relationship="AccountsModel.Machines1" FromRole="Machines" ToRole="Accounts" />
+        </EntityType>
+        <Association Name="Machines1">
+          <End Role="Accounts" Type="AccountsModel.AccountModel" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Machines" Type="AccountsModel.MachineModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Machines">
+              <PropertyRef Name="Owner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AccountsModelStoreContainer" CdmEntityContainer="AccountsEntities">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="AccountsModel.AccountModel">
+              <MappingFragment StoreEntitySet="Accounts">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Machines">
+            <EntityTypeMapping TypeName="AccountsModel.MachineModel">
+              <MappingFragment StoreEntitySet="Machines">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="InventoryPath" ColumnName="InventoryPath" />
+                <ScalarProperty Name="ResourcePool" ColumnName="ResourcePool" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,1 @@
+2013-04-24 21:19:53.7838|DEBUG|2013-4-24-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Connecting to vCenter

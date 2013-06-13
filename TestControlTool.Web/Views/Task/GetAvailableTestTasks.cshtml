@@ -1,0 +1,27 @@
+﻿@using System.Reflection
+@model System.Collections.Generic.IEnumerable<System.Type>
+
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <title></title>
+</head>
+
+<body>
+    <div>
+        @foreach (var type in Model)
+        {
+                <span style="color: red">@type.Name</span>
+                <ul style="margin-left: 50px">
+                    @foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead))
+                        {
+                        <li>@property.Name</li>
+                    }
+                </ul>
+        }
+    </div>
+</body>
+</html>

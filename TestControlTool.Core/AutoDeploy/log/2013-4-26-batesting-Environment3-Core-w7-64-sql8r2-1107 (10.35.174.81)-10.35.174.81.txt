@@ -1,0 +1,27 @@
+2013-04-26 12:39:13.4305|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Connecting to vCenter
+2013-04-26 12:39:33.2756|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Template VM existing checking
+2013-04-26 12:39:33.2756|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Checking existing of virtual machine 'template-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)'
+2013-04-26 12:40:42.0576|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Target VM existing checking
+2013-04-26 12:42:07.0054|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Found 1 virtual machines for delete before deploy
+2013-04-26 12:42:07.0054|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Checking is powered off of virtual machine '2013-4-23-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)'
+2013-04-26 12:43:23.4558|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Powering off unnecessary VM: 2013-4-23-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)
+2013-04-26 12:43:23.4558|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Powering off virtual machine '2013-4-23-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)'
+2013-04-26 12:53:07.9052|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Power off virtual machine '2013-4-23-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)' successfully finished
+2013-04-26 12:53:07.9052|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Powering off unnecessary VM: 2013-4-23-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)
+2013-04-26 12:53:07.9052|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Deleting of virtual machine '2013-4-23-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)'
+2013-04-26 12:54:12.1649|WARN|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Exception on getting folder childs VMs config.name
+2013-04-26 12:54:18.0752|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Delete VM task started, waiting it complete
+2013-04-26 12:54:29.8569|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Delete of virtual machine '2013-4-23-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)' successfully finished
+2013-04-26 12:54:29.8569|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Cloning VM
+2013-04-26 12:54:29.8569|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Cloning virtual machine 'applab/QA-Cluster VMs and vApps/batesting/template-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)' to --> applab/QA-Cluster VMs and vApps/batesting/2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81) 
+2013-04-26 12:59:32.3562|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Clone VM task started, waiting it complete
+2013-04-26 13:03:52.4581|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Clone virtual machine 'template-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)' to--> 2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81) successfully finished
+2013-04-26 13:03:52.4581|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Waiting windows start
+2013-04-26 13:03:52.4581|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Waiting boot virtual machine
+2013-04-26 13:06:05.9827|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Copy installer
+2013-04-26 13:06:08.6429|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Starting copy installer 'Core-X64-5.4.1.61343.exe'
+2013-04-26 13:06:48.3802|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|App installation
+2013-04-26 13:06:48.3802|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Start execute installer '\\10.35.174.81\reminst\Core-X64-5.4.1.61343.exe'
+2013-04-26 13:16:59.4401|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Installation successfully finished
+2013-04-26 13:16:59.4401|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Restart Machine
+2013-04-26 13:16:59.4401|DEBUG|2013-4-26-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Waiting App service start

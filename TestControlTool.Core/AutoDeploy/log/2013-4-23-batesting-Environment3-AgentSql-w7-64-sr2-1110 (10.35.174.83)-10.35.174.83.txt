@@ -1,0 +1,29 @@
+2013-04-23 11:17:22.8488|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Connecting to vCenter
+2013-04-23 11:17:37.0787|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Template VM existing checking
+2013-04-23 11:17:37.0787|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Checking existing of virtual machine 'template-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)'
+2013-04-23 11:18:26.9365|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Target VM existing checking
+2013-04-23 11:20:05.4741|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Found 1 virtual machines for delete before deploy
+2013-04-23 11:20:05.4741|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Checking is powered off of virtual machine '2013-4-17-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)'
+2013-04-23 11:21:21.7775|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Powering off unnecessary VM: 2013-4-17-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)
+2013-04-23 11:21:21.7775|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Powering off virtual machine '2013-4-17-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)'
+2013-04-23 11:22:57.0790|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Power off virtual machine '2013-4-17-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)' successfully finished
+2013-04-23 11:22:57.0790|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Powering off unnecessary VM: 2013-4-17-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)
+2013-04-23 11:22:57.0790|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Deleting of virtual machine '2013-4-17-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)'
+2013-04-23 11:23:37.8453|WARN|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Exception on getting folder childs VMs config.name
+2013-04-23 11:24:01.4566|WARN|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Exception on getting folder childs VMs config.name
+2013-04-23 11:24:04.2558|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Delete VM task started, waiting it complete
+2013-04-23 11:24:13.6253|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Delete of virtual machine '2013-4-17-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)' successfully finished
+2013-04-23 11:24:13.6253|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Cloning VM
+2013-04-23 11:24:13.6253|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Cloning virtual machine 'applab/QA-Cluster VMs and vApps/batesting/template-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)' to --> applab/QA-Cluster VMs and vApps/batesting/2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83) 
+2013-04-23 11:26:11.2031|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Clone VM task started, waiting it complete
+2013-04-23 11:33:05.8188|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Clone virtual machine 'template-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)' to--> 2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83) successfully finished
+2013-04-23 11:33:05.8188|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Waiting windows start
+2013-04-23 11:33:05.8188|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Waiting boot virtual machine
+2013-04-23 11:35:55.4575|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Copy installer
+2013-04-23 11:35:58.8817|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Starting copy installer 'Agent-X64-5.4.1.61196.exe'
+2013-04-23 11:36:30.7115|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|App installation
+2013-04-23 11:36:30.7115|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Start execute installer '\\10.35.174.83\reminst\Agent-X64-5.4.1.61196.exe'
+2013-04-23 11:45:49.8435|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Waiting for virtual machine reboot
+2013-04-23 11:51:49.8441|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Waiting boot virtual machine
+2013-04-23 11:52:51.1156|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Installation successfully finished
+2013-04-23 11:52:51.1156|DEBUG|2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Waiting App service start

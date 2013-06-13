@@ -1,0 +1,57 @@
+﻿@using System.Collections
+@using BootstrapSupport
+@model TestControlTool.Web.Models.TestSuiteModel
+@{
+    Layout = null;
+}
+
+<li id="@Model.Name" type="TestSuite">
+    <a ondblclick="editTestSuiteTask('@Model.Name')" href="#">@Model.Name</a>
+    <button type="button" class="close pull-right" aria-hidden="true" onclick="removeTask('@Model.Name')">×</button>
+    <ol style="display: none">
+        @foreach (var test in Model.Tests)
+        {
+            var visibleProperties = test.VisibleProperties(new string[0]);
+            var properties = visibleProperties.Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)).Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(test) + "'");
+            <li  testtype="@test.GetType().Name" @Html.Raw(properties)>
+                <a href="#" onclick="editTestModal(this)">@test.GetType().Name</a>
+                <button type='button' class='close' aria-hidden='true' onclick='removeTest(this)'>×</button>
+                @{
+            foreach (var property in visibleProperties.Where(x => x.PropertyType.Name.Contains("List")))
+            {
+                    <ul id="@(property.Name + "HiddenList")" style="display: none;" class="sortable">
+
+                        @{
+                var enumerable = ((IEnumerable)property.GetValue(test)).Cast<object>().Skip(1);
+                        }
+                        @foreach (var item in enumerable)
+                        {
+                            var childPropertyInfos = item.VisibleProperties(new string[0]).Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string)).ToList();
+                            var childProperties = childPropertyInfos.Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(item) + "'");
+                            var name = "";
+                            var genericType = property.PropertyType.GenericTypeArguments.First();
+
+                            if (genericType == typeof(string) || genericType.IsEnum || genericType == typeof(int))
+                            {
+                                name = @item.ToString();
+                                childProperties = "value='" + name + "'";
+                            }
+                            else
+                            {
+                                name = @childPropertyInfos.First().GetValue(item).ToString();
+                            }
+                            
+                            <li @Html.Raw(childProperties)>
+                                <a href='#' onclick="editListItem('@genericType', this); return false;">
+                                    @name
+                                </a>
+                                <button type='button' class='close' aria-hidden='true' onclick='removeTest(this)'>×</button>
+                            </li>
+                        }
+                    </ul>
+            }
+                }
+            </li>
+        }
+    </ol>
+</li>

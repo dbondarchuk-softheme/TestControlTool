@@ -1,0 +1,188 @@
+﻿@{
+    Layout = null;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<div class="modal hide fade" id="TestSuiteModal" tabindex="-1" role="dialog" aria-labelledby="Test Suite" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="TestSuiteLabel">Add new Test Suite</h3>
+    </div>
+    <div class="modal-body">
+        <div class="control-group">
+            <label class="control-label" for="TestSuiteName">
+                Name&nbsp;&nbsp;&nbsp;
+                <input type="text" id="TestSuiteName" onblur="CheckTestSuiteName()" onfocus="$('#TestSuiteNameValidation').text('');" />
+                <span class="help-inline error" id="TestSuiteNameValidation"></span>
+            </label>
+        </div>
+        <input type="hidden" id="EditTestSuiteName" />
+        <div class="control-group">
+            <label class="control-label" for="TestSuiteTests">
+                Tests:&nbsp;&nbsp;&nbsp;
+            <button type="button" class="close" aria-hidden="true" onclick="addTest();" title="Add new test">+</button>
+            </label>
+            <p style="display: none">
+                <span class="help-inline error" id="TestSuiteTestsValidation"></span>
+            </p>
+            <ol style="margin-left: 10%" id ="testsList" class="sortable">
+            </ol>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <input type="submit" class="btn btn-primary" value="Add" id="SaveTestSuiteButton" onclick="saveTestSuiteJob()" />
+    </div>
+</div>
+
+    @{
+        Html.RenderAction("NewTestModal", "Task");
+    }
+
+<script type="text/javascript">
+    $(function () {
+        $("#testsList").sortable();
+        $("#testsList").disableSelection();
+    });
+
+    var isEditTestModal = false;
+    var testToEdit;
+    
+    $('#TestSuiteModal').on('hidden', function () {
+        $('#TestSuiteName').val('');
+
+        $('#TestSuiteNameValidation').hide(500);
+        $('#TestSuiteLabel').text('Add new Test Suite');
+        $('#SaveTestSuiteButton').val('Add');
+        $('#testsList').text('');
+
+        $('#EditTestSuiteName').val('');
+
+        isEditTestSuiteModal = false;
+    });
+
+    function addTest() {
+        /*$('#TestSuiteModal').fadeOut('slow');*/
+        $('#NewTestModal').modal('show');
+    }
+
+    function saveTestSuiteJob() {
+        if (isEditTestSuiteModal) editTestSuite();
+        else {
+            addTestSuite();
+        }
+    }
+    
+    function addTestSuite() {
+        if (!CheckTestSuiteName()) {
+            return false;
+        }
+        var name = $('#TestSuiteName').val();
+        
+        $('#currentTasks').append("<li id='" + name + "' type='TestSuite'><a ondblclick=\"editTestSuiteTask('" + name + "')\" href='#'>" + name + "</a>" +
+            "<button type='button' class='close' aria-hidden='true' onclick=\"removeTask('" + name + "')\">×</button></li>"
+        );
+
+        var list = $('#testsList').clone();
+
+        $('#' + name).append(list);
+        list.attr('id', '');
+        list.hide();
+
+        $('#TestSuiteModal').modal('hide');
+    }
+    
+    function editTestSuite() {
+        if (!CheckTestSuiteName()) {
+            return false;
+        }
+        
+        var name = $('#TestSuiteName').val();
+        var oldName = $('#EditTestSuiteName').val();
+        
+        $('#' + oldName).find('a').first().attr('ondblclick', "editTestSuiteTask('" + name + "');");
+        $('#' + oldName).find('a').first().text(name);
+        $('#' + oldName).find('button').first().attr('onclick', "removeTask('" + name + "');");
+        $('#' + oldName).attr('id', name);
+
+        $('#' + name).find('ol').first().remove();
+
+        var list = $('#testsList').clone();
+
+        $('#' + name).append(list);
+        list.attr('id', '');
+        list.hide();
+
+        $('#TestSuiteModal').modal('hide');
+    }
+
+    function CheckTestSuiteName() {
+        var name = $('#TestSuiteName').val();
+
+        if (name.length == 0) {
+            $('#TestSuiteNameValidation').text('Please, check task\'s name');
+            canSave = false;
+            return false;
+        }
+
+        var names = new Array;
+
+        $('#currentTasks li').each(function (e) {
+            names.push($(this).attr('id'));
+        });
+
+        for (var i = 0; i < names.length; i++) {
+            if (name == names[i] && name != $('#EditTestSuiteName').val()) {
+                $('#TestSuiteNameValidation').text('Such name is already presented');
+                canSave = false;
+                return false;
+            }
+        }
+
+        $('#TestSuiteNameValidation').text('');
+        canSave = true;
+        return true;
+    }
+
+    function removeTest(object) {
+        $(object).parent().fadeOut('slow', function() {
+            $(this).remove();
+        });
+    }
+    
+    function editTestModal(object) {
+        $('#NewTestLabel').text('Edit Test');
+        $('#AddTestButton').val('Edit');
+        $('#NewTestType').val($(object).parent().attr('testtype'));
+        $('#NewTestType').prop('disabled', 'disabled');
+        testToEdit = $(object).parent();
+
+        loadTestFormForType($(object).parent().attr('testtype'), function() {
+            $('#testFormDiv').find('input,select').each(function() {
+                $(this).val($(object).parent().attr($(this).attr('id')));
+            });
+
+            $(object).parent().find('ul').each(function() {
+                var list = $(this).clone();
+                var tosearch = list.attr('id').replace(/HiddenList$/, "");
+
+                $('#' + tosearch).find('li').each(function() {
+                    $(this).remove();
+                });
+
+                list.find('li').each(function() {
+                    $('#' + tosearch).append($(this));
+                });
+
+                $('#' + tosearch).height(0);
+            });
+            
+            isEditTestModal = true;
+            $('#NewTestModal').modal('show');
+            $('#testFormDiv').find('.collapse').collapse('show');
+            $('#testFormDiv').find('.collapse').each(function() {
+                $(this).height('auto');
+            });
+        });
+    }
+</script>

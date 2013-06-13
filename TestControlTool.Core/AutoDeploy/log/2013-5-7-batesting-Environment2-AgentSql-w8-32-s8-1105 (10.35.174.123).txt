@@ -1,0 +1,14 @@
+2013-05-07 15:41:50.0397|DEBUG|2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)|Connecting to vCenter
+2013-05-07 15:42:11.5340|DEBUG|2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)|Template VM existing checking
+2013-05-07 15:42:11.5340|DEBUG|2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)|Checking existing of virtual machine 'template-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)'
+2013-05-07 15:43:12.8735|DEBUG|2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)|Target VM existing checking
+2013-05-07 15:44:29.1378|DEBUG|2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)|Found 1 virtual machines for delete before deploy
+2013-05-07 15:44:29.1378|DEBUG|2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)|Checking is powered off of virtual machine '2013-5-1-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)'
+2013-05-07 15:45:31.7434|DEBUG|2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)|Powering off unnecessary VM: 2013-5-1-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)
+2013-05-07 15:45:31.7434|DEBUG|2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)|Deleting of virtual machine '2013-5-1-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)'
+2013-05-07 15:46:33.8070|DEBUG|2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)|Delete VM task started, waiting it complete
+2013-05-07 15:46:37.7762|DEBUG|2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)|Delete of virtual machine '2013-5-1-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)' successfully finished
+2013-05-07 15:46:37.7762|DEBUG|2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)|Cloning VM
+2013-05-07 15:46:37.7762|DEBUG|2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)|Cloning virtual machine 'applab/QA-Cluster VMs and vApps/batesting/template-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)' to --> applab/QA-Cluster VMs and vApps/batesting/2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123) 
+2013-05-07 15:47:36.0405|DEBUG|2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)|Clone VM task started, waiting it complete
+2013-05-07 15:57:34.3038|DEBUG|2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)|Clone virtual machine 'template-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123)' to--> 2013-5-7-batesting-Environment2-AgentSql-w8-32-s8-1105 (10.35.174.123) successfully finished

@@ -1,0 +1,7 @@
+2013-04-19 16:58:14.1001|DEBUG|2013-4-19-batesting-Environment3-AgentEx-w2k8-64-e7-1112 (10.35.174.84)-10.35.174.84|Connecting to vCenter
+2013-04-19 16:58:32.7901|DEBUG|2013-4-19-batesting-Environment3-AgentEx-w2k8-64-e7-1112 (10.35.174.84)-10.35.174.84|Template VM existing checking
+2013-04-19 16:58:32.7901|DEBUG|2013-4-19-batesting-Environment3-AgentEx-w2k8-64-e7-1112 (10.35.174.84)-10.35.174.84|Checking existing of virtual machine 'template-Environment3-AgentEx-w2k8-64-e7-1112 (10.35.174.84)'
+2013-04-19 16:59:36.3154|DEBUG|2013-4-19-batesting-Environment3-AgentEx-w2k8-64-e7-1112 (10.35.174.84)-10.35.174.84|Target VM existing checking
+2013-04-19 17:01:27.4256|DEBUG|2013-4-19-batesting-Environment3-AgentEx-w2k8-64-e7-1112 (10.35.174.84)-10.35.174.84|Found 1 virtual machines for delete before deploy
+2013-04-19 17:01:27.4256|DEBUG|2013-4-19-batesting-Environment3-AgentEx-w2k8-64-e7-1112 (10.35.174.84)-10.35.174.84|Checking is powered off of virtual machine '2013-4-17-batesting-Environment3-AgentEx-w2k8-64-e7-1112 (10.35.174.84)'
+2013-04-19 17:47:29.8930|ERROR|2013-4-19-batesting-Environment3-AgentEx-w2k8-64-e7-1112 (10.35.174.84)-10.35.174.84|Checking is powered off of virtual machine '2013-4-17-batesting-Environment3-AgentEx-w2k8-64-e7-1112 (10.35.174.84)' failed. Reason: Can not find virtual machine with name '2013-4-17-batesting-Environment3-AgentEx-w2k8-64-e7-1112 (10.35.174.84)' in the specified folder

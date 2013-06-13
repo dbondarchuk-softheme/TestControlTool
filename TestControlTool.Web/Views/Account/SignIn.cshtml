@@ -1,0 +1,47 @@
+﻿@model TestControlTool.Web.Models.LoginModel
+
+@{
+    ViewBag.Title = "Sign in";
+    Layout = "~/Views/shared/_BootstrapLayout.empty.cshtml";
+}
+
+
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin" }))
+{
+    <div style="width: 50%; float: left;border-right: solid 1px darkgray">
+        <h2 class="form-signin-heading">TestControlTool</h2>
+        <div style="color: darkgray">
+            TestControlTool is very useful thing for managing tasks for QA
+        </div>
+    </div>
+    <div style="margin-left: 55%; horiz-align: right">
+        @Html.AntiForgeryToken()
+
+        <h2 class="form-signin-heading">Please, sign in</h2>
+
+        @Html.TextBoxFor(m => m.UserName, new { @class = "input-block-level", placeholder = "Email" })
+        <div class="text-left text-error">
+            <p>@Html.ValidationMessageFor(m => m.UserName)</p>
+        </div>
+
+        @Html.PasswordFor(m => m.Password, new { @class = "input-block-level", placeholder = "Password" })
+        <div class="text-left text-error">
+            <p>@Html.ValidationMessageFor(m => m.Password)</p>
+        </div>
+
+        <label class="checkbox">
+            @Html.CheckBoxFor(m => m.RememberMe)
+            @Html.LabelFor(m => m.RememberMe)
+        </label>
+
+        <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+
+        <div class="text-left text-error">
+            <p>@Html.ValidationSummary(true)</p>
+        </div>
+
+        <div class="text-left">
+            <p>@Html.ActionLink("Register", "Register") if you don't have an account.</p>
+        </div>
+    </div>
+}

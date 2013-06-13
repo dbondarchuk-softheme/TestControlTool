@@ -1,0 +1,12 @@
+2013-04-15 15:37:10.6010|DEBUG|2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 (10.35.174.111)-10.35.174.111|Connecting to vCenter
+2013-04-15 15:37:37.5265|DEBUG|2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 (10.35.174.111)-10.35.174.111|Template VM existing checking
+2013-04-15 15:37:37.5265|DEBUG|2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 (10.35.174.111)-10.35.174.111|Checking existing of virtual machine 'template-Environment1-Core-w12-64-s12-1097 (10.35.174.111)'
+2013-04-15 15:38:57.0291|DEBUG|2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 (10.35.174.111)-10.35.174.111|Target VM existing checking
+2013-04-15 15:40:10.5503|DEBUG|2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 (10.35.174.111)-10.35.174.111|Cloning VM
+2013-04-15 15:40:10.5503|DEBUG|2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 (10.35.174.111)-10.35.174.111|Cloning virtual machine 'applab/QA-Cluster VMs and vApps/batesting/template-Environment1-Core-w12-64-s12-1097 (10.35.174.111)' to --> applab/QA-Cluster VMs and vApps/batesting/2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 (10.35.174.111) 
+2013-04-15 15:41:43.9766|DEBUG|2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 (10.35.174.111)-10.35.174.111|Clone VM task started, waiting it complete
+2013-04-15 15:44:58.5458|DEBUG|2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 (10.35.174.111)-10.35.174.111|Clone virtual machine 'template-Environment1-Core-w12-64-s12-1097 (10.35.174.111)' to--> 2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 (10.35.174.111) successfully finished
+2013-04-15 15:44:58.5458|DEBUG|2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 (10.35.174.111)-10.35.174.111|Waiting windows start
+2013-04-15 15:44:58.5458|DEBUG|2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 (10.35.174.111)-10.35.174.111|Waiting boot virtual machine
+2013-04-15 15:46:19.3851|DEBUG|2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 (10.35.174.111)-10.35.174.111|Copy installer
+2013-04-15 15:46:22.3803|DEBUG|2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 (10.35.174.111)-10.35.174.111|Starting copy installer 'Core-X64-5.4.1.60891.exe'

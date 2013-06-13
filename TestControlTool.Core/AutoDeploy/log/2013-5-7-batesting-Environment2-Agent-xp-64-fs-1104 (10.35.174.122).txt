@@ -1,0 +1,17 @@
+2013-05-07 15:41:49.9837|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Connecting to vCenter
+2013-05-07 15:42:11.4110|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Template VM existing checking
+2013-05-07 15:42:11.4110|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Checking existing of virtual machine 'template-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)'
+2013-05-07 15:43:16.7477|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Target VM existing checking
+2013-05-07 15:44:56.9354|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Found 1 virtual machines for delete before deploy
+2013-05-07 15:44:56.9354|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Checking is powered off of virtual machine '2013-5-1-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)'
+2013-05-07 15:46:36.4041|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Powering off unnecessary VM: 2013-5-1-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)
+2013-05-07 15:46:36.4041|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Powering off virtual machine '2013-5-1-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)'
+2013-05-07 15:56:35.8564|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Power off virtual machine '2013-5-1-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)' successfully finished
+2013-05-07 15:56:35.8574|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Powering off unnecessary VM: 2013-5-1-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)
+2013-05-07 15:56:35.8574|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Deleting of virtual machine '2013-5-1-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)'
+2013-05-07 16:08:42.3410|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Delete VM task started, waiting it complete
+2013-05-07 16:08:45.5471|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Delete of virtual machine '2013-5-1-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)' successfully finished
+2013-05-07 16:08:45.5471|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Cloning VM
+2013-05-07 16:08:45.5471|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Cloning virtual machine 'applab/QA-Cluster VMs and vApps/batesting/template-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)' to --> applab/QA-Cluster VMs and vApps/batesting/2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122) 
+2013-05-07 16:09:27.9956|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Clone VM task started, waiting it complete
+2013-05-07 16:13:56.2929|DEBUG|2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)|Clone virtual machine 'template-Environment2-Agent-xp-64-fs-1104 (10.35.174.122)' to--> 2013-5-7-batesting-Environment2-Agent-xp-64-fs-1104 (10.35.174.122) successfully finished

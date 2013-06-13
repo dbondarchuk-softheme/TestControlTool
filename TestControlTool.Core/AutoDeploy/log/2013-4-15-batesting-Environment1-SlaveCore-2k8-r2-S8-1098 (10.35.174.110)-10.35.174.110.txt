@@ -1,0 +1,15 @@
+2013-04-15 15:37:10.7050|DEBUG|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Connecting to vCenter
+2013-04-15 15:37:36.0404|DEBUG|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Template VM existing checking
+2013-04-15 15:37:36.0404|DEBUG|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Checking existing of virtual machine 'template-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)'
+2013-04-15 15:39:03.3914|DEBUG|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Target VM existing checking
+2013-04-15 15:40:54.6408|DEBUG|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Found 1 virtual machines for delete before deploy
+2013-04-15 15:40:54.6948|DEBUG|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Checking is powered off of virtual machine '2013-4-8-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)'
+2013-04-15 15:41:49.5739|WARN|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Exception on getting folder childs VMs config.name
+2013-04-15 15:42:04.2428|DEBUG|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Powering off unnecessary VM: 2013-4-8-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)
+2013-04-15 15:42:04.2428|DEBUG|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Powering off virtual machine '2013-4-8-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)'
+2013-04-15 15:43:58.2123|DEBUG|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Power off virtual machine '2013-4-8-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)' successfully finished
+2013-04-15 15:43:58.2123|DEBUG|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Powering off unnecessary VM: 2013-4-8-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)
+2013-04-15 15:43:58.2123|DEBUG|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Deleting of virtual machine '2013-4-8-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)'
+2013-04-15 16:20:29.4910|WARN|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Exception on getting folder childs VMs config.name
+2013-04-15 16:20:36.6110|WARN|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Exception on getting folder childs VMs config.name
+2013-04-15 16:20:51.6010|ERROR|2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)-10.35.174.110|Delete virtual machine '2013-4-8-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)' failed. Reason: Can not find virtual machine with name '2013-4-8-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 (10.35.174.110)' in the specified folder

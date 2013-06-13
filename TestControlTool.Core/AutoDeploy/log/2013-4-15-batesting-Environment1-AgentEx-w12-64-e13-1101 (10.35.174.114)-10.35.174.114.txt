@@ -1,0 +1,27 @@
+2013-04-15 15:37:14.2552|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Connecting to vCenter
+2013-04-15 15:37:36.7205|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Template VM existing checking
+2013-04-15 15:37:36.7205|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Checking existing of virtual machine 'template-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)'
+2013-04-15 15:38:26.3373|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Target VM existing checking
+2013-04-15 15:40:13.4774|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Found 1 virtual machines for delete before deploy
+2013-04-15 15:40:13.4774|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Checking is powered off of virtual machine '2013-4-8-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)'
+2013-04-15 15:40:52.2537|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Powering off unnecessary VM: 2013-4-8-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)
+2013-04-15 15:40:52.2537|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Powering off virtual machine '2013-4-8-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)'
+2013-04-15 15:41:36.7242|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Power off virtual machine '2013-4-8-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)' successfully finished
+2013-04-15 15:41:36.7242|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Powering off unnecessary VM: 2013-4-8-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)
+2013-04-15 15:41:36.7242|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Deleting of virtual machine '2013-4-8-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)'
+2013-04-15 15:42:15.8344|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Delete VM task started, waiting it complete
+2013-04-15 15:42:25.1380|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Delete of virtual machine '2013-4-8-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)' successfully finished
+2013-04-15 15:42:25.1380|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Cloning VM
+2013-04-15 15:42:25.1380|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Cloning virtual machine 'applab/QA-Cluster VMs and vApps/batesting/template-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)' to --> applab/QA-Cluster VMs and vApps/batesting/2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114) 
+2013-04-15 15:44:19.2961|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Clone VM task started, waiting it complete
+2013-04-15 16:20:20.2010|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Clone virtual machine 'template-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)' to--> 2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114) successfully finished
+2013-04-15 16:20:20.2610|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Waiting windows start
+2013-04-15 16:20:20.2610|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Waiting boot virtual machine
+2013-04-15 16:22:15.9512|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Copy installer
+2013-04-15 16:22:19.1012|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Starting copy installer 'Agent-X64-5.4.1.60891.exe'
+2013-04-15 16:22:56.6912|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|App installation
+2013-04-15 16:22:56.6912|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Start execute installer '\\10.35.174.114\reminst\Agent-X64-5.4.1.60891.exe'
+2013-04-15 16:30:23.3140|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Waiting for virtual machine reboot
+2013-04-15 16:36:23.3196|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Waiting boot virtual machine
+2013-04-15 16:37:25.9858|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Installation successfully finished
+2013-04-15 16:37:25.9858|DEBUG|2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 (10.35.174.114)-10.35.174.114|Waiting App service start

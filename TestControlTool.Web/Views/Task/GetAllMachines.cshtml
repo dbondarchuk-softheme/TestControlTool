@@ -1,0 +1,13 @@
+﻿@model ICollection<TestControlTool.Core.Contracts.IMachine>
+
+@{
+    Layout = null;
+}
+
+
+<ul id="allMachines">
+    @foreach (var machine in Model)
+    {
+        <li id ="@machine.Id"><a href="#" onclick="removeMachineFromAll('@machine.Id')">@machine.Name</a></li>
+    }
+</ul>

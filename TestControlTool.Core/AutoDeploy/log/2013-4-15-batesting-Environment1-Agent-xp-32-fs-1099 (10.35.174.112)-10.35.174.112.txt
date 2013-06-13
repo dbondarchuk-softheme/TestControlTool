@@ -1,0 +1,29 @@
+2013-04-15 15:37:13.2211|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Connecting to vCenter
+2013-04-15 15:37:35.8014|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Template VM existing checking
+2013-04-15 15:37:35.8014|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Checking existing of virtual machine 'template-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)'
+2013-04-15 15:38:11.8355|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Target VM existing checking
+2013-04-15 15:39:32.5161|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Found 1 virtual machines for delete before deploy
+2013-04-15 15:39:32.5161|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Checking is powered off of virtual machine '2013-4-8-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)'
+2013-04-15 15:40:11.0393|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Powering off unnecessary VM: 2013-4-8-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)
+2013-04-15 15:40:11.0393|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Powering off virtual machine '2013-4-8-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)'
+2013-04-15 15:40:52.6637|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Power off virtual machine '2013-4-8-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)' successfully finished
+2013-04-15 15:40:52.6637|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Powering off unnecessary VM: 2013-4-8-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)
+2013-04-15 15:40:52.6637|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Deleting of virtual machine '2013-4-8-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)'
+2013-04-15 15:41:30.7799|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Delete VM task started, waiting it complete
+2013-04-15 15:41:34.8451|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Delete of virtual machine '2013-4-8-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)' successfully finished
+2013-04-15 15:41:34.8451|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Cloning VM
+2013-04-15 15:41:34.8451|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Cloning virtual machine 'applab/QA-Cluster VMs and vApps/batesting/template-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)' to --> applab/QA-Cluster VMs and vApps/batesting/2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112) 
+2013-04-15 15:42:40.6729|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Clone VM task started, waiting it complete
+2013-04-15 15:43:33.2439|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Clone virtual machine 'template-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)' to--> 2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112) successfully finished
+2013-04-15 15:43:33.2439|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Waiting windows start
+2013-04-15 15:43:33.2439|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Waiting boot virtual machine
+2013-04-15 15:44:55.3634|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Copy installer
+2013-04-15 15:44:59.8718|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Starting copy installer 'Agent-X86-5.4.1.60884.exe'
+2013-04-15 15:53:51.6234|WARN|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Cannot reach destination folder '\\10.35.175.175\Appassure\Builds', with credentials 'q1 - 123'. Maybe it is Win2003/Xp
+2013-04-15 15:53:51.6434|WARN|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Try reach it with domain credential '10.35.175.175\q1 - 123'
+2013-04-15 15:54:29.1150|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|App installation
+2013-04-15 15:54:29.1160|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Start execute installer '\\10.35.174.112\reminst\Agent-X86-5.4.1.60884.exe'
+2013-04-15 16:41:24.3307|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Waiting for virtual machine reboot
+2013-04-15 16:47:24.3367|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Waiting boot virtual machine
+2013-04-15 16:48:26.9068|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Installation successfully finished
+2013-04-15 16:48:26.9068|DEBUG|2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 (10.35.174.112)-10.35.174.112|Waiting App service start

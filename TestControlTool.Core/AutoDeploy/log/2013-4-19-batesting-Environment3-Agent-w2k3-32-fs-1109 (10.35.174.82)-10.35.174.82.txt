@@ -1,0 +1,9 @@
+2013-04-19 16:58:13.0301|DEBUG|2013-4-19-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Connecting to vCenter
+2013-04-19 16:58:29.3701|DEBUG|2013-4-19-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Template VM existing checking
+2013-04-19 16:58:29.3701|DEBUG|2013-4-19-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Checking existing of virtual machine 'template-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)'
+2013-04-19 16:59:31.0134|DEBUG|2013-4-19-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Target VM existing checking
+2013-04-19 17:00:46.3155|DEBUG|2013-4-19-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Found 1 virtual machines for delete before deploy
+2013-04-19 17:00:46.3155|DEBUG|2013-4-19-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Checking is powered off of virtual machine '2013-4-16-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)'
+2013-04-19 17:01:51.3156|DEBUG|2013-4-19-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Powering off unnecessary VM: 2013-4-16-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)
+2013-04-19 17:01:51.3156|DEBUG|2013-4-19-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Powering off virtual machine '2013-4-16-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)'
+2013-04-19 17:02:59.7157|ERROR|2013-4-19-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Power Off virtual machine '2013-4-16-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)' failed. Reason: Task can not be processed, status 'UNABLE TO COMMUNICATE WITH THE REMOTE HOST, SINCE IT IS DISCONNECTED.'

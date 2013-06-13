@@ -1,0 +1,103 @@
+﻿@using System.Web.Optimization
+@using BootstrapSupport
+@using NavigationRoutes
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="@Styles.Url("~/content/css")" rel="stylesheet"/>
+    @RenderSection("head", required: false)
+    @Html.Partial("_html5shiv")
+    @Scripts.Render("~/js")
+    @RenderSection("Scripts", required: false)
+    @* favicons and touch icons go here *@
+    <script type="text/javascript">
+
+        function ShowMachines() {
+            $('#machinesSidebar').collapse('show');
+            $('#tasksSidebar').collapse('hide');
+        }
+
+        function ShowTasks() {
+            $('#machinesSidebar').collapse('hide');
+            $('#tasksSidebar').collapse('show');
+        }
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="@Url.Action("Index", "Home")" title="Test Control Tool">Test Control Tool</a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <li><a href="@Url.Action("Tasks", "Home")">Tasks</a></li>
+                        <li><a href="@Url.Action("Machines", "Home")">Machines</a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li><a href="#" onclick="return false;"><i class="icon-user"></i>@User.Identity.Name</a></li>
+                        <li><a href="@Url.Action("ChangePassword", "Account")">Change password</a></li>
+                        @Html.Navigation()
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span2" style="display: none;">
+                <div class="well sidebar-nav">
+                    <ul class="nav nav-list">
+                        <li class="nav-header"><span data-toggle="collapse" data-target="#machinesSidebar" id="machinesSidebarLabelButton" style="padding-right: 1em;">˃</span><a href="@Url.Action("Machines", "Home")" style="display: inline">Machines</a></li>
+                        <ul id="machinesSidebar" style="list-style: none; margin-left: 30px;" class="collapse nav nav-list">
+                            @{
+                                Html.RenderAction("GetMachinesListSidebar", "BootstrapBase");
+                            }
+                        </ul>
+                        <li class="nav-header"><span data-toggle="collapse" data-target="#tasksSidebar" id="tasksSidebarLabelButton" style="padding-right: 1em;">˅</span><a href="@Url.Action("Tasks", "Home")" style="display: inline">Tasks</a></li>
+                        <ul id="tasksSidebar" style="list-style: none; margin-left: 30px;" class="collapse in nav nav-list">
+                            @{
+                                Html.RenderAction("GetTasksListSidebar", "BootstrapBase");
+                            }
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="span11">
+                @Html.Partial("_alerts")
+                @Html.Partial("_validationSummary")
+                @RenderSection("featured", false)
+                @RenderBody()
+            </div>
+            <hr>
+            <footer>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $("#machinesSidebar").on("show", function() {
+        $("#machinesSidebarLabelButton").text('˅');
+    });
+    $("#machinesSidebar").on("hide", function () {
+        $("#machinesSidebarLabelButton").text('˃');
+    });
+    $("#tasksSidebar").on("show", function () {
+        $("#tasksSidebarLabelButton").text('˅');
+    });
+    $("#tasksSidebar").on("hide", function() {
+        $("#tasksSidebarLabelButton").text('˃');
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("[rel='tooltip']").tooltip();
+    });
+</script>

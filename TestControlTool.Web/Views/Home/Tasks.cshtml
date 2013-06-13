@@ -1,0 +1,164 @@
+﻿@using BootstrapSupport
+@using BootstrapSupport.HtmlHelpers
+@using TestControlTool.Core.Contracts
+@using TestControlTool.Web.Models
+@model IEnumerable<TaskModel>   
+@{
+    ViewBag.Title = "Tasks list";
+}
+<h4>Tasks</h4>
+<table class="table table-striped">
+    <caption></caption>
+    <thead>
+        <tr>
+            @foreach (var property in Model.VisibleProperties(TaskModel.NotShownProperties))
+            {
+                <th>
+                    @property.GetLabel().ToSeparatedWords()
+                </th>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    @{ int index = 0; }
+    @foreach (var taskModel in Model)
+    {
+        ViewData[index.ToString()] = taskModel;
+        var trId = "Task" + taskModel.Id;
+        <tr id="@trId">
+            @foreach (var property in taskModel.VisibleProperties(TaskModel.NotShownProperties))
+            {
+                var tdId = trId + property.Name;
+                var spinner = "";
+                if (property.Name.ToUpperInvariant() == "STATUS" && taskModel.Status.ToString().ToUpperInvariant() == "RUNNING")
+                {
+                    spinner = "<img src='" + Url.Content("~/Content/images/select2-spinner.gif") + "' style='margin-left: 10px' />";
+                }      
+                <td id="@tdId">
+                    @Html.Link(property, property.GetValue(taskModel) + spinner, new { Id = taskModel.Id })
+                </td>                  
+            }
+            
+            <td>
+                <a href="@Url.Action("Edit", "Task", new { Id = taskModel.Id })" data-toggle="tooltip" title="Edit task" rel="tooltip"><i class="icon-pencil"></i></a>
+            </td>
+            @{var pauseId = "Task" + taskModel.Id + "Pause";}
+            @{var stopId = "Task" + taskModel.Id + "Stop";}
+            <td id="@pauseId">
+                @if (taskModel.IsEnabled)
+                {
+                    <a href="#" onclick="PauseStartScheduleExecution('@taskModel.Id', false); return false;" data-toggle="tooltip" title="Pause Task Schedule start" rel="tooltip"><i class="icon-off"></i></a>
+                }
+                else
+                {
+                    <a href="#" onclick="PauseStartScheduleExecution('@taskModel.Id', true); return false;" data-toggle="tooltip" title="Resume Task Schedule start" rel="tooltip" style="opacity: 0.4"><i class="icon-off"></i></a>
+                }
+            </td>
+            <td id="@stopId">
+                @if (taskModel.Status != TaskStatus.Running)
+                {
+                    <a href="#" onclick="StopTask('@taskModel.Id', 'run'); return false;" data-toggle="tooltip" title="Run Task" rel="tooltip">Run  <i class="icon-circle-arrow-right"></i></a>    
+                }
+                else
+                {
+                    <a href="#" onclick="StopTask('@taskModel.Id', 'stop'); return false;" data-toggle="tooltip" title="Stop Task" rel="tooltip">Stop  <i class="icon-stop"></i></a>
+                }
+            </td>
+        <td>
+                <button rel="tooltip" type='button' class='close' aria-hidden='true' style="float: none" onclick="deleteTask('@taskModel.Id');" title="Delete task" data-toggle="tooltip">×</button>
+            </td>
+        </tr>
+                index++;
+    }
+
+</table>
+<p>
+    @Html.ActionLink("Create New", "CreateTask", null, new { @class = "btn" })
+</p>
+<script type="text/javascript">
+    function deleteTask(id) {
+        window.location.href = '@Url.Action("DeleteTask", "Home")/' + id;
+    }
+    function RefreshStatuses() {
+        $.ajax({
+            url: '@Url.Action("GetStatuses", "Task")',
+            dataType: 'json'
+        }).done(function(data) {
+            $('td[id^=Task][id$=Status]').each(function() {
+                var link = $(this).find('a');
+                var id = $(this).attr('id').replace('Task', '').replace('Status', '');
+
+                var status = data[id];
+
+                if (status.toUpperCase() == 'RUNNING') {
+                    status += '<img src="@Url.Content("~/Content/images/select2-spinner.gif")" style="margin-left: 10px" />';
+                    $('#Task' + id +'Stop').html('<a href="#" onclick="StopTask(\'' + id + '\', \'stop\'); return false;" data-toggle="tooltip" title="Stop Task" rel="tooltip">Stop  <i class="icon-stop"></i></a>');
+                } else {
+                    $('#Task' + id + 'Stop').html('<a href="#" onclick="StopTask(\'' + id + '\', \'run\'); return false;" data-toggle="tooltip" title="Run Task" rel="tooltip">Run  <i class="icon-circle-arrow-right"></i></a>');
+                }
+
+                link.html(status);
+
+            });
+        });
+    }
+    
+    setInterval(function () {
+        RefreshStatuses();
+    }, 5000);
+
+    function StopTask(id, type) {
+        var td = $('#Task' + id + 'Stop');
+        var previousHtml = td.html();
+
+        td.html('<img src="@Url.Content("~/Content/images/select2-spinner.gif")" style="margin-left: 10px" />');
+
+        var url = type.toLowerCase() == "stop" ? '@Url.Action("Stop", "Task")' : '@Url.Action("Run", "Task")';
+
+        $.ajax({
+            url: url,
+            data: {Id : id},
+            dataType: 'json'
+        }).done(function (data) {
+            if (data == false) {
+                td.html('<a href="#" onclick="StopTask(\'' + id + '\', \'run\'); return false;" data-toggle="tooltip" title="Run Task" rel="tooltip">Run  <i class="icon-circle-arrow-right"></i></a>');
+            }
+            else if (data == true) {
+                td.html('<a href="#" onclick="StopTask(\'' + id + '\', \'stop\'); return false;" data-toggle="tooltip" title="Stop Task" rel="tooltip">Stop  <i class="icon-stop"></i></a>');
+            } else {
+                td.html(previousHtml);
+            }
+            
+            RefreshStatuses();
+
+            td.find("a").tooltip();
+        });
+    }
+    
+    function PauseStartScheduleExecution(id, type) {
+        var td = $('#Task' + id + 'Pause');
+
+        var previousHtml = td.html();
+
+        td.html('<img src="@Url.Content("~/Content/images/select2-spinner.gif")" style="margin-left: 10px" />');
+
+        $.ajax({
+            url: '@Url.Action("ToogleEnabled", "Task")',
+            data: { Id: id, Enabled: type },
+            dataType: 'json'
+        }).done(function (data) {
+            if (data == false) {
+                td.html('<a href="#" onclick="PauseStartScheduleExecution(\'' + id + '\', true); return false;" data-toggle="tooltip" title="Resume Task Schedule start" rel="tooltip" style="opacity: 0.4"><i class="icon-off"></i></a>');
+            }
+            else if (data == true) {
+                td.html('<a href="#" onclick="PauseStartScheduleExecution(\'' + id + '\', false); return false;" data-toggle="tooltip" title="Pause Task Schedule start" rel="tooltip"><i class="icon-off"></i></a>');
+            } else {
+                td.html(previousHtml);
+            }
+
+            td.find("a").tooltip();
+        });
+    }
+
+    ShowTasks();
+</script>

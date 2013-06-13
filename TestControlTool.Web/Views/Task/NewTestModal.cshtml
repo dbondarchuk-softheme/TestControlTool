@@ -1,0 +1,139 @@
+﻿@model IEnumerable<Type>
+
+@{
+    Layout = null;
+}
+
+<div class="modal hide fade" id="NewTestModal" tabindex="-1" role="dialog" aria-labelledby="New Test" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="NewTestLabel">Add new Test</h3>
+    </div>
+    <div class="modal-body">
+        <div class="control-group">
+            <label class="control-label" for="NewTestType">
+                Type&nbsp;&nbsp;&nbsp;
+                <select id="NewTestType" class="input-xlarge" onchange="loadTestForm();">
+                    <option value="-1">Please, select test type</option>
+                    @foreach (var type in Model.OrderBy(x => x.Name))
+                    {
+                        <option value="@type.Name">@type.Name</option>
+                    }
+                </select>
+            </label>
+        </div>
+        <div id="testFormDiv">
+        </div>
+        <div id="spinner" style="display: none;">
+            <img src="@Url.Content("~/Content/images/select2-spinner.gif")"/>
+        </div>
+        <br />
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <input type="submit" class="btn btn-primary" value="Add" id="AddTestButton" onclick="saveTest();" />
+    </div>
+</div>
+
+<div style="display: block" id="ListItemsModalDiv"></div>
+
+<script type="text/javascript">
+    /*   $('#NewTestType').select2({
+           dropdownContainer: $("#NewTestType").closest(".modal")
+       });*/
+
+    $('#NewTestModal').on('show', function () {
+        /*$("TestSuiteModal").modal('lock');*/
+    });
+
+    $('#NewTestModal').on('hidden', function () {
+        $('#NewTestLabel').text('Add new Test');
+        $('#AddTestButton').val('Add');
+        $('#NewTestType').prop('disabled', false);
+        $('#NewTestType').val('-1');
+        $('#testFormDiv').text('');
+        isEditTestModal = false;
+        /*$("#TestSuiteModal").modal('unlock');*/
+    });
+
+    function loadTestForm() {
+        loadTestFormForType($('#NewTestType').val(), function () { });
+    }
+
+    function loadTestFormForType(type, callback) {
+        if ($('#NewTestType').val() != '-1') {
+            $('#testFormDiv').fadeOut('slow', function () {
+                $('#spinner').show();
+                $('#testFormDiv').load("/Task/TestForm", { testName: type }, function () {
+                    $('#spinner').hide();
+                    $('#testFormDiv').fadeIn('slow');
+                    callback();
+                });
+            });
+        } else {
+            $('#testFormDiv').fadeOut('slow', function () {
+                $('#testFormDiv').text('');
+                $('#testFormDiv').fadeIn('slow');
+                callback();
+            });
+        }
+    }
+
+    function saveTest() {
+        if (!isEditTestModal) {
+            addNewTest();
+        } else {
+            editTest();
+        }
+    }
+
+    function addNewTest() {
+        var attributes = "";
+
+        $('#testFormDiv').find('input, select').each(function () {
+            attributes += " " + $(this).attr('id') + "='" + $(this).val() + "'";
+        });
+        
+        var li = "<li testType='" + $('#NewTestType').val() + "'" + attributes + "><a href='#' onclick='editTestModal(this)'>" +
+            $('#NewTestType').val() + "</a>";
+        
+        $('#testFormDiv').find('ul').each(function () {
+            var list = $(this).clone();
+            list.hide();
+            list.attr('id', list.attr('id') + 'HiddenList');
+
+            li += list.wrap('<p>').parent().html();;
+        });
+
+        li += "<button type='button' class='close' aria-hidden='true' onclick='removeTest(this)'>×</button></li>";
+
+        $('#testsList').append(li);
+
+        $('#NewTestModal').modal('hide');
+    }
+
+    function editTest() {
+        var attributes = "";
+
+        $('#testFormDiv').find('input').each(function () {
+            attributes += " " + $(this).attr('id') + "='" + $(this).val() + "'";
+        });
+
+        var li = "<li testType='" + $('#NewTestType').val() + "'" + attributes + "><a href='#' onclick='editTestModal(this)'>" +
+            $('#NewTestType').val() + "</a>";
+
+        $('#testFormDiv').find('ul').each(function () {
+            var list = $(this).clone();
+            list.hide();
+            list.attr('id', list.attr('id') + 'HiddenList');
+
+            li += list.wrap('<p>').parent().html();;
+        });
+
+        li += "<button type='button' class='close' aria-hidden='true' onclick='removeTest(this)'>×</button></li>";
+
+        testToEdit.replaceWith(li);
+
+        $('#NewTestModal').modal('hide');
+    }
+</script>

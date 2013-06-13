@@ -1,0 +1,31 @@
+2013-05-07 13:00:36.5695|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Connecting to vCenter
+2013-05-07 13:00:55.0275|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Template VM existing checking
+2013-05-07 13:00:55.0275|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Checking existing of virtual machine 'template-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)'
+2013-05-07 13:01:57.9571|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Target VM existing checking
+2013-05-07 13:03:34.6626|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Found 1 virtual machines for delete before deploy
+2013-05-07 13:03:34.6626|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Checking is powered off of virtual machine '2013-5-2-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)'
+2013-05-07 13:04:41.8875|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Powering off unnecessary VM: 2013-5-2-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)
+2013-05-07 13:04:41.8875|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Powering off virtual machine '2013-5-2-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)'
+2013-05-07 13:07:58.8117|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Power off virtual machine '2013-5-2-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)' successfully finished
+2013-05-07 13:07:58.8117|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Powering off unnecessary VM: 2013-5-2-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)
+2013-05-07 13:07:58.8117|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Deleting of virtual machine '2013-5-2-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)'
+2013-05-07 13:09:12.9600|WARN|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Exception on getting folder childs VMs config.name
+2013-05-07 13:09:14.8241|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Delete VM task started, waiting it complete
+2013-05-07 13:09:18.5863|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Delete of virtual machine '2013-5-2-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)' successfully finished
+2013-05-07 13:09:18.5863|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Cloning VM
+2013-05-07 13:09:18.5863|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Cloning virtual machine 'applab/QA-Cluster VMs and vApps/batesting/template-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)' to --> applab/QA-Cluster VMs and vApps/batesting/2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82) 
+2013-05-07 13:10:05.6720|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Clone VM task started, waiting it complete
+2013-05-07 13:19:37.7667|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Clone virtual machine 'template-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)' to--> 2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82) successfully finished
+2013-05-07 13:19:37.7667|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Waiting windows start
+2013-05-07 13:19:37.7667|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Waiting boot virtual machine
+2013-05-07 13:20:54.1621|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Copy installer
+2013-05-07 13:20:56.6262|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Starting copy installer 'Agent-X86-5.4.1.61595.exe'
+2013-05-07 13:27:57.0813|WARN|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Cannot reach destination folder '\\10.35.175.175\Appassure\Builds', with credentials 'q1 - 123'. Maybe it is Win2003/Xp
+2013-05-07 13:27:57.0813|WARN|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Try reach it with domain credential '10.35.175.175\q1 - 123'
+2013-05-07 13:28:35.6555|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|App installation
+2013-05-07 13:28:35.6565|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Start execute installer '\\10.35.174.82\reminst\Agent-X86-5.4.1.61595.exe'
+2013-05-07 13:35:27.1520|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Waiting for virtual machine reboot
+2013-05-07 13:41:27.1536|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Waiting boot virtual machine
+2013-05-07 13:42:30.3402|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Installation successfully finished
+2013-05-07 13:42:30.3402|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Restart Machine
+2013-05-07 13:42:53.5746|DEBUG|2013-5-7-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Waiting App service start

@@ -1,0 +1,25 @@
+2013-04-05 11:09:42.5534|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Connecting to vCenter
+2013-04-05 11:16:33.2499|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Connecting to vCenter
+2013-04-05 11:32:09.1554|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Connecting to vCenter
+2013-04-05 11:40:06.9697|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Connecting to vCenter
+2013-04-05 11:41:06.2141|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Connecting to vCenter
+2013-04-05 11:54:46.0620|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Connecting to vCenter
+2013-04-05 12:00:17.3940|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Connecting to vCenter
+2013-04-05 12:00:34.2479|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Template VM existing checking
+2013-04-05 12:00:34.2479|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Checking existing of virtual machine 'template-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)'
+2013-04-05 12:01:39.3127|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Target VM existing checking
+2013-04-05 12:02:49.2807|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Found 1 virtual machines for delete before deploy
+2013-04-05 12:02:49.2807|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Checking is powered off of virtual machine '2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)'
+2013-04-05 12:03:38.4705|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Powering off unnecessary VM: 2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)
+2013-04-05 12:03:38.4705|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Powering off virtual machine '2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)'
+2013-04-05 12:04:32.6666|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Power off virtual machine '2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)' successfully finished
+2013-04-05 12:04:32.6666|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Powering off unnecessary VM: 2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)
+2013-04-05 12:04:32.6666|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Deleting of virtual machine '2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)'
+2013-04-05 12:05:09.5017|WARN|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Exception on getting folder childs VMs config.name
+2013-04-05 12:05:21.9044|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Delete VM task started, waiting it complete
+2013-04-05 12:05:36.2252|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Delete of virtual machine '2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)' successfully finished
+2013-04-05 12:05:36.2252|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Cloning VM
+2013-04-05 12:05:36.2252|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Cloning virtual machine 'applab/QA-Cluster VMs and vApps/batesting/template-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)' to --> applab/QA-Cluster VMs and vApps/batesting/2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81) 
+2013-04-05 12:09:42.5583|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Clone VM task started, waiting it complete
+2013-04-05 12:14:38.5692|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Connecting to vCenter
+2013-04-05 12:15:36.3075|DEBUG|2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Connecting to vCenter

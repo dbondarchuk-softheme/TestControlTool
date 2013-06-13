@@ -1,0 +1,1 @@
+2013-04-24 21:19:50.7606|DEBUG|2013-4-24-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Connecting to vCenter

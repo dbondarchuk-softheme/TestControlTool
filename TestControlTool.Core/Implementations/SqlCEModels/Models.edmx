@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SqlCEModels.Store" Alias="Self" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="SqlCEModelsStoreContainer">
+          <EntitySet Name="Accounts" EntityType="SqlCEModels.Store.Accounts" store:Type="Tables" />
+          <EntitySet Name="Machines" EntityType="SqlCEModels.Store.Machines" store:Type="Tables" />
+          <EntitySet Name="Tasks" EntityType="SqlCEModels.Store.Tasks" store:Type="Tables" />
+          <AssociationSet Name="Machines1" Association="SqlCEModels.Store.Machines1">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Machines" EntitySet="Machines" />
+          </AssociationSet>
+          <AssociationSet Name="Tasks1" Association="SqlCEModels.Store.Tasks1">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Accounts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Login" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="PasswordHash" Type="nvarchar" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Machines">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Share" Type="nvarchar" Nullable="true" MaxLength="100" />
+          <Property Name="Owner" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="TemplateVMName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="TemplateInventoryPath" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="VirtualMachineVMName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="VirtualMachineInventoryPath" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="VirtualMachineResourcePool" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="VirtualMachineDatastore" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Host" Type="nvarchar" MaxLength="100" />
+          <Property Name="Type" Type="nvarchar" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Tasks">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="EndTime" Type="datetime" Nullable="false" />
+          <Property Name="Frequency" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="IsEnabled" Type="bit" Nullable="false" />
+          <Property Name="Owner" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Status" Type="nvarchar" Nullable="false" MaxLength="100" DefaultValue="Undefined" />
+          <Property Name="LastRun" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="Machines1">
+          <End Role="Accounts" Type="SqlCEModels.Store.Accounts" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Machines" Type="SqlCEModels.Store.Machines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Machines">
+              <PropertyRef Name="Owner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Tasks1">
+          <End Role="Accounts" Type="SqlCEModels.Store.Accounts" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tasks" Type="SqlCEModels.Store.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="Owner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SqlCEModels" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AccountsEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="SqlCEModels.AccountModel" />
+          <EntitySet Name="Machines" EntityType="SqlCEModels.MachineModel" />
+          <EntitySet Name="Tasks" EntityType="SqlCEModels.TaskModel" />
+          <AssociationSet Name="Machines1" Association="SqlCEModels.Machines1">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Machines" EntitySet="Machines" />
+          </AssociationSet>
+          <AssociationSet Name="Tasks1" Association="SqlCEModels.Tasks1">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AccountModel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Login" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="PasswordHash" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Machines" Relationship="SqlCEModels.Machines1" FromRole="Accounts" ToRole="Machines" />
+          <NavigationProperty Name="Tasks" Relationship="SqlCEModels.Tasks1" FromRole="Accounts" ToRole="Tasks" />
+        </EntityType>
+        <EntityType Name="MachineModel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Share" Type="String" Nullable="true" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Owner" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="TemplateVMName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="TemplateInventoryPath" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="VirtualMachineVMName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="VirtualMachineInventoryPath" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="VirtualMachineResourcePool" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="VirtualMachineDatastore" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Host" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Account" Relationship="SqlCEModels.Machines1" FromRole="Machines" ToRole="Accounts" />
+        </EntityType>
+        <EntityType Name="TaskModel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Owner" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" DefaultValue="Undefined" />
+          <Property Name="LastRun" Type="DateTime" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" />
+          <Property Name="Frequency"  Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false"  />
+          <Property Name="IsEnabled" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="SqlCEModels.Tasks1" FromRole="Tasks" ToRole="Accounts" />
+        </EntityType>
+        <Association Name="Machines1">
+          <End Role="Accounts" Type="SqlCEModels.AccountModel" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Machines" Type="SqlCEModels.MachineModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Machines">
+              <PropertyRef Name="Owner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Tasks1">
+          <End Role="Accounts" Type="SqlCEModels.AccountModel" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tasks" Type="SqlCEModels.TaskModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="Owner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SqlCEModelsStoreContainer" CdmEntityContainer="AccountsEntities">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="SqlCEModels.AccountModel">
+              <MappingFragment StoreEntitySet="Accounts">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Machines">
+            <EntityTypeMapping TypeName="SqlCEModels.MachineModel">
+              <MappingFragment StoreEntitySet="Machines">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Share" ColumnName="Share" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="TemplateVMName" ColumnName="TemplateVMName" />
+                <ScalarProperty Name="TemplateInventoryPath" ColumnName="TemplateInventoryPath" />
+                <ScalarProperty Name="VirtualMachineVMName" ColumnName="VirtualMachineVMName" />
+                <ScalarProperty Name="VirtualMachineInventoryPath" ColumnName="VirtualMachineInventoryPath" />
+                <ScalarProperty Name="VirtualMachineResourcePool" ColumnName="VirtualMachineResourcePool" />
+                <ScalarProperty Name="VirtualMachineDatastore" ColumnName="VirtualMachineDatastore" />
+                <ScalarProperty Name="Host" ColumnName="Host" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="SqlCEModels.TaskModel">
+              <MappingFragment StoreEntitySet="Tasks">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LastRun" ColumnName="LastRun" />
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

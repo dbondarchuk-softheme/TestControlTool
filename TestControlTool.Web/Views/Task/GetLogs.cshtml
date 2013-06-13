@@ -1,0 +1,8 @@
+﻿@model string
+@{
+    var log = Model.Replace("\n", "<br/>");
+}
+
+<div>
+    @Html.Raw(log)
+</div>

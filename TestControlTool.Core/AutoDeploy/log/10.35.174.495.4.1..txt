@@ -1,0 +1,2 @@
+2013-04-22 11:33:44.3182|DEBUG|10.35.174.495.4.1.|Waiting windows start
+2013-04-22 11:33:44.3342|DEBUG|10.35.174.495.4.1.|Waiting boot virtual machine

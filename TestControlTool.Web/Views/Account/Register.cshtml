@@ -1,0 +1,51 @@
+﻿@model TestControlTool.Web.Models.RegisterModel
+@{
+    ViewBag.Title = "Register new account";
+    Layout = "~/Views/shared/_BootstrapLayout.empty.cshtml";
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+
+@using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin" }))
+{
+    <div style="width: 50%; float: left; border-right: solid 1px darkgray">
+        <h2 class="form-signin-heading">TestControlTool</h2>
+        <div style="color: darkgray">
+            TestControlTool is very useful thing for managing tasks for QA
+        </div>
+    </div>
+    <div style="margin-left: 55%; horiz-align: right">
+        @Html.AntiForgeryToken()
+
+        <h2 class="form-signin-heading">@ViewBag.Title</h2>
+
+        @Html.TextBoxFor(m => m.UserName, new { @class = "input-block-level", placeholder = "Email" })
+        <div class="text-left text-error">
+            <p>@Html.ValidationMessageFor(m => m.UserName)</p>
+        </div>
+
+        @Html.PasswordFor(m => m.Password, new { @class = "input-block-level", placeholder = "Password" })
+        <div class="text-left text-error">
+            <p>@Html.ValidationMessageFor(m => m.Password)</p>
+        </div>
+
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "input-block-level", placeholder = "Confirm password" })
+        <div class="text-error">
+            <p>@Html.ValidationMessageFor(m => m.ConfirmPassword)</p>
+        </div>
+
+        <button class="btn btn-large btn-primary" type="submit">Register</button>
+
+        <div class="text-left text-error">
+            <p>@Html.ValidationSummary(true)</p>
+        </div>
+
+        <div class="text-left">
+            <p>@Html.ActionLink("Login", "Login") if you already have an account.</p>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $('#UserName').popover({ trigger: "focus", title: "Email", content: "Your login is your email. We will send tasks reports to this email" });
+</script>

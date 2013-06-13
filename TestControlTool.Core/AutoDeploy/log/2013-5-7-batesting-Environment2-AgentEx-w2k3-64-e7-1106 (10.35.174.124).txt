@@ -1,0 +1,17 @@
+2013-05-07 15:41:50.9208|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Connecting to vCenter
+2013-05-07 15:42:08.9898|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Template VM existing checking
+2013-05-07 15:42:08.9898|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Checking existing of virtual machine 'template-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)'
+2013-05-07 15:42:28.6870|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Target VM existing checking
+2013-05-07 15:43:44.3033|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Found 1 virtual machines for delete before deploy
+2013-05-07 15:43:44.3033|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Checking is powered off of virtual machine '2013-5-1-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)'
+2013-05-07 15:44:21.5014|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Powering off unnecessary VM: 2013-5-1-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)
+2013-05-07 15:44:21.5014|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Powering off virtual machine '2013-5-1-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)'
+2013-05-07 15:45:04.8599|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Power off virtual machine '2013-5-1-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)' successfully finished
+2013-05-07 15:45:04.8599|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Powering off unnecessary VM: 2013-5-1-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)
+2013-05-07 15:45:04.8599|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Deleting of virtual machine '2013-5-1-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)'
+2013-05-07 15:45:43.2821|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Delete VM task started, waiting it complete
+2013-05-07 15:45:48.9174|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Delete of virtual machine '2013-5-1-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)' successfully finished
+2013-05-07 15:45:48.9174|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Cloning VM
+2013-05-07 15:45:48.9174|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Cloning virtual machine 'applab/QA-Cluster VMs and vApps/batesting/template-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)' to --> applab/QA-Cluster VMs and vApps/batesting/2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124) 
+2013-05-07 15:46:47.6698|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Clone VM task started, waiting it complete
+2013-05-07 15:55:38.3931|DEBUG|2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)|Clone virtual machine 'template-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124)' to--> 2013-5-7-batesting-Environment2-AgentEx-w2k3-64-e7-1106 (10.35.174.124) successfully finished

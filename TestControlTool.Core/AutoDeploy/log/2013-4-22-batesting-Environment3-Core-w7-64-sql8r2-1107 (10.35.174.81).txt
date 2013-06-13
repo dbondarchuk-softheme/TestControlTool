@@ -1,0 +1,1 @@
+2013-04-22 18:45:54.4693|DEBUG|2013-4-22-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)|Connecting to vCenter

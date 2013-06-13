@@ -1,0 +1,9 @@
+2013-04-19 16:58:10.5189|DEBUG|2013-4-19-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Connecting to vCenter
+2013-04-19 16:58:32.3801|DEBUG|2013-4-19-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Template VM existing checking
+2013-04-19 16:58:32.3801|DEBUG|2013-4-19-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Checking existing of virtual machine 'template-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)'
+2013-04-19 16:59:38.2454|DEBUG|2013-4-19-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Target VM existing checking
+2013-04-19 17:01:17.0456|DEBUG|2013-4-19-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Found 1 virtual machines for delete before deploy
+2013-04-19 17:01:17.0456|DEBUG|2013-4-19-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Checking is powered off of virtual machine '2013-4-17-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)'
+2013-04-19 17:02:19.4957|DEBUG|2013-4-19-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Powering off unnecessary VM: 2013-4-17-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)
+2013-04-19 17:02:19.4957|DEBUG|2013-4-19-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Powering off virtual machine '2013-4-17-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)'
+2013-04-19 17:47:42.9230|ERROR|2013-4-19-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)-10.35.174.80|Power Off virtual machine '2013-4-17-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)' failed. Reason: Can not find virtual machine with name '2013-4-17-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 (10.35.174.80)' in the specified folder

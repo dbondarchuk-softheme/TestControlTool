@@ -1,0 +1,11 @@
+﻿@model IEnumerable<TestControlTool.Core.Contracts.IMachine>
+@{
+    Layout = null;
+}
+
+@foreach (var machine in Model)
+{
+    var liId = "machineSidebar" + machine.Id;
+    
+    <li id="@liId"><a href="@Url.Action("MachineDetails", "Home", new {id = machine.Id})" style="display: inline">@machine.Name</a></li>
+}

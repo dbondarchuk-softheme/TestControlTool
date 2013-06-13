@@ -1,0 +1,26 @@
+﻿@model Guid
+@{
+    ViewBag.Title = "View logs";
+}
+<div>
+    <button class="btn" onclick="refreshLogs();"><i class="icon-refresh"></i>Refresh</button>
+</div>
+<div id="logs">
+    @{
+        Html.RenderAction("GetLogs", Model);
+    }
+</div>
+<div id="hidden" style="display: none;"></div>
+<script type="text/javascript">
+    setInterval(function() {
+        refreshLogs();
+    }, 5000);
+
+    function refreshLogs() {
+        var id = '@Model.ToString()';
+        $('#hidden').load("@Url.Action("GetLogs")", {id : id},  function () {
+            var value = $('#hidden').html();
+            $('#logs').html(value);
+        });
+    }
+</script>

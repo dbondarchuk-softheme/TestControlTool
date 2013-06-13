@@ -1,0 +1,49 @@
+  ***** WEBGUIAUTOMATION SUITE REPORT ***** 
+ ........................................... 
+ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+   Start Date : [ Saturday, May 25, 2013 ]
+   Start Time : [ 02:15:34 ]
+ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ ........................................... 
+ ........................................... 
+ ---------------- [ Test ] ----------------- 
+    Test Name : [  ]
+       Status : [ Succeeded ]
+   Start Time : [ 02:15:34 ]
+     End Time : [ 02:15:37 ]
+     Duration : [ 00:00:02.4561405 ]
+      Message : [  ]
+ ........................................... 
+ ........................................... 
+ ---------------- [ Test ] ----------------- 
+    Test Name : [ General - Connection ]
+       Status : [ Fail ]
+   Start Time : [ 02:15:37 ]
+     End Time : [ 02:15:42 ]
+     Duration : [ 00:00:05.3533062 ]
+      Message : [ System.Windows.Automation.ElementNotAvailableException: The target element corresponds to UI that is no longer available (for example, the parent window has closed).
+   at MS.Internal.Automation.Misc.ThrowWin32ExceptionsIfError(Int32 errorCode)
+   at MS.Internal.Automation.ProxyManager.GetClassName(HWND hwnd)
+   at MS.Internal.Automation.HwndProxyElementProvider.System.Windows.Automation.Provider.IRawElementProviderSimple.GetPropertyValue(Int32 propertyId)
+   at MS.Internal.Automation.UiaCoreApi.CheckError(Int32 hr)
+   at System.Windows.Automation.AutomationElement.GetCurrentPropertyValue(AutomationProperty property, Boolean ignoreDefaultValue)
+   at System.Windows.Automation.AutomationElement.AutomationElementInformation.get_ClassName()
+   at WebGuiAutomation.SeleniumWebElements.WebDrivers.ChromeWebDriver.NavigateWithAuthentication(Uri url, String userName, String password) in d:\Projects\Appasure\replay\testing\WebGuiAutomation\WebGuiAutomation.SeleniumWebElements\WebDrivers\ChromeWebDriver.cs:line 67
+   at WebGuiAutomation.Implementation.AppAssureStructure.Pages.PageRoot.NavigateTo(String host, String port, String userName, String password) in d:\Projects\Appasure\replay\testing\WebGuiAutomation\WebGuiAutomation.Implementation\AppAssureStructure\Pages\Root.cs:line 91
+   at WebGuiAutomation.Scripts.General.Connection.Run(ITestReporter reporter) in d:\Projects\Appasure\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\General\Connection.cs:line 60 ]
+ ........................................... 
+ ........................................... 
+ ---------------- [ Test ] ----------------- 
+    Test Name : [  ]
+       Status : [ Succeeded ]
+   Start Time : [ 02:15:42 ]
+     End Time : [ 02:15:49 ]
+     Duration : [ 00:00:06.7623868 ]
+      Message : [ A exception with a null response was thrown sending an HTTP request to the remote WebDriver server for URL http://localhost:26609/session/e55c7dc2eb7b65e69dd622ff8e17145b/window. The status of the exception was ConnectFailure, and the message was: Unable to connect to the remote server ]
+ ........................................... 
+ ........................................... 
+ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+   End Time: [02:15:49]
+   Duration: [00:00:14.6678389]
+ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+          ***** END OF REPORT *****          

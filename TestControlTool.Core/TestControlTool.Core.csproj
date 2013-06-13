@@ -1,0 +1,438 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{51CC28C8-06A3-4BE6-BCF9-3FAD7B0B1B7F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TestControlTool.Core</RootNamespace>
+    <AssemblyName>TestControlTool.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.3.2.0\lib\net45\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CastleResolver.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Implementations\BackendSuiteTask.cs" />
+    <Compile Include="Implementations\FileLogger.cs" />
+    <Compile Include="Contracts\IAccount.cs" />
+    <Compile Include="Contracts\IAccountController.cs" />
+    <Compile Include="Contracts\IChildTask.cs" />
+    <Compile Include="Contracts\IMachine.cs" />
+    <Compile Include="Contracts\IPasswordHash.cs" />
+    <Compile Include="Contracts\IScheduleTask.cs" />
+    <Compile Include="Contracts\ITaskParser.cs" />
+    <Compile Include="Exceptions\AddExistingTaskException.cs" />
+    <Compile Include="Exceptions\NoSuchTaskException.cs" />
+    <Compile Include="Implementations\Account.cs" />
+    <Compile Include="Exceptions\AddExistingAccountException.cs" />
+    <Compile Include="Exceptions\AddExistingMachineException.cs" />
+    <Compile Include="Implementations\DeployInstallTask.cs" />
+    <Compile Include="Contracts\ILogger.cs" />
+    <Compile Include="Helpers\FileWatcher.cs" />
+    <Compile Include="Implementations\Machine.cs" />
+    <Compile Include="Implementations\Md5PasswordHash.cs" />
+    <Compile Include="Helpers\ProcessRunner.cs" />
+    <Compile Include="Implementations\ScheduleTask.cs" />
+    <Compile Include="Exceptions\NoSuchAccountException.cs" />
+    <Compile Include="Exceptions\NoSuchMachineException.cs" />
+    <Compile Include="Implementations\SqlCEAccountController.cs" />
+    <Compile Include="Implementations\SqlCEModels\AccountModel.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Implementations\SqlCEModels\MachineModel.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Implementations\SqlCEModels\Models.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Models.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Implementations\SqlCEModels\Models.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Implementations\SqlCEModels\Models.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Models.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Implementations\SqlCEModels\TaskModel.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Implementations\XmlTaskParser.cs" />
+    <Compile Include="Implementations\TestSuiteTask.cs" />
+    <Compile Include="Models\ChildTaskModel.cs" />
+    <Compile Include="Models\TaskChildContainer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="Implementations\SqlCEModels\Models.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Models.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Implementations\SqlCEModels\Models.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Models.edmx</DependentUpon>
+      <LastGenOutput>Models.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Implementations\SqlCEModels\Models.edmx.diagram">
+      <DependentUpon>Models.edmx</DependentUpon>
+    </None>
+    <None Include="Implementations\SqlCEModels\Models.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Models.edmx</DependentUpon>
+      <LastGenOutput>Models.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <None Include="AutoDeploy\AutodeploymentConsole.exe.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="AutoDeploy\AutodeploymentConsole.exe.lastcodeanalysissucceeded">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="AutoDeploy\AutodeploymentConsole.vshost.exe.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="AutoDeploy\AutodeploymentConsole.vshost.exe.manifest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="AutoDeploy\NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="AutoDeploy\Scripts\RunCommand.ps1" />
+    <None Include="TestPerformer\Castle.Windsor.BrowserControl.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformer\Castle.Windsor.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformer\Castle.Windsor.Logging.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformer\Castle.Windsor.TestPeformer.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformer\Castle.Windsor.TestPeformerCore.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformer\NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformer\WebGuiAutomation.TestPerformer.exe.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformer\WebGuiAutomation.TestPerformer.vshost.exe.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformer\WebGuiAutomation.TestPerformer.vshost.exe.manifest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="accounts.sdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\AppUtil.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\AutodeploymentConsole.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\AutodeploymentConsole.exe.CodeAnalysisLog.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\AutodeploymentConsole.pdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\AutodeploymentConsole.vshost.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\AutodeploymentServices.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\AutodeploymentServices.pdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\AutodeploySource.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\Gibraltar.Agent.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\Gibraltar.Agent.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\Ionic.Zip.Reduced.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\Localization.Base.Contracts.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\Localization.Base.Contracts.pdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\Logging.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\Logging.pdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\log\10.35.174.465.4.1..txt" />
+    <Content Include="AutoDeploy\log\10.35.174.475.4.1..txt" />
+    <Content Include="AutoDeploy\log\10.35.174.485.4.1..txt" />
+    <Content Include="AutoDeploy\log\10.35.174.495.4.1..txt" />
+    <Content Include="AutoDeploy\log\10.35.174.505.4.1..txt" />
+    <Content Include="AutoDeploy\log\10.35.174.805.4.1..txt" />
+    <Content Include="AutoDeploy\log\10.35.174.815.4.1..txt" />
+    <Content Include="AutoDeploy\log\10.35.174.825.4.1..txt" />
+    <Content Include="AutoDeploy\log\10.35.174.835.4.1..txt" />
+    <Content Include="AutoDeploy\log\10.35.174.845.4.1..txt" />
+    <Content Include="AutoDeploy\log\2013-4-15-batesting-Environment1-Agent-xp-32-fs-1099 %2810.35.174.112%29-10.35.174.112.txt" />
+    <Content Include="AutoDeploy\log\2013-4-15-batesting-Environment1-AgentEx-w12-64-e13-1101 %2810.35.174.114%29-10.35.174.114.txt" />
+    <Content Include="AutoDeploy\log\2013-4-15-batesting-Environment1-AgentSql-w8-64-s12-1100 %2810.35.174.113%29-10.35.174.113.txt" />
+    <Content Include="AutoDeploy\log\2013-4-15-batesting-Environment1-Core-w12-64-s12-1097 %2810.35.174.111%29-10.35.174.111.txt" />
+    <Content Include="AutoDeploy\log\2013-4-15-batesting-Environment1-SlaveCore-2k8-r2-S8-1098 %2810.35.174.110%29-10.35.174.110.txt" />
+    <Content Include="AutoDeploy\log\2013-4-19-batesting-Environment3-Agent-w2k3-32-fs-1109 %2810.35.174.82%29-10.35.174.82.txt" />
+    <Content Include="AutoDeploy\log\2013-4-19-batesting-Environment3-AgentEx-w2k8-64-e7-1112 %2810.35.174.84%29-10.35.174.84.txt" />
+    <Content Include="AutoDeploy\log\2013-4-19-batesting-Environment3-AgentSql-w7-64-sr2-1110 %2810.35.174.83%29-10.35.174.83.txt" />
+    <Content Include="AutoDeploy\log\2013-4-19-batesting-Environment3-Core-w7-64-sql8r2-1107 %2810.35.174.81%29-10.35.174.81.txt" />
+    <Content Include="AutoDeploy\log\2013-4-19-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 %2810.35.174.80%29-10.35.174.80.txt" />
+    <Content Include="AutoDeploy\log\2013-4-22-batesting-Environment3-Agent-w2k3-32-fs-1109 %2810.35.174.82%29.txt" />
+    <Content Include="AutoDeploy\log\2013-4-22-batesting-Environment3-AgentEx-w2k8-64-e7-1112 %2810.35.174.84%29.txt" />
+    <Content Include="AutoDeploy\log\2013-4-22-batesting-Environment3-AgentSql-w7-64-sr2-1110 %2810.35.174.83%29.txt" />
+    <Content Include="AutoDeploy\log\2013-4-22-batesting-Environment3-Core-w7-64-sql8r2-1107 %2810.35.174.81%29.txt" />
+    <Content Include="AutoDeploy\log\2013-4-22-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 %2810.35.174.80%29.txt" />
+    <Content Include="AutoDeploy\log\2013-4-22-uitesting-e1-2k12s-e13-1070-%2810.35.174.50%29-10.35.174.50.txt" />
+    <Content Include="AutoDeploy\log\2013-4-22-uitesting-e1-2k12s-s12-1067-%2810.35.174.47%29-10.35.174.47.txt" />
+    <Content Include="AutoDeploy\log\2013-4-22-uitesting-e1-2k8er2-sr2-1066-%2810.35.174.46%29-10.35.174.46.txt" />
+    <Content Include="AutoDeploy\log\2013-4-22-uitesting-e1-w7e-64-s12-1068-%2810.35.174.48%29-10.35.174.48.txt" />
+    <Content Include="AutoDeploy\log\2013-4-22-uitesting-e1-w8e-32-sr2-1069-%2810.35.174.49%29-10.35.174.49.txt" />
+    <Content Include="AutoDeploy\log\2013-4-23-batesting-Environment3-Agent-w2k3-32-fs-1109 %2810.35.174.82%29-10.35.174.82.txt" />
+    <Content Include="AutoDeploy\log\2013-4-23-batesting-Environment3-AgentEx-w2k8-64-e7-1112 %2810.35.174.84%29-10.35.174.84.txt" />
+    <Content Include="AutoDeploy\log\2013-4-23-batesting-Environment3-AgentSql-w7-64-sr2-1110 %2810.35.174.83%29-10.35.174.83.txt" />
+    <Content Include="AutoDeploy\log\2013-4-23-batesting-Environment3-Core-w7-64-sql8r2-1107 %2810.35.174.81%29-10.35.174.81.txt" />
+    <Content Include="AutoDeploy\log\2013-4-23-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 %2810.35.174.80%29-10.35.174.80.txt" />
+    <Content Include="AutoDeploy\log\2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 %2810.35.174.82%29-10.35.174.82.txt" />
+    <Content Include="AutoDeploy\log\2013-4-5-batesting-Environment3-AgentEx-w2k8-64-e7-1112 %2810.35.174.84%29-10.35.174.84.txt" />
+    <Content Include="AutoDeploy\log\2013-4-5-batesting-Environment3-AgentSql-w7-64-sr2-1110 %2810.35.174.83%29-10.35.174.83.txt" />
+    <Content Include="AutoDeploy\log\2013-4-5-batesting-Environment3-Core-w7-64-sql8r2-1107 %2810.35.174.81%29-10.35.174.81.txt" />
+    <Content Include="AutoDeploy\log\2013-4-5-batesting-Environment3-CoreSlave-2k8-r2-S8-1108 %2810.35.174.80%29-10.35.174.80.txt" />
+    <Content Include="AutoDeploy\log\log.txt" />
+    <Content Include="AutoDeploy\Microsoft.Practices.Unity.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\Microsoft.Practices.Unity.pdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\Microsoft.Practices.Unity.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\NLog.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\VimService2010.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\VimService2010.XmlSerializers.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\VMware.Security.CredentialStore.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\WmiHelper.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoDeploy\WmiHelper.pdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\Castle.Core.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\Castle.Core.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\Castle.Windsor.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\Castle.Windsor.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\chromedriver.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\IEDriverServer.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\NLog.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\NLog.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebDriver.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebDriver.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.AppAssureTools.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.AppAssureTools.pdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.Implementation.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.Implementation.pdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.Implementation.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.IoC.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.Logging.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.Scripts.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.Scripts.pdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.SeleniumWebElements.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.SeleniumWebElements.pdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.TestPerformer.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.TestPerformer.vshost.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.TestPerformerCore.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.Tools.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.Tools.pdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.WebElements.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.WebElements.pdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.4.0">
+      <Visible>False</Visible>
+      <ProductName>SQL Server Compact 4.0 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AutoDeploy\de\" />
+    <Folder Include="AutoDeploy\es\" />
+    <Folder Include="AutoDeploy\fr\" />
+    <Folder Include="AutoDeploy\ja\" />
+    <Folder Include="AutoDeploy\zh-CN\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

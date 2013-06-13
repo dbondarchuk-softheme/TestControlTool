@@ -1,0 +1,9 @@
+2013-04-19 16:58:10.4029|DEBUG|2013-4-19-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Connecting to vCenter
+2013-04-19 16:58:32.2201|DEBUG|2013-4-19-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Template VM existing checking
+2013-04-19 16:58:32.2201|DEBUG|2013-4-19-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Checking existing of virtual machine 'template-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)'
+2013-04-19 16:59:43.0254|DEBUG|2013-4-19-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Target VM existing checking
+2013-04-19 17:01:35.1356|DEBUG|2013-4-19-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Found 1 virtual machines for delete before deploy
+2013-04-19 17:01:35.1356|DEBUG|2013-4-19-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Checking is powered off of virtual machine '2013-4-17-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)'
+2013-04-19 17:02:41.2957|DEBUG|2013-4-19-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Powering off unnecessary VM: 2013-4-17-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)
+2013-04-19 17:02:41.2957|DEBUG|2013-4-19-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Powering off virtual machine '2013-4-17-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)'
+2013-04-19 17:47:20.3730|ERROR|2013-4-19-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)-10.35.174.81|Power Off virtual machine '2013-4-17-batesting-Environment3-Core-w7-64-sql8r2-1107 (10.35.174.81)' failed. Reason: The underlying connection was closed: An unexpected error occurred on a send.

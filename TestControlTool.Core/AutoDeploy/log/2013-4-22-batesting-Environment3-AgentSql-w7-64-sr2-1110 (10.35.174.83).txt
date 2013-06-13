@@ -1,0 +1,1 @@
+2013-04-22 18:45:54.6703|DEBUG|2013-4-22-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)|Connecting to vCenter

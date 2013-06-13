@@ -1,0 +1,9 @@
+2013-04-19 18:00:26.9179|DEBUG|10.35.174.845.4.1.|Waiting windows start
+2013-04-19 18:00:26.9179|DEBUG|10.35.174.845.4.1.|Waiting boot virtual machine
+2013-04-19 18:00:37.8779|DEBUG|10.35.174.845.4.1.|Copy installer
+2013-04-19 18:00:45.6979|DEBUG|10.35.174.845.4.1.|Starting copy installer 'Agent-X64-5.4.1.61108.exe'
+2013-04-19 18:01:40.4480|DEBUG|10.35.174.845.4.1.|App installation
+2013-04-19 18:01:40.4480|DEBUG|10.35.174.845.4.1.|Start execute installer '\\10.35.174.84\reminst\Agent-X64-5.4.1.61108.exe'
+2013-04-22 18:46:18.3037|DEBUG|10.35.174.845.4.1.|Waiting windows start
+2013-04-22 18:46:18.3037|DEBUG|10.35.174.845.4.1.|Waiting boot virtual machine
+2013-04-22 18:46:29.2453|DEBUG|10.35.174.845.4.1.|Copy installer

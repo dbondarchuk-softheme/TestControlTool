@@ -1,0 +1,17 @@
+2013-05-07 15:41:49.8877|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Connecting to vCenter
+2013-05-07 15:42:12.5590|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Template VM existing checking
+2013-05-07 15:42:12.5590|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Checking existing of virtual machine 'template-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)'
+2013-05-07 15:42:57.9966|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Target VM existing checking
+2013-05-07 15:44:43.8877|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Found 1 virtual machines for delete before deploy
+2013-05-07 15:44:43.8877|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Checking is powered off of virtual machine '2013-5-1-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)'
+2013-05-07 15:45:49.9855|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Powering off unnecessary VM: 2013-5-1-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)
+2013-05-07 15:45:49.9855|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Powering off virtual machine '2013-5-1-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)'
+2013-05-07 15:55:40.3112|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Power off virtual machine '2013-5-1-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)' successfully finished
+2013-05-07 15:55:40.3112|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Powering off unnecessary VM: 2013-5-1-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)
+2013-05-07 15:55:40.3112|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Deleting of virtual machine '2013-5-1-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)'
+2013-05-07 15:56:22.0766|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Delete VM task started, waiting it complete
+2013-05-07 15:56:24.9038|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Delete of virtual machine '2013-5-1-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)' successfully finished
+2013-05-07 15:56:24.9038|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Cloning VM
+2013-05-07 15:56:24.9038|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Cloning virtual machine 'applab/QA-Cluster VMs and vApps/batesting/template-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)' to --> applab/QA-Cluster VMs and vApps/batesting/2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121) 
+2013-05-07 15:57:13.1015|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Clone VM task started, waiting it complete
+2013-05-07 16:08:30.6533|DEBUG|2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)|Clone virtual machine 'template-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121)' to--> 2013-5-7-batesting-Environment2-Core-w2k8-r2-S8-1102 (10.35.174.121) successfully finished

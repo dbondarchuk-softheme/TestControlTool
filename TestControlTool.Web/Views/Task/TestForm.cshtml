@@ -1,0 +1,97 @@
+﻿@using System.Reflection
+@using BootstrapSupport
+@model Type
+@{
+    Layout = null;
+}
+@foreach (var property in Model.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead))
+{
+    using (Html.ControlGroupFor(property.Name))
+    {
+    @Html.Label(property.Name.ToSeparatedWords(), new { @class = "control-label" })
+    <div class="controls">
+        @if (property.PropertyType == typeof(string) || property.PropertyType == typeof(int))
+        {
+            @Html.TextBox(property.Name, "", new { @class = "input-xlarge" })
+            @Html.ValidationMessage(property.Name, null, new { @class = "help-inline" })
+        }
+        else if (property.PropertyType.IsEnum)
+        {
+            @Html.EnumDropDownList(property.Name, property.PropertyType)
+        }
+        else if (property.PropertyType.Name.Contains("List"))
+        {
+            <a href="#" data-toggle="collapse" data-target="#@property.Name" style="padding-left: 5px">Edit <i class="icon-chevron-right"></i></a>
+            <button type="button" class="close" aria-hidden="true" onclick="loadListItemsModal('@property.PropertyType.GetGenericArguments()[0].Name', '@property.Name');" title="Add new item">+</button>
+            <ul style="padding-left: 20%; height: auto;" class="collapse sortable" id="@property.Name">
+            </ul>
+        }
+    </div>
+    }
+}
+
+<script type="text/javascript">
+    var listName = "";
+    var isEditListItem = false;
+    var listItemToEdit;
+
+    function editListItem(type, obj) {
+        $('#ListItemsModalDiv').load('@Url.Action("ListItemModal", "Task")', { typeName: type }, function() {
+            $('#ListItemsLabel').text($('#ListItemsLabel').text().replace('Add new', 'Edit'));
+            $('#ListItemsButton').val('Edit');
+
+            var attributes = $(obj).parent().listAttributes();
+
+            for (var i = 0; i < attributes.length; i++) {
+                $('#itemsProperties').find('input,select').each(function () {
+                    if ($(this).attr('id').toLowerCase() == attributes[i].toLowerCase()) {
+                        $(this).val($(obj).parent().attr(attributes[i]));
+                    }
+                });
+            }
+
+            listItemToEdit = $(obj).parent();
+            isEditListItem = true;
+            
+            $('#ListItemsModal').modal('show');
+        });
+    }
+
+    function loadListItemsModal(type, list) {
+        $('#ListItemsModalDiv').load('@Url.Action("ListItemModal", "Task")', { typeName: type }, function () {
+            listName = list;
+            $('#ListItemsModal').modal('show');
+        });
+    }
+
+    $(document).ready(function() {
+        $('#testFormDiv').find('.sortable').each(function() {
+            $(this).sortable();
+            $(this).disableSelection();
+        });
+    });
+
+    $('#testFormDiv').find('.collapse').on('hidden', function (event) {
+        event.stopPropagation();
+    });
+
+    $(document).ready(function() {
+        $('#testFormDiv').find('.collapse').each(function () {
+            var i = $(this).parent().find('a').find('i');
+            
+            $(this).on('show', function () {
+                i.removeClass('icon-chevron-right', 100, function () {
+                    i.addClass('icon-chevron-down', 100);
+                });
+            });
+
+            $(this).on('hide', function () {
+                i.removeClass('icon-chevron-down', 100, function () {
+                    i.addClass('icon-chevron-right', 100);
+                });
+            });
+            
+            $(this).collapse('show');
+        });
+    });
+</script>

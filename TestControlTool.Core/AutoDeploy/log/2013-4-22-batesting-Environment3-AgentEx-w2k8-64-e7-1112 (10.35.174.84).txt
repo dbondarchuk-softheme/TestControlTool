@@ -1,0 +1,1 @@
+2013-04-22 18:45:55.4764|DEBUG|2013-4-22-batesting-Environment3-AgentEx-w2k8-64-e7-1112 (10.35.174.84)|Connecting to vCenter

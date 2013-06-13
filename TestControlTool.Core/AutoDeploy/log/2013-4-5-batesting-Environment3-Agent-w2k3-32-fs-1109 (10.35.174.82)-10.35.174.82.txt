@@ -1,0 +1,18 @@
+2013-04-05 11:09:45.1735|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Connecting to vCenter
+2013-04-05 11:16:51.1739|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Connecting to vCenter
+2013-04-05 11:40:09.5899|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Connecting to vCenter
+2013-04-05 11:54:48.6732|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Connecting to vCenter
+2013-04-05 12:00:20.0191|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Connecting to vCenter
+2013-04-05 12:00:35.4780|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Template VM existing checking
+2013-04-05 12:00:35.4780|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Checking existing of virtual machine 'template-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)'
+2013-04-05 12:01:28.0600|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Target VM existing checking
+2013-04-05 12:02:45.0054|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Found 1 virtual machines for delete before deploy
+2013-04-05 12:02:45.0054|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Checking is powered off of virtual machine '2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)'
+2013-04-05 12:04:16.5186|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Powering off unnecessary VM: 2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)
+2013-04-05 12:04:16.5186|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Powering off virtual machine '2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)'
+2013-04-05 12:05:10.1747|WARN|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Exception on getting folder childs VMs config.name
+2013-04-05 12:09:54.7890|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Power off virtual machine '2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)' successfully finished
+2013-04-05 12:09:54.7890|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Powering off unnecessary VM: 2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)
+2013-04-05 12:09:54.7890|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Deleting of virtual machine '2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)'
+2013-04-05 12:14:41.1724|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Connecting to vCenter
+2013-04-05 12:15:38.9357|DEBUG|2013-4-5-batesting-Environment3-Agent-w2k3-32-fs-1109 (10.35.174.82)-10.35.174.82|Connecting to vCenter

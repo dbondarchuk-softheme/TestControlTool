@@ -1,0 +1,9 @@
+2013-04-19 18:00:25.9379|DEBUG|10.35.174.805.4.1.|Waiting windows start
+2013-04-19 18:00:25.9379|DEBUG|10.35.174.805.4.1.|Waiting boot virtual machine
+2013-04-19 18:00:38.1479|DEBUG|10.35.174.805.4.1.|Copy installer
+2013-04-19 18:00:45.5579|DEBUG|10.35.174.805.4.1.|Starting copy installer 'Core-X64-5.4.1.61108.exe'
+2013-04-19 18:02:16.0880|DEBUG|10.35.174.805.4.1.|App installation
+2013-04-19 18:02:16.0880|DEBUG|10.35.174.805.4.1.|Start execute installer '\\10.35.174.80\reminst\Core-X64-5.4.1.61108.exe'
+2013-04-22 18:46:17.3526|DEBUG|10.35.174.805.4.1.|Waiting windows start
+2013-04-22 18:46:17.3526|DEBUG|10.35.174.805.4.1.|Waiting boot virtual machine
+2013-04-22 18:46:29.6963|DEBUG|10.35.174.805.4.1.|Copy installer

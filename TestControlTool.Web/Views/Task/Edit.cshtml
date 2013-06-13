@@ -1,0 +1,183 @@
+﻿@using System.Collections
+@using BootstrapSupport
+@using TestControlTool.Core.Models
+@using TestControlTool.Web.Models
+@model TaskChildsModel
+@{
+    ViewBag.Title = "Edit task";
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryui")
+@Styles.Render("~/Content/themes/base/css")
+<script src="@Url.Content("~/Scripts/jquery.listAttributes.js")"></script>
+
+@{
+    Html.RenderAction("DeployInstallJobModal");
+    Html.RenderPartial("TestSuiteModal");
+    Html.RenderPartial("CalendarModal");
+    Html.RenderPartial("UploadTestSuiteXml");
+}
+
+<script src="~/Scripts/EditTask.js"></script>
+
+<div class="container-fluid">
+    <div id="alertArea" style="display: none;"></div>
+    <div class="row-fluid">
+        <h2>Edit task</h2>
+    </div>
+    <div class="row-fluid">
+        <form id="taskForm">
+            <div class="span4">
+                <fieldset class="form-horizontal" style="padding: 1px;">
+                    <legend>Task <small>Details</small></legend>
+                    @using (Html.ControlGroupFor(x => x.Task.Name))
+                    {
+                        @Html.LabelFor(x => x.Task.Name, new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.EditorFor(x => x.Task.Name, new { @class = "input-xlarge" })
+                            @Html.ValidationMessageFor(x => x.Task.Name, null, new { @class = "help-inline" })
+                        </div>
+                    }
+                    @using (Html.ControlGroupFor(x => x.Task.StartTime))
+                    {
+                        @Html.Label("", "Schedule", new { @class = "control-label" })
+                        <div class="controls">
+                            <a onclick="showCalendar(); return false;" href="#" id="scheduleText"></a>
+                        </div>
+                    }
+                    @using (Html.ControlGroupFor(x => x.Task.IsEnabled))
+                    {
+                        @Html.LabelFor(x => x.Task.IsEnabled, new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.CheckBoxFor(x => x.Task.IsEnabled, new { @class = "input-xlarge" })
+                            @Html.ValidationMessageFor(x => x.Task.IsEnabled, null, new { @class = "help-inline" })
+                        </div>
+                    }
+                    @Html.HiddenFor(x => x.Task.Frequency)
+                    @Html.HiddenFor(x => x.Task.StartTime)
+                    @Html.HiddenFor(x => x.Task.EndTime)
+
+                    <div class="control-group">
+                        <label class="control-label">
+                            <button class="btn-primary btn-large" onclick="saveTasks('@Model.Task.Id', '/Task/Edit', '@Url.Action("Index", "Task")'); return false;" style="margin-left: auto;">Save</button>
+                        </label>
+                        <div class="controls"></div>
+                    </div>
+                </fieldset>
+            </div>
+            @Html.EditorFor(x => x.Task.Id)
+            <div class="span4">
+                <fieldset class="form-horizontal">
+                    <legend>Task <small>Jobs</small>
+                    </legend>
+                    <ul id="currentTasks" class="sortable">
+                        @foreach (var task in Model.ChildTasks)
+                        {
+                            if (task.TaskType == TaskType.DeployInstall)
+                            {
+                                var taskModel = DeployInstallTaskModel.GetFromXmlFile(task.File);
+                         
+                            <li id="@taskModel.Name" type="DeployInstall" deployType="@taskModel.Type" version="@taskModel.Version" 
+                                    machines="@taskModel.Machines.Aggregate("", (s, machine) => s + machine + ";").TrimEnd(';')">
+                                <a ondblclick="editDeployTask('@taskModel.Name')" href="#">@taskModel.Name</a>
+                                <a class="pull-right" style="padding-left: 10px" href="@Url.Action("GetXmlFile", "Task", new { taskId = Model.Task.Id, childTaskName = task.Name })">
+                                    <i class="icon-download-alt" data-toggle="tooltip" rel="tooltip" title="Download XML file"></i>
+                                </a>
+                                <button type="button" class="close" aria-hidden="true" onclick="removeTask('@taskModel.Name')">×</button>
+                            </li>
+                            }
+                            else if (task.TaskType == TaskType.TestSuite)
+                            {
+                                var taskModel = TestSuiteModel.GetFromXmlFile(task.File);
+                            <li id="@taskModel.Name" type="TestSuite">
+                                <a ondblclick="editTestSuiteTask('@taskModel.Name')" href="#">@taskModel.Name</a>
+                                <a class="pull-right" data-toggle="tooltip" rel="tooltip" title="Download XML file" style="padding-left: 10px" href="@Url.Action("GetXmlFile", "Task", new { taskId = Model.Task.Id, childTaskName = task.Name })"><i class="icon-download-alt"></i></a>
+                                <button type="button" class="close pull-right" aria-hidden="true" onclick="removeTask('@taskModel.Name')">×</button>
+                                <ol style="display: none">
+                                    @foreach (var test in taskModel.Tests)
+                                    {
+                                        var visibleProperties = test.VisibleProperties(new string[0]);
+                                        var properties = visibleProperties.Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)).Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(test) + "'");
+                                        <li  testtype="@test.GetType().Name" @Html.Raw(properties)>
+                                            <a href="#" onclick="editTestModal(this)">@test.GetType().Name</a>
+                                            <button type='button' class='close' aria-hidden='true' onclick='removeTest(this)'>×</button>
+                                            @{
+                                        foreach (var property in visibleProperties.Where(x => x.PropertyType.Name.Contains("List")))
+                                        {
+                                                <ul id="@(property.Name + "HiddenList")" style="display: none;" class="sortable">
+
+                                                    @{
+                                            var enumerable = ((IEnumerable)property.GetValue(test)).Cast<object>().Skip(1);
+                                                    }
+                                                    @foreach (var item in enumerable)
+                                                    {
+                                                        var childPropertyInfos = item.VisibleProperties(new string[0]).Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string)).ToList();
+                                                        var childProperties = childPropertyInfos.Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(item) + "'");
+                                                        var name = "";
+                                                        var genericType = property.PropertyType.GenericTypeArguments.First();
+                                                        
+                                                        if (genericType == typeof(string) || genericType.IsEnum || genericType == typeof(int))
+                                                        {
+                                                            name = @item.ToString();
+                                                            childProperties = "value='" + name + "'";
+                                                        }
+                                                        else
+                                                        {
+                                                            name = @childPropertyInfos.First().GetValue(item).ToString();
+                                                        }
+                            
+                                                        <li @Html.Raw(childProperties)>
+                                                            <a href='#' onclick="editListItem('@genericType.Name', this); return false;">
+                                                                @name
+                                                            </a>
+                                                            <button type='button' class='close' aria-hidden='true' onclick='removeTest(this)'>×</button>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                        }
+                                            }
+                                        </li>
+                                    }
+                                </ol>
+                            </li>
+                            }
+                        }
+                        @if (!Model.ChildTasks.Any())
+                        {
+                            <br />
+                        }
+                    </ul>
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Add new<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a data-toggle="modal" href="#DeployInstallJobModal">DeployInstall Task</a></li>
+                            <li><a data-toggle="modal" href="#TestSuiteModal">Test Suite</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Upload exesisting xml<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal(); return false;">Test Suite</a></li>
+                        </ul>
+                    </div>
+                </fieldset>
+            </div>
+        </form>
+    </div>
+</div>
+<div style="display: none;" id="UploadTestSuiteXmlModalDiv"></div>
+<script src="~/Scripts/getRepetitionTextInternal.js"></script>
+<script type="text/javascript">
+    var taskId = '@Model.Task.Id';
+
+    $('#scheduleText').text(getRepetitonText());
+
+    $(function () {
+        $("#currentTasks").sortable();
+        $("#currentTasks").disableSelection();
+    });
+
+
+    ShowTasks();
+</script>

@@ -1,0 +1,9 @@
+2013-04-19 16:58:13.6121|DEBUG|2013-4-19-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Connecting to vCenter
+2013-04-19 16:58:29.9201|DEBUG|2013-4-19-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Template VM existing checking
+2013-04-19 16:58:29.9201|DEBUG|2013-4-19-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Checking existing of virtual machine 'template-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)'
+2013-04-19 16:59:39.1754|DEBUG|2013-4-19-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Target VM existing checking
+2013-04-19 17:01:03.2456|DEBUG|2013-4-19-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Found 1 virtual machines for delete before deploy
+2013-04-19 17:01:03.2456|DEBUG|2013-4-19-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Checking is powered off of virtual machine '2013-4-17-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)'
+2013-04-19 17:02:24.0457|DEBUG|2013-4-19-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Powering off unnecessary VM: 2013-4-17-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)
+2013-04-19 17:02:24.0457|DEBUG|2013-4-19-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Powering off virtual machine '2013-4-17-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)'
+2013-04-19 17:47:20.3730|ERROR|2013-4-19-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)-10.35.174.83|Power Off virtual machine '2013-4-17-batesting-Environment3-AgentSql-w7-64-sr2-1110 (10.35.174.83)' failed. Reason: The underlying connection was closed: An unexpected error occurred on a send.

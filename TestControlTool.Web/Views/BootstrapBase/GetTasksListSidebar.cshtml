@@ -1,0 +1,12 @@
+﻿@model System.Collections.Generic.List<TestControlTool.Core.Contracts.IScheduleTask>
+
+@{
+    Layout = null;
+}
+
+@foreach (var task in Model)
+{
+    var liId = "machineSidebar" + task.Id;
+     
+    <li id="@liId"><a href="@Url.Action("TaskDetails", "Home", new {id = task.Id})" style="display: inline">@task.Name</a></li>
+}

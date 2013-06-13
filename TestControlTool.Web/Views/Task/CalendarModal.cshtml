@@ -1,0 +1,177 @@
+﻿@using System.Globalization
+@{
+    Layout = null;
+}
+
+<link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+
+<div class="modal hide fade" id="CalendarModal" tabindex="-1" role="dialog" aria-labelledby="Calendar" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="NewTestLabel">Change Schedule</h3>
+    </div>
+    <div class="modal-body">
+        <div class="control-group">
+            <label class="control-label" for="StartDate" style="display: inline;">
+                Start Date&nbsp;&nbsp;&nbsp;
+                <div id="StartDate" class="input-append">
+                    <input data-format="MM/dd/yyyy" type="text" class="input-small"/>
+                    <span class="add-on">
+                        <i data-date-icon="icon-calendar"></i>
+                    </span>
+                </div>
+            </label>
+            <label class="control-label" for="StartTime" style="display: inline; margin-left: 1em;">
+                Start Time&nbsp;&nbsp;&nbsp;
+                <div id="StartTime" class="input-append">
+                    <input data-format="HH:mm:ss PP" type="text" class="input-small" />
+                    <span class="add-on">
+                        <i data-time-icon="icon-time"></i>
+                    </span>
+                </div>
+            </label>
+        </div>
+        <div class="control-group">
+            Repetition&nbsp;&nbsp;&nbsp;
+            <label style="display: inline-block" for="allDaysChevron" onclick="$('#allDaysList').collapse('toggle');">
+                Days:
+            </label>
+            <label style="display: inline-block">@Html.CheckBox("AllDaysCheckBox", new { style = "padding: 10px", onclick = "checkAllDays();" }) All</label>
+            <label style="display: inline-block" for="allDaysChevron" onclick="$('#allDaysList').collapse('toggle');">
+                <a href="#" data-toggle="collapse" data-target="#allDaysList" onclick="return false;" style="padding-left: 5px">
+                    <i class="icon-chevron-down" id="allDaysChevron"></i>
+                </a>
+            </label>
+            <ul style="list-style: none; padding-left: 20%" class="collapse in" id="allDaysList">
+                @foreach (var day in Enum.GetNames(typeof(DayOfWeek)))
+                {
+                    <li><label>@Html.CheckBox(day + "CheckBox", new { style = "padding: 10px", onclick = "checkOneDayCheckBox();" }) @day</label></li>
+                }
+            </ul>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="EndDate">
+                End Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div id="EndDate" class="input-append">
+                    <input data-format="MM/dd/yyyy" type="text" class="input-small" />
+                    <span class="add-on">
+                        <i data-date-icon="icon-calendar"></i>
+                    </span>
+                </div>
+            </label>
+        </div>
+            <span class="help-inline error" id="CalendarValidation" style="display: none;"></span>
+        <br />
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <input type="submit" class="btn btn-primary" value="Save" id="saveScheduleButton" onclick="saveSchedule();" />
+    </div>
+</div>
+
+<script type="text/javascript">
+    function saveSchedule() {
+        var startTime = $('#StartTime').data('datetimepicker').getDate();
+        var endTime = $('#EndDate').data('datetimepicker').getDate();
+
+        if (startTime > endTime) {
+            $('#CalendarValidation').text('Start time should be less then end time');
+            $('#CalendarValidation').fadeIn('fast');
+            return;
+        }
+
+        $('#CalendarValidation').fadeOut('fast');
+        
+        $('#Task_StartTime').val($('#StartDate').find('input').val() + " " + $('#StartTime').find('input').val());
+        $('#Task_EndTime').val($('#EndDate').find('input').val());
+        $('#Task_Frequency').val(getRepetition());
+        
+        $('#scheduleText').text(window.getRepetitonText());
+
+        $('#CalendarModal').modal('hide');
+    }
+    
+    function getRepetition() {
+        var repetition = "* * ";
+
+        var daysCheckBoxes = $('#allDaysList').find('input[type=checkbox]');
+        
+        if ($('#AllDaysCheckBox').is(':checked')) {
+            repetition += "*";
+        } else {
+            var any = false;
+
+            for (var i = 0; i < 12; i++) {
+                if ($(daysCheckBoxes[i]).is(':checked')) {
+                    repetition += i + ",";
+                    any = true;
+                }
+            }
+
+            if (!any) {
+                repetition += "!";
+            }
+
+            repetition = repetition.replace(/,$/, "");
+        }
+
+        repetition += " *";
+
+        return repetition;
+    }
+
+    $(function () {
+        $('#StartDate').datetimepicker({
+            language: 'en',
+            startDate: new Date(2013, 1, 1, 1, 1),
+            endDate: new Date(2030, 1, 1, 1, 1),
+            pickTime: false
+        });
+        $('#StartTime').datetimepicker({
+            language: 'en',
+            pick12HourFormat: true,
+            pickSeconds: true,
+            pickDate: false
+        });
+        $('#EndDate').datetimepicker({
+            language: 'en',
+            pick12HourFormat: true,
+            pickSeconds: true,
+            startDate: new Date(2013, 1, 1, 1, 1),
+            endDate: new Date(2030, 1, 1, 1, 1),
+            pickTime: false
+        });
+    });
+
+    $('#allDaysList').on('show', function () {
+        $('#allDaysChevron').removeClass('icon-chevron-right', 100, function () {
+            $('#allDaysChevron').addClass('icon-chevron-down', 100);
+        });
+    });
+
+    $('#allDaysList').on('hide', function () {
+        $('#allDaysChevron').removeClass('icon-chevron-down', 100, function () {
+            $('#allDaysChevron').addClass('icon-chevron-right', 100);
+        });
+    });
+    
+    function checkAllDays() {
+        if ($('#AllDaysCheckBox').is(':checked')) {
+            $('#allDaysList').find('input[type=checkbox]').attr('checked', true);
+        }
+        else {
+            $('#allDaysList').find('input[type=checkbox]').attr('checked', false);
+        }
+    }
+
+    function checkOneDayCheckBox() {
+        var notChecked = $('#allDaysList').find('input[type=checkbox]:not(:checked)').length;
+
+        if (notChecked > 0) {
+            $('#AllDaysCheckBox').attr('checked', false);
+        } else {
+            $('#AllDaysCheckBox').attr('checked', true);
+        }
+    }
+</script>
