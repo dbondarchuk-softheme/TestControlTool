@@ -25,7 +25,7 @@ namespace TestControlTools.Tests
                     Frequency = "2 3 * *"
                 };
 
-            _time = new DateTime(2013, 3, 2, 3, 4, 0); ;
+            _time = new DateTime(2013, 3, 2, 3, 4, 0);
         }
 
         [Test]

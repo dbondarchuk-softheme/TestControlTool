@@ -74,8 +74,48 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CastleResolver.cs" />
+    <Compile Include="Implementations\DummyLogger.cs" />
+    <Compile Include="Exceptions\AddExistingVMServerException.cs" />
+    <Compile Include="Exceptions\NoSuchVMServerException.cs" />
+    <Compile Include="Implementations\HyperVDeployInstallTask.cs" />
+    <Compile Include="Implementations\SqlCEModels\AccountModel.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Implementations\SqlCEModels\HyperVMachineModel.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Implementations\SqlCEModels\Models.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Models.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Implementations\SqlCEModels\Models.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Implementations\SqlCEModels\Models.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Models.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Implementations\SqlCEModels\ServerModel.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Implementations\SqlCEModels\TaskModel.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Implementations\SqlCEModels\VCenterMachineModel.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Implementations\VCenterDeployInstallTask.cs" />
+    <Compile Include="Implementations\VMServer.cs" />
+    <Compile Include="Contracts\TestSuiteTask.cs" />
+    <Compile Include="Implementations\HyperVMachine.cs" />
+    <Compile Include="Implementations\VCenterMachine.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Implementations\BackendSuiteTask.cs" />
+    <Compile Include="Implementations\TestSuiteReleaseTask.cs" />
     <Compile Include="Implementations\FileLogger.cs" />
     <Compile Include="Contracts\IAccount.cs" />
     <Compile Include="Contracts\IAccountController.cs" />
@@ -99,34 +139,10 @@
     <Compile Include="Exceptions\NoSuchAccountException.cs" />
     <Compile Include="Exceptions\NoSuchMachineException.cs" />
     <Compile Include="Implementations\SqlCEAccountController.cs" />
-    <Compile Include="Implementations\SqlCEModels\AccountModel.cs">
-      <DependentUpon>Models.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Implementations\SqlCEModels\MachineModel.cs">
-      <DependentUpon>Models.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Implementations\SqlCEModels\Models.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Models.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Implementations\SqlCEModels\Models.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Models.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Implementations\SqlCEModels\Models.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Models.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Implementations\SqlCEModels\TaskModel.cs">
-      <DependentUpon>Models.tt</DependentUpon>
-    </Compile>
     <Compile Include="Implementations\XmlTaskParser.cs" />
-    <Compile Include="Implementations\TestSuiteTask.cs" />
+    <Compile Include="Implementations\TestSuiteTrunkTask.cs" />
     <Compile Include="Models\ChildTaskModel.cs" />
-    <Compile Include="Models\TaskChildContainer.cs" />
+    <Compile Include="Models\DeployInstallTaskContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +151,21 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Models.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="HyperVAutoDeploy\Autodeployment.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="HyperVAutoDeploy\Functions.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="HyperVAutoDeploy\Logging.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="HyperVAutoDeploy\PowerOff.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="HyperVAutoDeploy\VmManagement.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Implementations\SqlCEModels\Models.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Models.edmx</DependentUpon>
@@ -165,32 +196,77 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="AutoDeploy\Scripts\RunCommand.ps1" />
+    <None Include="TestPerformerRelease\Castle.Windsor.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformerRelease\Castle.Windsor.Logging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformerRelease\Castle.Windsor.TestPeformer.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformerRelease\Castle.Windsor.TestPeformerCore.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformerRelease\Functions.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformerRelease\Logging.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformerRelease\NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformerRelease\RunTests.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformerRelease\WebGuiAutomation.TestPerformer.exe.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformerRelease\WebGuiAutomation.TestPerformer.vshost.exe.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformerRelease\WebGuiAutomation.TestPerformer.vshost.exe.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TestPerformer\Castle.Windsor.BrowserControl.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestPerformer\Castle.Windsor.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestPerformer\Castle.Windsor.Logging.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestPerformer\Castle.Windsor.TestPeformer.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestPerformer\Castle.Windsor.TestPeformerCore.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformer\Functions.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformer\Logging.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestPerformer\NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformer\RunTests.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestPerformer\WebGuiAutomation.TestPerformer.exe.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestPerformer\WebGuiAutomation.TestPerformer.exe.lastcodeanalysissucceeded">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestPerformer\WebGuiAutomation.TestPerformer.vshost.exe.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestPerformer\WebGuiAutomation.TestPerformer.vshost.exe.manifest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -313,89 +389,158 @@
     <Content Include="AutoDeploy\WmiHelper.pdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestPerformerRelease\Castle.Core.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\Castle.Core.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\Castle.Windsor.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\Castle.Windsor.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\chromedriver.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\NLog.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\NLog.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\WebDriver.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\WebDriver.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\WebGuiAutomation.Implementation.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\WebGuiAutomation.Implementation.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\WebGuiAutomation.IoC.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\WebGuiAutomation.Logging.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\WebGuiAutomation.Scripts.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\WebGuiAutomation.Scripts.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\WebGuiAutomation.TestPerformer.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\WebGuiAutomation.TestPerformer.vshost.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformerRelease\WebGuiAutomation.TestPerformerCore.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestPerformer\Castle.Core.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\Castle.Core.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\Castle.Windsor.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\Castle.Windsor.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\chromedriver.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\IEDriverServer.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\NLog.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\NLog.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebDriver.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebDriver.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.AppAssureTools.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.AppAssureTools.pdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.Implementation.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.Implementation.pdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.Implementation.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.IoC.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.IoC.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.Logging.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.Logging.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.Scripts.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.Scripts.pdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.SeleniumWebElements.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.SeleniumWebElements.pdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.TestPerformer.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.TestPerformer.exe.CodeAnalysisLog.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.TestPerformer.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.TestPerformer.vshost.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.TestPerformerCore.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\WebGuiAutomation.TestPerformerCore.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.Tools.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.Tools.pdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.WebElements.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebGuiAutomation.WebElements.pdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

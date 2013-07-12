@@ -16,15 +16,19 @@ namespace TestControlTool.Core.Implementations.SqlCEModels
     {
         public AccountModel()
         {
-            this.Machines = new HashSet<MachineModel>();
+            this.HyperVMachines = new HashSet<HyperVMachineModel>();
+            this.Servers = new HashSet<ServerModel>();
             this.Tasks = new HashSet<TaskModel>();
+            this.VCenterMachines = new HashSet<VCenterMachineModel>();
         }
     
         public string Id { get; set; }
         public string Login { get; set; }
         public string PasswordHash { get; set; }
     
-        public virtual ICollection<MachineModel> Machines { get; set; }
+        public virtual ICollection<HyperVMachineModel> HyperVMachines { get; set; }
+        public virtual ICollection<ServerModel> Servers { get; set; }
         public virtual ICollection<TaskModel> Tasks { get; set; }
+        public virtual ICollection<VCenterMachineModel> VCenterMachines { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using TestControlTool.Core.Contracts;
 using TestControlTool.Core.Exceptions;
@@ -15,17 +16,22 @@ namespace TestControlTool.Core.Implementations
         /// <summary>
         /// Get's all accounts
         /// </summary>
-        public ICollection<IAccount> Accounts { get { return _database.Accounts.AsNoTracking().Include("Tasks").Include("Machines").ToList().Select(ToIAccount).ToList(); } }
+        public ICollection<IAccount> Accounts { get { return _database.Accounts.AsNoTracking().Include("Tasks").Include("HyperVMachines").Include("VCenterMachines").Include("Servers").ToList().Select(ToIAccount).ToList(); } }
 
         /// <summary>
         /// Get's all machines
         /// </summary>
-        public ICollection<IMachine> Machines { get { return _database.Machines.AsNoTracking().Select(ToIMachine).ToList(); } }
+        public ICollection<IMachine> Machines { get { return _database.VCenterMachines.AsNoTracking().Select(ToIMachine).Union(_database.HyperVMachines.AsNoTracking().Select(ToIMachine)).ToList(); } }
 
         /// <summary>
         /// Get's all tasks
         /// </summary>
         public ICollection<IScheduleTask> Tasks { get { return _database.Tasks.AsNoTracking().ToList().Select(ToITask).ToList(); } }
+
+        /// <summary>
+        /// Get's all servers
+        /// </summary>
+        public ICollection<VMServer> Servers { get { return _database.Servers.AsNoTracking().ToList().Select(ToVMServer).ToList(); } }
 
         /// <summary>
         /// Get's all accounts (cached)
@@ -42,6 +48,12 @@ namespace TestControlTool.Core.Implementations
         /// </summary>
         public ICollection<IScheduleTask> CachedTasks { get; private set; }
 
+
+        /// <summary>
+        /// Get's all servers (cached)
+        /// </summary>
+        public ICollection<VMServer> CachedServers { get; private set; }
+
         /// <summary>
         /// Creates new instance of the SqlCEAccountController
         /// </summary>
@@ -50,6 +62,7 @@ namespace TestControlTool.Core.Implementations
             CachedAccounts = new List<IAccount>(Accounts);
             CachedMachines = new List<IMachine>(Machines);
             CachedTasks = new List<IScheduleTask>(Tasks);
+            CachedServers = new List<VMServer>(Servers);
         }
 
         /// <summary>
@@ -61,7 +74,7 @@ namespace TestControlTool.Core.Implementations
         {
             try
             {
-                _database.Accounts.Add(ToAccount(account));
+                _database.Accounts.Add(ToAccountModel(account));
                 _database.SaveChanges();
 
                 RefreshAccounts();
@@ -84,7 +97,9 @@ namespace TestControlTool.Core.Implementations
 
             try
             {
-                _database.Machines.Add(ToMachine(machine));
+                if (machine is VCenterMachine) _database.VCenterMachines.Add(ToVCenterMachineModel((VCenterMachine)machine));
+                else if (machine is HyperVMachine) _database.HyperVMachines.Add(ToHyperVMachineModel((HyperVMachine)machine));
+
                 _database.SaveChanges();
 
                 Refresh();
@@ -114,10 +129,80 @@ namespace TestControlTool.Core.Implementations
 
                 Refresh();
             }
-            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            catch (System.Data.Entity.Infrastructure.DbUpdateException)
             {
                 throw new AddExistingTaskException(task);
             }
+
+            Refresh();
+        }
+
+        /// <summary>
+        /// Add's task to the database
+        /// </summary>
+        /// <param name="server">HyperV Server to add</param>
+        /// <exception cref="NoSuchAccountException">If <paramref name="server"/>'s owner wasn't found</exception>
+        /// <exception cref="AddExistingVMServerException">If <paramref name="server"/> with such id is already presented in the database</exception>
+        public void AddVMServer(VMServer server)
+        {
+            if (!CachedAccounts.Any(x => x.Id == server.Owner)) throw new NoSuchAccountException(server.Owner);
+            
+            try
+            {
+                _database.Servers.Add(ToServerModel(server));
+                _database.SaveChanges();
+
+                Refresh();
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException)
+            {
+                throw new AddExistingVMServerException(server);
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            {
+                e.Message.ToString();
+            }
+
+            Refresh();
+        }
+
+        /// <summary>
+        /// Edit's VM Server with such id
+        /// </summary>
+        /// <param name="id">Id of the server to edit</param>
+        /// <param name="server">New server info (new id and owner doesn't take effect)</param>
+        /// <exception cref="NoSuchVMServerException">If server with <paramref name="id"/> wasn't found</exception>
+        public void EditVMServer(Guid id, VMServer server)
+        {
+            var idString = id.ToString();
+            var serverInDatabase = _database.Servers.FirstOrDefault(x => x.Id == idString);
+
+            if (serverInDatabase == null) throw new NoSuchVMServerException(id);
+
+            serverInDatabase.ServerName = server.ServerName;
+            serverInDatabase.ServerUsername = server.ServerUsername;
+            serverInDatabase.ServerPassword = server.ServerPassword;
+
+            _database.SaveChanges();
+
+            Refresh();
+        }
+
+        /// <summary>
+        /// Remove's VM server with such id
+        /// </summary>
+        /// <param name="id">Id of the server to remove</param>
+        /// <exception cref="NoSuchVMServerException">If server with <paramref name="id"/> wasn't found</exception>
+        public void RemoveVMServer(Guid id)
+        {
+            var idString = id.ToString();
+            var serverInDatabase = _database.Servers.FirstOrDefault(x => x.Id == idString);
+
+            if (serverInDatabase == null) throw new NoSuchVMServerException(id);
+
+            _database.Servers.Remove(serverInDatabase);
+
+            _database.SaveChanges();
 
             Refresh();
         }
@@ -155,24 +240,52 @@ namespace TestControlTool.Core.Implementations
         /// <exception cref="NoSuchMachineException">If machine with <paramref name="id"/> wasn't found</exception>
         public void EditMachine(Guid id, IMachine machine)
         {
-            var idString = id.ToString();
-            var machineInDatabase = _database.Machines.FirstOrDefault(x => x.Id == idString);
+            var idString = id.ToString(); // Entity doesn't work with tostring method in lamda expression
 
-            if (machineInDatabase == null) throw new NoSuchMachineException(id);
+            var vcenterMachineInDatabase = _database.VCenterMachines.FirstOrDefault(x => x.Id == idString);
 
-            machineInDatabase.Name = machine.Name;
-            machineInDatabase.Host = machine.Host;
-            machineInDatabase.UserName = machine.UserName;
-            machineInDatabase.Password = machine.Password;
-            machineInDatabase.Share = machine.Share;
-            machineInDatabase.Address = machine.Address;
-            machineInDatabase.TemplateInventoryPath = machine.TemplateInventoryPath;
-            machineInDatabase.TemplateVMName = machine.TemplateVMName;
-            machineInDatabase.VirtualMachineVMName = machine.VirtualMachineVMName;
-            machineInDatabase.VirtualMachineResourcePool = machine.VirtualMachineResourcePool;
-            machineInDatabase.VirtualMachineInventoryPath = machine.VirtualMachineInventoryPath;
-            machineInDatabase.VirtualMachineDatastore = machine.VirtualMachineDatastore;
-            machineInDatabase.Type = machine.Type.ToString();
+            if (vcenterMachineInDatabase == null)
+            {
+                var hypervMachineInDatabase = _database.HyperVMachines.FirstOrDefault(x => x.Id == idString);
+                
+                if (hypervMachineInDatabase == null) throw new NoSuchMachineException(id);
+
+                var hypervMachine = machine as HyperVMachine;
+
+                if (hypervMachine == null) throw new InvalidOperationException("Wrong type of the machine");
+
+                hypervMachineInDatabase.Name = hypervMachine.Name;
+                hypervMachineInDatabase.Host = hypervMachine.Host;
+                hypervMachineInDatabase.UserName = hypervMachine.UserName;
+                hypervMachineInDatabase.Password = hypervMachine.Password;
+                hypervMachineInDatabase.Share = hypervMachine.Share;
+                hypervMachineInDatabase.Address = hypervMachine.Address;
+                hypervMachineInDatabase.Snapshot = hypervMachine.Snapshot;
+                hypervMachineInDatabase.VirtualMachineName = hypervMachine.VirtualMachineName;
+                hypervMachineInDatabase.Server = hypervMachine.Server.ToString();
+                hypervMachineInDatabase.Type = machine.Type.ToString();
+            }
+            else
+            {
+                var vcenterMachine = machine as VCenterMachine;
+
+                if (vcenterMachine == null) throw new InvalidOperationException("Wrong type of the machine");
+
+                vcenterMachineInDatabase.Name = vcenterMachine.Name;
+                vcenterMachineInDatabase.Host = vcenterMachine.Host;
+                vcenterMachineInDatabase.UserName = vcenterMachine.UserName;
+                vcenterMachineInDatabase.Password = vcenterMachine.Password;
+                vcenterMachineInDatabase.Share = vcenterMachine.Share;
+                vcenterMachineInDatabase.Address = vcenterMachine.Address;
+                vcenterMachineInDatabase.TemplateInventoryPath = vcenterMachine.TemplateInventoryPath;
+                vcenterMachineInDatabase.TemplateVMName = vcenterMachine.TemplateVMName;
+                vcenterMachineInDatabase.VirtualMachineVMName = vcenterMachine.VirtualMachineVMName;
+                vcenterMachineInDatabase.VirtualMachineResourcePool = vcenterMachine.VirtualMachineResourcePool;
+                vcenterMachineInDatabase.VirtualMachineInventoryPath = vcenterMachine.VirtualMachineInventoryPath;
+                vcenterMachineInDatabase.VirtualMachineDatastore = vcenterMachine.VirtualMachineDatastore;
+                vcenterMachineInDatabase.Type = machine.Type.ToString();
+                vcenterMachineInDatabase.Server = machine.Server.ToString();
+            }
 
             _database.SaveChanges();
 
@@ -187,11 +300,20 @@ namespace TestControlTool.Core.Implementations
         public void RemoveMachine(Guid id)
         {
             var idString = id.ToString();
-            var machineInDatabase = _database.Machines.FirstOrDefault(x => x.Id == idString);
+            var vcenterMachineInDatabase = _database.VCenterMachines.FirstOrDefault(x => x.Id == idString);
 
-            if (machineInDatabase == null) throw new NoSuchMachineException(id);
+            if (vcenterMachineInDatabase == null)
+            {
+                var hyperVMachineInDatabase = _database.HyperVMachines.FirstOrDefault(x => x.Id == idString);
 
-            _database.Machines.Remove(machineInDatabase);
+                if (hyperVMachineInDatabase == null) throw new NoSuchMachineException(id);
+
+                _database.HyperVMachines.Remove(hyperVMachineInDatabase);
+            }
+            else
+            {
+                _database.VCenterMachines.Remove(vcenterMachineInDatabase);
+            }
 
             _database.SaveChanges();
 
@@ -202,7 +324,7 @@ namespace TestControlTool.Core.Implementations
         /// Edit's task with such id
         /// </summary>
         /// <param name="id">Id of the task to edit</param>
-        /// <param name="task">New task info (new id and machine doesn't take effect)</param>
+        /// <param name="task">New task info (new id and owner doesn't take effect)</param>
         /// <exception cref="NoSuchTaskException">If task with <paramref name="id"/> wasn't found</exception>
         public void EditTask(Guid id, IScheduleTask task)
         {
@@ -228,7 +350,7 @@ namespace TestControlTool.Core.Implementations
         /// Remove's task with such id
         /// </summary>
         /// <param name="id">Id of the task to remove</param>
-        /// <exception cref="NoSuchTaskException">If machine with <paramref name="id"/> wasn't found</exception>
+        /// <exception cref="NoSuchTaskException">If server with <paramref name="id"/> wasn't found</exception>
         public void RemoveTask(Guid id)
         {
             var idString = id.ToString();
@@ -352,6 +474,7 @@ namespace TestControlTool.Core.Implementations
 
             RefreshMachines();
             RefreshTasks();
+            RefreshSevers();
         }
 
         private void RefreshMachines()
@@ -370,22 +493,33 @@ namespace TestControlTool.Core.Implementations
             }
         }
 
-        private static AccountModel ToAccount(IAccount account)
+        private void RefreshSevers()
+        {
+            lock (CachedServers)
+            {
+                CachedServers = new List<VMServer>(Servers);
+            }
+        }
+
+        private static AccountModel ToAccountModel(IAccount account)
         {
             return new AccountModel
                 {
                     Id = account.Id.ToString(),
                     Login = account.Login,
                     PasswordHash = account.PasswordHash,
-                    Machines = account.Machines != null ? (ICollection<MachineModel>) account.Machines.Select(ToMachine).ToList() : new Collection<MachineModel>(),
-                    Tasks = account.Tasks != null ? (ICollection<TaskModel>) account.Tasks.Select(ToTask).ToList() : new Collection<TaskModel>()
+                    VCenterMachines = account.Machines != null ? (ICollection<VCenterMachineModel>)account.Machines.Where(x => x is VCenterMachine).Select(x => ToVCenterMachineModel((VCenterMachine)x)).ToList() : new Collection<VCenterMachineModel>(),
+                    HyperVMachines = account.Machines != null ? (ICollection<HyperVMachineModel>)account.Machines.Where(x => x is HyperVMachine).Select(x => ToHyperVMachineModel((HyperVMachine)x)).ToList() : new Collection<HyperVMachineModel>(),
+                    Tasks = account.Tasks != null ? (ICollection<TaskModel>) account.Tasks.Select(ToTask).ToList() : new Collection<TaskModel>(),
+                    Servers = account.VMServers != null ? (ICollection<ServerModel>)account.VMServers.Select(ToServerModel).ToList() : new Collection<ServerModel>()
                 };
         }
 
-        private static MachineModel ToMachine(IMachine machine)
+        private static VCenterMachineModel ToVCenterMachineModel(VCenterMachine machine)
         {
-            return new MachineModel
+            return new VCenterMachineModel
                 {
+                    Id = machine.Id.ToString(),
                     Owner = machine.Owner.ToString(),
                     Name = machine.Name,
                     Host = machine.Host,
@@ -393,15 +527,34 @@ namespace TestControlTool.Core.Implementations
                     UserName = machine.UserName,
                     Password = machine.Password,
                     Share = machine.Share,
-                    Id = machine.Id.ToString(),
                     TemplateInventoryPath = machine.TemplateInventoryPath,
                     TemplateVMName = machine.TemplateVMName,
                     VirtualMachineVMName = machine.VirtualMachineVMName,
                     VirtualMachineResourcePool = machine.VirtualMachineResourcePool,
                     VirtualMachineInventoryPath = machine.VirtualMachineInventoryPath,
                     VirtualMachineDatastore = machine.VirtualMachineDatastore,
-                    Type = machine.Type.ToString()
+                    Type = machine.Type.ToString(),
+                    Server = machine.Server.ToString()
                 };
+        }
+
+        private static HyperVMachineModel ToHyperVMachineModel(HyperVMachine machine)
+        {
+            return new HyperVMachineModel
+            {
+                Id = machine.Id.ToString(),
+                Owner = machine.Owner.ToString(),
+                Name = machine.Name,
+                Host = machine.Host,
+                Address = machine.Address,
+                UserName = machine.UserName,
+                Password = machine.Password,
+                Share = machine.Share,
+                Snapshot = machine.Snapshot,
+                VirtualMachineName = machine.VirtualMachineName,
+                Server = machine.Server.ToString(),
+                Type = machine.Type.ToString()
+            };
         }
 
         private static TaskModel ToTask(IScheduleTask task)
@@ -427,14 +580,15 @@ namespace TestControlTool.Core.Implementations
                 Id = new Guid(account.Id),
                 Login = account.Login,
                 PasswordHash = account.PasswordHash,
-                Machines = account.Machines.Select(ToIMachine).ToList(),
-                Tasks = account.Tasks.Select(ToITask).ToList()
+                Machines = account.VCenterMachines.Select(ToIMachine).Union(account.HyperVMachines.Select(ToIMachine)).ToList(),
+                Tasks = account.Tasks.Select(ToITask).ToList(),
+                VMServers = account.Servers.Select(ToVMServer).ToList()
             };
         }
 
-        private static IMachine ToIMachine(MachineModel machine)
+        private static IMachine ToIMachine(VCenterMachineModel machine)
         {
-            return new Machine
+            return new VCenterMachine
             {
                 Id = new Guid(machine.Id),
                 Owner = new Guid(machine.Owner),
@@ -450,7 +604,27 @@ namespace TestControlTool.Core.Implementations
                 VirtualMachineResourcePool = machine.VirtualMachineResourcePool,
                 VirtualMachineInventoryPath = machine.VirtualMachineInventoryPath,
                 VirtualMachineDatastore = machine.VirtualMachineDatastore,
-                Type = (MachineType)Enum.Parse(typeof(MachineType), machine.Type, true)
+                Type = (MachineType)Enum.Parse(typeof(MachineType), machine.Type, true),
+                Server = new Guid(machine.Server)
+            };
+        }
+
+        private static IMachine ToIMachine(HyperVMachineModel machine)
+        {
+            return new HyperVMachine
+            {
+                Id = new Guid(machine.Id),
+                Owner = new Guid(machine.Owner),
+                Name = machine.Name,
+                Host = machine.Host,
+                Address = machine.Address,
+                UserName = machine.UserName,
+                Password = machine.Password,
+                Share = machine.Share,
+                Snapshot = machine.Snapshot,
+                VirtualMachineName = machine.VirtualMachineName,
+                Type = (MachineType)Enum.Parse(typeof(MachineType), machine.Type, true),
+                Server = new Guid(machine.Server)
             };
         }
 
@@ -467,6 +641,32 @@ namespace TestControlTool.Core.Implementations
                     Name = task.Name,
                     LastRun = task.LastRun,
                     Status = (TaskStatus) Enum.Parse(typeof (TaskStatus), task.Status, true),
+                };
+        }
+
+        private static VMServer ToVMServer(ServerModel model)
+        {
+            return new VMServer
+                {
+                    Id = new Guid(model.Id),
+                    ServerName = model.ServerName,
+                    ServerPassword = model.ServerPassword,
+                    ServerUsername = model.ServerUsername,
+                    Owner = new Guid(model.Owner),
+                    Type = (VMServerType)Enum.Parse(typeof(VMServerType), model.Type, true),
+                };
+        }
+
+        private static ServerModel ToServerModel(VMServer model)
+        {
+            return new ServerModel
+                {
+                    Id = model.Id.ToString(),
+                    ServerName = model.ServerName,
+                    ServerPassword = model.ServerPassword,
+                    ServerUsername = model.ServerUsername,
+                    Owner = model.Owner.ToString(),
+                    Type = model.Type.ToString()
                 };
         }
     }

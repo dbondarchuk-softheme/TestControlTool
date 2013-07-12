@@ -12,6 +12,7 @@ using BootstrapSupport;
 using TestControlTool.Core;
 using TestControlTool.Core.Contracts;
 using TestControlTool.Web.App_Start;
+using TestControlTool.Web.Models;
 
 namespace TestControlTool.Web
 {
@@ -24,21 +25,16 @@ namespace TestControlTool.Web
         /// Account controller
         /// </summary>
         public static readonly IAccountController AccountController = CastleResolver.Resolve<IAccountController>();
-        
-        /// <summary>
-        /// Available WebGuiTests
-        /// </summary>
-        public static readonly IEnumerable<Type> AvailableTests = GetAvailabaleTests();
-
-        /// <summary>
-        /// All TestPerformer types
-        /// </summary>
-        public static readonly IEnumerable<Type> TestPerformerTypes = GetTestPerformerTypes();
 
         /// <summary>
         /// Gets hash from the password
         /// </summary>
         public static readonly IPasswordHash PasswordHash = CastleResolver.Resolve<IPasswordHash>();
+
+        /// <summary>
+        /// Getting available tests for the trunk and release WGA test suites
+        /// </summary>
+        public static readonly TestSuiteTypesHelper TypesHelper = new TestSuiteTypesHelper();
 
         protected void Application_Start()
         {
@@ -53,54 +49,7 @@ namespace TestControlTool.Web
             BootstrapBundleConfig.RegisterBundles(System.Web.Optimization.BundleTable.Bundles);
             BootstrapMvcSample.ExampleLayoutsRouteConfig.RegisterRoutes(RouteTable.Routes);
             ModelBinders.Binders.Add(typeof(string), new TrimModelBinder());
-        }
-
-        private static IEnumerable<Type> GetAvailabaleTests()
-        {
-            var assemblyPath = GetAssemblyPath();
-
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(assemblyPath));
-
-            var dir = Directory.GetCurrentDirectory();
-
-            var assembly = Assembly.LoadFile(assemblyPath);
-
-            var tests = assembly.ExportedTypes.Where(x => x.BaseType != null && x.BaseType.Name == "AppAssureTest");
-            return tests;
-        }
-
-        private static IEnumerable<Type> GetTestPerformerTypes()
-        {
-            var assemblyPath = GetAssemblyPath();
-
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(assemblyPath));
-
-            var dir = Directory.GetCurrentDirectory();
-
-            var assembly = Assembly.LoadFile(assemblyPath);
-
-            var types = assembly.ExportedTypes;
-            return types;
-        }
-
-        private static string GetAssemblyPath()
-        {
-            var assembly = ConfigurationManager.AppSettings["TestPerformerScripts"];
-
-            var serverAssemblyFile = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath.Replace('/', '\\'));
-
-            if (assembly.StartsWith(@"..\"))
-            {
-                var executionPath = Directory.GetDirectoryRoot(serverAssemblyFile);
-
-                assembly = executionPath + "\\" + assembly.Remove(0, 2);
-            }
-            else if (assembly.StartsWith(@".\"))
-            {
-                assembly = serverAssemblyFile + "\\" + assembly.Remove(0, 2);
-            }
-
-            return assembly;
+            ModelBinders.Binders.Add(typeof(MachineModel), new MachineModelBinder());
         }
     }
 }

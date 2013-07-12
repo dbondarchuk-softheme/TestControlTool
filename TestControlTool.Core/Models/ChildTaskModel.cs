@@ -40,9 +40,15 @@ namespace TestControlTool.Core.Models
         DeployInstall,
 
         /// <summary>
-        /// Test task
+        /// Test suite of WGA for trunk task 
         /// </summary>
-        TestSuite,
+        TestSuiteTrunk,
+
+
+        /// <summary>
+        /// Test suite of WGA for release task 
+        /// </summary>
+        TestSuiteRelease,
 
         /// <summary>
         /// Suite for the backend automation

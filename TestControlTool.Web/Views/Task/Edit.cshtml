@@ -80,28 +80,29 @@
                          
                             <li id="@taskModel.Name" type="DeployInstall" deployType="@taskModel.Type" version="@taskModel.Version" 
                                     machines="@taskModel.Machines.Aggregate("", (s, machine) => s + machine + ";").TrimEnd(';')">
-                                <a ondblclick="editDeployTask('@taskModel.Name')" href="#">@taskModel.Name</a>
+                                <a onclick="editDeployTask('@taskModel.Name')" href="#">@taskModel.Name</a>
                                 <a class="pull-right" style="padding-left: 10px" href="@Url.Action("GetXmlFile", "Task", new { taskId = Model.Task.Id, childTaskName = task.Name })">
                                     <i class="icon-download-alt" data-toggle="tooltip" rel="tooltip" title="Download XML file"></i>
                                 </a>
-                                <button type="button" class="close" aria-hidden="true" onclick="removeTask('@taskModel.Name')">×</button>
+                                <button type="button" class="close" aria-hidden="true" onclick="removeItem(this)">×</button>
                             </li>
                             }
-                            else if (task.TaskType == TaskType.TestSuite)
+                            else if (task.TaskType == TaskType.TestSuiteTrunk || task.TaskType == TaskType.TestSuiteRelease)
                             {
                                 var taskModel = TestSuiteModel.GetFromXmlFile(task.File);
-                            <li id="@taskModel.Name" type="TestSuite">
-                                <a ondblclick="editTestSuiteTask('@taskModel.Name')" href="#">@taskModel.Name</a>
+                            <li id="@taskModel.Name" type="@task.TaskType.ToString()" machine="@taskModel.Machine">
+                                <a onclick="editTestSuiteTask(this)" href="#">@taskModel.Name</a>
                                 <a class="pull-right" data-toggle="tooltip" rel="tooltip" title="Download XML file" style="padding-left: 10px" href="@Url.Action("GetXmlFile", "Task", new { taskId = Model.Task.Id, childTaskName = task.Name })"><i class="icon-download-alt"></i></a>
-                                <button type="button" class="close pull-right" aria-hidden="true" onclick="removeTask('@taskModel.Name')">×</button>
+                                <button type="button" class="close pull-right" aria-hidden="true" onclick="removeItem(this)">×</button>
                                 <ol style="display: none">
                                     @foreach (var test in taskModel.Tests)
                                     {
                                         var visibleProperties = test.VisibleProperties(new string[0]);
-                                        var properties = visibleProperties.Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)).Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(test) + "'");
+                                        var properties = visibleProperties.Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)
+                                             || x.PropertyType == typeof(bool)).Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(test) + "'");
                                         <li  testtype="@test.GetType().Name" @Html.Raw(properties)>
                                             <a href="#" onclick="editTestModal(this)">@test.GetType().Name</a>
-                                            <button type='button' class='close' aria-hidden='true' onclick='removeTest(this)'>×</button>
+                                            <button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button>
                                             @{
                                         foreach (var property in visibleProperties.Where(x => x.PropertyType.Name.Contains("List")))
                                         {
@@ -112,15 +113,16 @@
                                                     }
                                                     @foreach (var item in enumerable)
                                                     {
-                                                        var childPropertyInfos = item.VisibleProperties(new string[0]).Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string)).ToList();
+                                                        var childPropertyInfos = item.VisibleProperties(new string[0]).Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string)
+                                                            || x.PropertyType == typeof(int) || x.PropertyType == typeof(bool)).ToList();
                                                         var childProperties = childPropertyInfos.Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(item) + "'");
                                                         var name = "";
                                                         var genericType = property.PropertyType.GenericTypeArguments.First();
-                                                        
-                                                        if (genericType == typeof(string) || genericType.IsEnum || genericType == typeof(int))
+
+                                                        if (genericType == typeof(string) || genericType.IsEnum || genericType == typeof(int) || genericType == typeof(bool))
                                                         {
                                                             name = @item.ToString();
-                                                            childProperties = "value='" + name + "'";
+                                                            childProperties = "item='" + name + "'";
                                                         }
                                                         else
                                                         {
@@ -128,10 +130,10 @@
                                                         }
                             
                                                         <li @Html.Raw(childProperties)>
-                                                            <a href='#' onclick="editListItem('@genericType.Name', this); return false;">
+                                                            <a href='#' onclick="editListItem('@genericType.FullName', this); return false;">
                                                                 @name
                                                             </a>
-                                                            <button type='button' class='close' aria-hidden='true' onclick='removeTest(this)'>×</button>
+                                                            <button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button>
                                                         </li>
                                                     }
                                                 </ul>
@@ -152,13 +154,16 @@
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Add new<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a data-toggle="modal" href="#DeployInstallJobModal">DeployInstall Task</a></li>
-                            <li><a data-toggle="modal" href="#TestSuiteModal">Test Suite</a></li>
+                            <li class="divider"></li>
+                            <li><a data-toggle="modal" href="#" onclick="showNewTestSuite(true); return false;">Test Suite for Trunk</a></li>
+                            <li><a data-toggle="modal" href="#" onclick="showNewTestSuite(false); return false;">Test Suite for Release</a></li>
                         </ul>
                     </div>
                     <div class="btn-group">
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Upload exesisting xml<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal(); return false;">Test Suite</a></li>
+                            <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal(true); return false;">Test Suite for Trunk</a></li>
+                            <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal(false); return false;">Test Suite for Release</a></li>
                         </ul>
                     </div>
                 </fieldset>

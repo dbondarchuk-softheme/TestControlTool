@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TestControlTool.Core.Exceptions;
+using TestControlTool.Core.Implementations;
 
 namespace TestControlTool.Core.Contracts
 {
@@ -20,6 +21,16 @@ namespace TestControlTool.Core.Contracts
         ICollection<IMachine> Machines { get; }
 
         /// <summary>
+        /// Get's all tasks
+        /// </summary>
+        ICollection<IScheduleTask> Tasks { get; }
+
+        /// <summary>
+        /// Get's all servers
+        /// </summary>
+        ICollection<VMServer> Servers { get; }
+
+        /// <summary>
         /// Get's all accounts (cached)
         /// </summary>
         ICollection<IAccount> CachedAccounts { get; }
@@ -28,16 +39,16 @@ namespace TestControlTool.Core.Contracts
         /// Get's all machines (cached)
         /// </summary>
         ICollection<IMachine> CachedMachines { get; }
-
-        /// <summary>
-        /// Get's all tasks
-        /// </summary>
-        ICollection<IScheduleTask> Tasks { get; }
-
+        
         /// <summary>
         /// Get's all tasks (cached)
         /// </summary>
         ICollection<IScheduleTask> CachedTasks { get; }
+
+        /// <summary>
+        /// Get's all servers (cached)
+        /// </summary>
+        ICollection<VMServer> CachedServers { get; }
 
         /// <summary>
         /// Check's if account login and password are valid
@@ -68,6 +79,14 @@ namespace TestControlTool.Core.Contracts
         /// <exception cref="NoSuchAccountException">If <paramref name="task"/>'s owner wasn't found</exception>
         /// <exception cref="AddExistingTaskException">If <paramref name="task"/> with such id is already presented in the database</exception>
         void AddTask(IScheduleTask task);
+
+        /// <summary>
+        /// Add's task to the database
+        /// </summary>
+        /// <param name="server">HyperV Server to add</param>
+        /// <exception cref="NoSuchAccountException">If <paramref name="server"/>'s owner wasn't found</exception>
+        /// <exception cref="AddExistingVMServerException">If <paramref name="server"/> with such id is already presented in the database</exception>
+        void AddVMServer(VMServer server);
         
         /// <summary>
         /// Changes password for the account
@@ -93,6 +112,14 @@ namespace TestControlTool.Core.Contracts
         void EditTask(Guid id, IScheduleTask task);
 
         /// <summary>
+        /// Edit's VM Server with such id
+        /// </summary>
+        /// <param name="id">Id of the server to edit</param>
+        /// <param name="server">New server info (new id and owner doesn't take effect)</param>
+        /// <exception cref="NoSuchVMServerException">If server with <paramref name="id"/> wasn't found</exception>
+        void EditVMServer(Guid id, VMServer server);
+
+        /// <summary>
         /// Remove's machine with such id
         /// </summary>
         /// <param name="id">Id of the machine to remove</param>
@@ -105,6 +132,13 @@ namespace TestControlTool.Core.Contracts
         /// <param name="id">Id of the task to remove</param>
         /// <exception cref="NoSuchTaskException">If machine with <paramref name="id"/> wasn't found</exception>
         void RemoveTask(Guid id);
+
+        /// <summary>
+        /// Remove's VM server with such id
+        /// </summary>
+        /// <param name="id">Id of the server to remove</param>
+        /// <exception cref="NoSuchVMServerException">If server with <paramref name="id"/> wasn't found</exception>
+        void RemoveVMServer(Guid id);
 
         /// <summary>
         /// Sets status of the task

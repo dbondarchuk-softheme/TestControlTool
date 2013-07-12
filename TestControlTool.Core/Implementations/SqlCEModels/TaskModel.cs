@@ -15,14 +15,14 @@ namespace TestControlTool.Core.Implementations.SqlCEModels
     public partial class TaskModel
     {
         public string Id { get; set; }
-        public DateTime StartTime { get; set; }
-        public string Frequency { get; set; }
-        public DateTime EndTime { get; set; }
-        public bool IsEnabled { get; set; }
+        public System.DateTime StartTime { get; set; }
         public string Owner { get; set; }
         public string Name { get; set; }
         public string Status { get; set; }
-        public DateTime LastRun { get; set; }
+        public System.DateTime LastRun { get; set; }
+        public string Frequency { get; set; }
+        public System.DateTime EndTime { get; set; }
+        public bool IsEnabled { get; set; }
     
         public virtual AccountModel Account { get; set; }
     }

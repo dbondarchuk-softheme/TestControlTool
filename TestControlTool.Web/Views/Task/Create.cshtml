@@ -68,7 +68,7 @@
                 <fieldset class="form-horizontal">
                     <legend>Task <small>Jobs</small>
                     </legend>
-                    <ul id="currentTasks">
+                    <ul id="currentTasks" class="sortable">
                         @foreach (var task in Model.ChildTasks)
                         {
                             if (task.TaskType == TaskType.DeployInstall)
@@ -81,7 +81,7 @@
                                 <button type="button" class="close" aria-hidden="true" onclick="removeTask('@taskModel.Name')">×</button>
                             </li>
                             }
-                            else if (task.TaskType == TaskType.TestSuite)
+                            else if (task.TaskType == TaskType.TestSuiteTrunk)
                             {
                                 var taskModel = TestSuiteModel.GetFromXmlFile(task.File);
                             <li id="@taskModel.Name" type="TestSuite">
@@ -109,13 +109,16 @@
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Add new<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a data-toggle="modal" href="#DeployInstallJobModal">DeployInstall Task</a></li>
-                            <li><a data-toggle="modal" href="#TestSuiteModal">Test Suite</a></li>
+                            <li class="divider"></li>
+                            <li><a data-toggle="modal" href="#" onclick="showNewTestSuite(true); return false;">Test Suite for Trunk</a></li>
+                            <li><a data-toggle="modal" href="#" onclick="showNewTestSuite(false); return false;">Test Suite for Release</a></li>
                         </ul>
                     </div>
                     <div class="btn-group">
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Upload exesisting xml<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal(); return false;">Test Suite</a></li>
+                            <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal(true); return false;">Test Suite for Trunk</a></li>
+                            <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal(false); return false;">Test Suite for Release</a></li>
                         </ul>
                     </div>
                 </fieldset>

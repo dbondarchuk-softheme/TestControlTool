@@ -45,6 +45,9 @@
     <Reference Include="AutodeploymentServices">
       <HintPath>..\TestControlTool.Core\AutoDeploy\AutodeploymentServices.dll</HintPath>
     </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>C:\Users\1\Desktop\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Mvc">
       <HintPath>..\packages\Mvc4Futures.4.0.20710.0\lib\net40\Microsoft.Web.Mvc.dll</HintPath>
@@ -123,12 +126,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="WebGuiAutomation.Scripts">
-      <HintPath>..\TestControlTool.Core\TestPerformer\WebGuiAutomation.Scripts.dll</HintPath>
-    </Reference>
-    <Reference Include="WebGuiAutomation.TestPerformerCore">
-      <HintPath>..\TestControlTool.Core\TestPerformer\WebGuiAutomation.TestPerformerCore.dll</HintPath>
-    </Reference>
     <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.2.0.20710.0\lib\net40\WebMatrix.Data.dll</HintPath>
@@ -185,17 +182,23 @@
     <Compile Include="App_Start\TrimModelBinder.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BootstrapSupport\ControlGroupExtensions.cs" />
+    <Compile Include="BootstrapSupport\HelpAttribute.cs" />
+    <Compile Include="BootstrapSupport\HtmlHelpers\EditorWithHelp.cs" />
     <Compile Include="BootstrapSupport\HtmlHelpers\GlyphIcons.cs" />
     <Compile Include="BootstrapSupport\HtmlHelpers\Linker.cs" />
     <Compile Include="BootstrapSupport\HtmlHelpers\Paging.cs" />
     <Compile Include="BootstrapSupport\LinkAttribute.cs" />
+    <Compile Include="MachineModelBinder.cs" />
     <Compile Include="BootstrapSupport\ViewHelperExtensions.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BootstrapBaseController.cs" />
     <Compile Include="Controllers\ExampleLayoutsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MachineController.cs" />
+    <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\ValidationController.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -203,8 +206,10 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\DeployInstallTaskModel.cs" />
     <Compile Include="Models\HomeInputModel.cs" />
+    <Compile Include="Models\HyperVMachineModel.cs" />
     <Compile Include="Models\MachineModel.cs" />
-    <Compile Include="Models\SaveTaskModel.cs" />
+    <Compile Include="Models\ServerModel.cs" />
+    <Compile Include="Models\VCenterMachineModel.cs" />
     <Compile Include="Models\TaskChildsModel.cs" />
     <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Models\TestSuiteModel.cs" />
@@ -215,6 +220,7 @@
     <Compile Include="NavigationRoutes\NavigationRouteFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskWcfService.cs" />
+    <Compile Include="TestSuiteTypesHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="accounts.sdf">
@@ -229,8 +235,10 @@
     <Content Include="Content\bootstrap-responsive.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\AddMachine.PNG" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
+    <Content Include="Content\images\Schedule.PNG" />
     <Content Include="Content\images\select2-spinner.gif" />
     <Content Include="Content\images\select2.png" />
     <Content Include="Content\images\select2x2.png" />
@@ -299,6 +307,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Content\images\AddVMServer.PNG" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-fileupload.min.js" />
@@ -395,15 +404,17 @@
     <Content Include="Views\ExampleLayouts\Fluid.cshtml" />
     <Content Include="Views\Shared\Edit.cshtml" />
     <Content Include="Views\Home\Machines.cshtml" />
-    <Content Include="Views\Shared\MachineDetails.cshtml" />
-    <Content Include="Views\Shared\EditMachine.cshtml" />
-    <Content Include="Views\Shared\CreateMachine.cshtml" />
+    <Content Include="Views\Machine\Details.cshtml" />
+    <Content Include="Views\Machine\Edit.cshtml" />
+    <Content Include="Views\Machine\Create.cshtml" />
     <Content Include="Views\Shared\EditTask.cshtml" />
     <Content Include="Views\Shared\CreateTask.cshtml" />
     <Content Include="Views\Shared\TaskDetails.cshtml" />
     <Content Include="Views\BootstrapBase\GetMachinesListSidebar.cshtml" />
     <Content Include="Views\BootstrapBase\GetTasksListSidebar.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Home\Servers.cshtml" />
+    <Content Include="Views\Home\Help.cshtml" />
     <None Include="Views\Home\Tasks.cshtml" />
     <Content Include="Views\Task\Edit.cshtml" />
     <Content Include="Views\Task\GetAllMachines.cshtml" />
@@ -419,6 +430,9 @@
     <Content Include="Views\Task\ListItemModal.cshtml" />
     <Content Include="Views\Task\UploadedTestSuite.cshtml" />
     <Content Include="Views\Task\UploadTestSuiteXml.cshtml" />
+    <Content Include="Views\Server\Create.cshtml" />
+    <Content Include="Views\Server\Edit.cshtml" />
+    <Content Include="Views\Server\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -450,7 +464,7 @@
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>18721</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:18721/</IISUrl>
+          <IISUrl>http://localhost:18723/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

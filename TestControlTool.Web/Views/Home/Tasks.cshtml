@@ -47,17 +47,17 @@
             <td id="@pauseId">
                 @if (taskModel.IsEnabled)
                 {
-                    <a href="#" onclick="PauseStartScheduleExecution('@taskModel.Id', false); return false;" data-toggle="tooltip" title="Pause Task Schedule start" rel="tooltip"><i class="icon-off"></i></a>
+                    <a href="#" onclick="PauseStartScheduleExecution('@taskModel.Id', false); return false;" data-toggle="tooltip" title="Disable" rel="tooltip"><i class="icon-off"></i></a>
                 }
                 else
                 {
-                    <a href="#" onclick="PauseStartScheduleExecution('@taskModel.Id', true); return false;" data-toggle="tooltip" title="Resume Task Schedule start" rel="tooltip" style="opacity: 0.4"><i class="icon-off"></i></a>
+                    <a href="#" onclick="PauseStartScheduleExecution('@taskModel.Id', true); return false;" data-toggle="tooltip" title="Enable" rel="tooltip" style="opacity: 0.4"><i class="icon-off"></i></a>
                 }
             </td>
             <td id="@stopId">
                 @if (taskModel.Status != TaskStatus.Running)
                 {
-                    <a href="#" onclick="StopTask('@taskModel.Id', 'run'); return false;" data-toggle="tooltip" title="Run Task" rel="tooltip">Run  <i class="icon-circle-arrow-right"></i></a>    
+                    <a href="#" onclick="StopTask('@taskModel.Id', 'run'); return false;" data-toggle="tooltip" title="Run Task" rel="tooltip">Run  <i class="icon-play"></i></a>    
                 }
                 else
                 {
@@ -65,7 +65,7 @@
                 }
             </td>
         <td>
-                <button rel="tooltip" type='button' class='close' aria-hidden='true' style="float: none" onclick="deleteTask('@taskModel.Id');" title="Delete task" data-toggle="tooltip">×</button>
+                <button rel="tooltip" type='button' class='close' aria-hidden='true' style="float: none" onclick=" removeTask('@taskModel.Id');" title="Delete task" data-toggle="tooltip">×</button>
             </td>
         </tr>
                 index++;
@@ -73,11 +73,11 @@
 
 </table>
 <p>
-    @Html.ActionLink("Create New", "CreateTask", null, new { @class = "btn" })
+    @Html.ActionLink("Create New", "Create", "Task", null, new { @class = "btn" })
 </p>
 <script type="text/javascript">
-    function deleteTask(id) {
-        window.location.href = '@Url.Action("DeleteTask", "Home")/' + id;
+    function removeTask(id) {
+        window.location.href = '@Url.Action("Delete", "Task")/' + id;
     }
     function RefreshStatuses() {
         $.ajax({
@@ -88,14 +88,19 @@
                 var link = $(this).find('a');
                 var id = $(this).attr('id').replace('Task', '').replace('Status', '');
 
-                var status = data[id];
+                var status = data[id].status;
+                var lastRun = data[id].lastRun;
 
                 if (status.toUpperCase() == 'RUNNING') {
                     status += '<img src="@Url.Content("~/Content/images/select2-spinner.gif")" style="margin-left: 10px" />';
                     $('#Task' + id +'Stop').html('<a href="#" onclick="StopTask(\'' + id + '\', \'stop\'); return false;" data-toggle="tooltip" title="Stop Task" rel="tooltip">Stop  <i class="icon-stop"></i></a>');
                 } else {
-                    $('#Task' + id + 'Stop').html('<a href="#" onclick="StopTask(\'' + id + '\', \'run\'); return false;" data-toggle="tooltip" title="Run Task" rel="tooltip">Run  <i class="icon-circle-arrow-right"></i></a>');
+                    $('#Task' + id + 'Stop').html('<a href="#" onclick="StopTask(\'' + id + '\', \'run\'); return false;" data-toggle="tooltip" title="Run Task" rel="tooltip">Run  <i class="icon-play"></i></a>');
                 }
+
+                $('#Task' + id + 'LastRunExtended').find('a').text(lastRun);
+
+                $('#Task' + id + 'Stop').find('a').tooltip();
 
                 link.html(status);
 
@@ -121,7 +126,7 @@
             dataType: 'json'
         }).done(function (data) {
             if (data == false) {
-                td.html('<a href="#" onclick="StopTask(\'' + id + '\', \'run\'); return false;" data-toggle="tooltip" title="Run Task" rel="tooltip">Run  <i class="icon-circle-arrow-right"></i></a>');
+                td.html('<a href="#" onclick="StopTask(\'' + id + '\', \'run\'); return false;" data-toggle="tooltip" title="Run Task" rel="tooltip">Run  <i class="icon-play"></i></a>');
             }
             else if (data == true) {
                 td.html('<a href="#" onclick="StopTask(\'' + id + '\', \'stop\'); return false;" data-toggle="tooltip" title="Stop Task" rel="tooltip">Stop  <i class="icon-stop"></i></a>');
@@ -147,15 +152,17 @@
             data: { Id: id, Enabled: type },
             dataType: 'json'
         }).done(function (data) {
-            if (data == false) {
-                td.html('<a href="#" onclick="PauseStartScheduleExecution(\'' + id + '\', true); return false;" data-toggle="tooltip" title="Resume Task Schedule start" rel="tooltip" style="opacity: 0.4"><i class="icon-off"></i></a>');
+            if (data.enabled == false) {
+                td.html('<a href="#" onclick="PauseStartScheduleExecution(\'' + id + '\', true); return false;" data-toggle="tooltip" title="Enable" rel="tooltip" style="opacity: 0.4"><i class="icon-off"></i></a>');
             }
-            else if (data == true) {
-                td.html('<a href="#" onclick="PauseStartScheduleExecution(\'' + id + '\', false); return false;" data-toggle="tooltip" title="Pause Task Schedule start" rel="tooltip"><i class="icon-off"></i></a>');
+            else if (data.enabled == true) {
+                td.html('<a href="#" onclick="PauseStartScheduleExecution(\'' + id + '\', false); return false;" data-toggle="tooltip" title="Disable" rel="tooltip"><i class="icon-off"></i></a>');
             } else {
                 td.html(previousHtml);
             }
 
+            $('#Task' + id + 'NextRun').find('a').text(data.nextStart);
+            
             td.find("a").tooltip();
         });
     }

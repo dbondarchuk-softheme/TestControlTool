@@ -9,7 +9,7 @@
     <caption></caption>
     <thead>
         <tr>
-            @foreach (var property in Model.VisibleProperties(MachineModel.NotShownProperties))
+            @foreach (var property in Model.VisibleProperties(VCenterMachineModel.NotShownProperties))
             {
                 <th>
                     @property.GetLabel().ToSeparatedWords()
@@ -23,7 +23,7 @@
     {
         ViewData[index.ToString()] = model;
         <tr>
-            @foreach (var property in model.VisibleProperties(MachineModel.NotShownProperties))
+            @foreach (var property in model.VisibleProperties(VCenterMachineModel.NotShownProperties))
             {
                 <td>
                     @Html.Display(index + "." + property.Name)

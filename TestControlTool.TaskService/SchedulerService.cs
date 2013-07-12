@@ -37,12 +37,14 @@ namespace TestControlTool.TaskService
 
         private void TaskTimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            foreach (var task in _accountController.CachedTasks.Where(x => x.IsTimeToStart(DateTime.Now) && x.Status != TaskStatus.Running && x.IsEnabled))
+            var tasks = _accountController.Tasks;
+
+            foreach (var task in tasks.Where(x => x.IsTimeToStart(DateTime.Now) && x.Status != TaskStatus.Running && x.IsEnabled))
             {
                 TaskService.RunTask(task.Id);
             }
 
-            foreach (var task in _accountController.CachedTasks.Where(x => (DateTime.Now - x.LastRun) > MaximalDuration && x.Status == TaskStatus.Running))
+            foreach (var task in tasks.Where(x => (DateTime.Now - x.LastRun) > MaximalDuration && x.Status == TaskStatus.Running))
             {
                 TaskService.StopTask(task.Id, true);
             }

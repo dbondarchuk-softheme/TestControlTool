@@ -4,7 +4,7 @@ using TestControlTool.Core.Contracts;
 namespace TestControlTool.Core.Exceptions
 {
     /// <summary>
-    /// Generated, when such account is already presented in the database
+    /// Generated, when such task is already presented in the database
     /// </summary>
     public class AddExistingTaskException : Exception
     {
@@ -36,9 +36,9 @@ namespace TestControlTool.Core.Exceptions
         }
 
         /// <summary>
-        /// Create's new AddExistingMachineException for trying to add matched machine
+        /// Create's new AddExistingTaskException for trying to add matched task
         /// </summary>
-        /// <param name="task">Account, which was tried to add</param>
+        /// <param name="task">Task, which was tried to add</param>
         public AddExistingTaskException(IScheduleTask task)
             : base("Task with id = " + task.Id + " is already presented in the database")
         {

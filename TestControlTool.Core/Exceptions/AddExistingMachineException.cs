@@ -4,7 +4,7 @@ using TestControlTool.Core.Contracts;
 namespace TestControlTool.Core.Exceptions
 {
     /// <summary>
-    /// Generated, when such account is already presented in the database
+    /// Generated, when such machine is already presented in the database
     /// </summary>
     public class AddExistingMachineException : Exception
     {

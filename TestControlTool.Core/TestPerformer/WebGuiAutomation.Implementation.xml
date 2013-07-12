@@ -421,45 +421,27 @@
         </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetTransferTimeoutTextBox(System.String)">
             <summary>
-            Set 'Transfer Timeout Seconds' value
+            Set 'Transfer Timeout' value
             </summary>
-            <param name="value">New 'Transfer Timeout Seconds' value</param>
+            <param name="value">New 'Transfer Timeout' value</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetSnapshotTimeoutMinutesTextBox(System.String)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetSnapshotTimeoutTextBox(System.String)">
             <summary>
-            Set 'Snapshot Timeout Minutes' value
+            Set 'Snapshot Timeout' value
             </summary>
-            <param name="value">New 'Snapshot Timeout Minutes' value</param>
+            <param name="value">New 'Snapshot Timeout' value</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetSnapshotTimeoutSecondsTextBox(System.String)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetNetworkReadTimeoutTextBox(System.String)">
             <summary>
-            Set 'Snapshot Timeout Seconds' value
+            Set 'Network Read Timeout' value
             </summary>
-            <param name="value">New 'Snapshot Timeout Seconds' value</param>
+            <param name="value">New 'Network Read Timeout' value</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetNetworkReadTimeoutMinutesTextBox(System.String)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetNetworkWriteTimeoutTextBox(System.String)">
             <summary>
-            Set 'Network Read Timeout Minutes' value
+            Set 'Network Write Timeout' value
             </summary>
-            <param name="value">New 'Network Read Timeout Minutes' value</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetNetworkReadTimeoutSecondsTextBox(System.String)">
-            <summary>
-            Set 'Network Read Timeout Seconds' value
-            </summary>
-            <param name="value">New 'Network Read Timeout Seconds' value</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetNetworkWriteTimeoutMinutesTextBox(System.String)">
-            <summary>
-            Set 'Network Write Timeout Minutes' value
-            </summary>
-            <param name="value">New 'Network Write Timeout Minutes' value</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetNetworkWriteTimeoutSecondsTextBox(System.String)">
-            <summary>
-            Set 'Network Write Timeout Seconds' value
-            </summary>
-            <param name="value">New 'Network Write Timeout Seconds' value</param>
+            <param name="value">New 'Network Write Timeout' value</param>
         </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetPriorityComboBox(System.String)">
             <summary>
@@ -629,6 +611,19 @@
             Initializes a new instance of the RestoreCoreConfigurationTab class
             </summary>
         </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreCoreConfigurationTab.SelectRepository(System.String)">
+            <summary>
+            Selects repository by its name
+            </summary>
+            <param name="name">Repository name</param>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreCoreConfigurationTab.SetRepositoryCheckBoxState(System.String,WebGuiAutomation.WebElements.CheckBoxElement.CheckBoxState)">
+            <summary>
+            Sets selected repository's checkbox state
+            </summary>
+            <param name="repositoryNames">repository displayed name</param>
+            <param name="state">Checkbox state</param>
+        </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreCoreConfigurationTab.Restore">
             <summary>
             Clicks "Restore" button
@@ -642,6 +637,129 @@
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreCoreConfigurationTab.RestoreRepositoriesCheckBox">
             <summary>
             Gets or sets "Restore Repositories" checkbox state
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreCoreConfigurationTab.AllRepositoriesCheckBox">
+            <summary>
+            Gets or sets "All Repositories" checkbox state
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreCoreConfigurationTab.SelectedRepository">
+            <summary>
+            Gets current Repository
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.FixPathDialog">
+            <summary>
+            Describes controls of the Fix Storage Location dialog
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.FixPathDialog.#ctor">
+            <summary>
+            Initializes a new instance of the FixPathDialog class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.FixPathDialog.FileOnLocalDiskClick">
+            <summary>
+            Clicks "File on local disk" radioButton
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.FixPathDialog.FileOnCifsShareClick">
+            <summary>
+            Clicks "File on CIFS share" radioButton
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.FixPathDialog.Save">
+            <summary>
+            Clicks "Save" button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.FixPathDialog.Cancel">
+            <summary>
+            Clicks "Cancel" button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.FixPathDialog.Close">
+            <summary>
+            Clicks "Close" button
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.FixPathDialog.MetadataPathTextBox">
+            <summary>
+            Gets or sets "Metadata Path" textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.FixPathDialog.DataPathTextBox">
+            <summary>
+            Gets or sets "Data Path" textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.FixPathDialog.UncPathTextBox">
+            <summary>
+            Gets or sets "UNC path" textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.FixPathDialog.UserNameTextBox">
+            <summary>
+            Gets or sets "User Name" textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.FixPathDialog.PasswordTextBox">
+            <summary>
+            Gets or sets "Password" textbox value
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.SelectedRepository">
+            <summary>
+            Describes controls of the selected repository
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.SelectedRepository.#ctor">
+            <summary>
+            Initializes a new instance of the SelectedRepository class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.SelectedRepository.SelectRepository(System.String)">
+            <summary>
+            Selects the repository
+            </summary>
+            <param name="name">Repository name</param>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.SelectedRepository.SelectStorageLocation(System.String)">
+            <summary>
+            Selects Storage Location by its path
+            </summary>
+            <param name="path">Storage Location path</param>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.SelectedRepository.RepositoryExpanderClick">
+            <summary>
+            Clicks "Repository Expander" item
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.SelectedRepository.SelectedStorageLocation">
+            <summary>
+            Gets current Storage Location
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.SelectedStorageLocation">
+            <summary>
+            Describes controls of the selected storage location
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.SelectedStorageLocation.#ctor">
+            <summary>
+            Initializes a new instance of the SelectedStorageLocation class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.SelectedStorageLocation.SelectStorageLocation(System.String)">
+            <summary>
+            Selects certain file specifications
+            </summary>
+            <param name="text">File specification's text</param>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.RestoreRepository.SelectedStorageLocation.FixPathDialog">
+            <summary>
+            Gets "Fix path" dialog
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.AddTraceLogDialog">
@@ -861,6 +979,79 @@
             Gets or sets "Expired On" textbox value
             </summary>
         </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.UpdatesSettingsDialog">
+            <summary>
+            Describes controls of the Updates Settings dialog
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.UpdatesSettingsDialog.#ctor">
+            <summary>
+            Initializes a new instance of the UpdatesSettingsDialog class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.UpdatesSettingsDialog.InstallThemAutomaticallyRadioButtonClick">
+            <summary>
+            Clicks "Install Them Automatically" radio button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.UpdatesSettingsDialog.DoNotInstallThemRadioButtonClick">
+            <summary>
+            Clicks "Notify me but do not install them" radio button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.UpdatesSettingsDialog.SetUpdatePeriodicityItem(System.String)">
+            <summary>
+            Expands Update Periodicity ComboBox and clicks necessary item
+            </summary>
+            <param name="updatePeriodicityItem">Never, Daily, Weekly or Monthly</param>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.UpdatesSettingsDialog.Ok">
+            <summary>
+            Applies changes and closes the dialog
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.UpdatesSettingsDialog.Cancel">
+            <summary>
+            Clicks "Cancel" button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.UpdatesSettingsDialog.Close">
+            <summary>
+            Clicks "Close" button
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Bulk.AddMachinesFromVCenterDialog">
+            <summary>
+            Describes controls of the Add Machines From Vcenter Server/ESX(i) Dialog
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Bulk.AddMachinesFromVCenterDialog.#ctor">
+            <summary>
+            Initializes a new instance of the AddMachinesFromVCenterDialog class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Bulk.AddMachinesFromVCenterDialog.SetMachineCheckBox(System.String,WebGuiAutomation.WebElements.CheckBoxElement.CheckBoxState)">
+            <summary>
+            Checks or unchecks machine checkboxes
+            </summary>
+            <param name="name">Machine name or multiple names separated with '|' symbol</param>
+            <param name="state">Checked or Unchecked or Default</param>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Bulk.AddMachinesFromVCenterDialog.Add">
+            <summary>
+            Clicks "Add" button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Bulk.AddMachinesFromVCenterDialog.Cancel">
+            <summary>
+            Clicks "Cancel" button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Bulk.AddMachinesFromVCenterDialog.Close">
+            <summary>
+            Clicks "Close" button
+            </summary>
+        </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Home.SetupCore.EmailNotification.SmtpServerSettingsDialog">
             <summary>
             Describes controls of the SMTP Server Settings dialog
@@ -919,6 +1110,11 @@
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Home.SetupCore.EmailNotification.SmtpServerSettingsDialog.FromTextBox">
             <summary>
             Gets or sets "From" textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Home.SetupCore.EmailNotification.SmtpServerSettingsDialog.SendTestEmailDialog">
+            <summary>
+            Gets "Send Test Email" dialog
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Tools.BulkDeploy.AddMachineDialog">
@@ -2134,6 +2330,11 @@
             Gets or sets "Password" textbox value
             </summary>
         </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Bulk.ConnectToVCenterServerDialog.AddMachinesFromVCenterDialog">
+            <summary>
+             Gets Add Machines From Vcenter Server/ESX(i) Dialog
+            </summary>
+        </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.ConfigureEvents.EmailNotificationsDialog">
             <summary>
             Describes controls of the Change Email Notifications dialog
@@ -2162,41 +2363,6 @@
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.ConfigureEvents.EmailNotificationsDialog.EnableEmailNotificationsCheckBox">
             <summary>
             Gets or sets "Enable Email Notifications" checkbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.ConfigureEvents.EmailNotificationsDialog.SmtpServerTextBox">
-            <summary>
-            Gets or sets "Smtp Server" textbox value
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.ConfigureEvents.EmailNotificationsDialog.PortTextBox">
-            <summary>
-            Gets or sets "Port" textbox value
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.ConfigureEvents.EmailNotificationsDialog.TimeoutTextBox">
-            <summary>
-            Gets or sets "Timeout" textbox value
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.ConfigureEvents.EmailNotificationsDialog.TlsCheckBox">
-            <summary>
-            Gets or sets "TLS" checkbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.ConfigureEvents.EmailNotificationsDialog.UserNameTextBox">
-            <summary>
-            Gets or sets "Username" textbox value
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.ConfigureEvents.EmailNotificationsDialog.PasswordTextBox">
-            <summary>
-            Gets or sets "Password" textbox value
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.ConfigureEvents.EmailNotificationsDialog.FromTextBox">
-            <summary>
-            Gets or sets "From" textbox value
             </summary>
         </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.ConfigureEvents.EmailNotificationsDialog.EmailSubjectTextBox">
@@ -5013,19 +5179,9 @@
             Gets "Mounts" tab
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.ToolsTab.RestartServiceTab">
-            <summary>
-            Gets "Restart Service" tab
-            </summary>
-        </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.ToolsTab.ViewLogTab">
             <summary>
             Gets "View Log" tab
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.ToolsTab.UploadLogTab">
-            <summary>
-            Gets "Upload Log" tab
             </summary>
         </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.ToolsTab.ComplianceReportTab">
@@ -6839,6 +6995,21 @@
             Clicks "Use the following IP address" radio button
             </summary>
         </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Tools.BootCDs.CreateBootCDDialog.ObtainIPAddressAutomaticallyClick">
+            <summary>
+            Clicks "Obtain Ip Address Automatically" radio button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Tools.BootCDs.CreateBootCDDialog.Windows8X64Click">
+            <summary>
+            Clicks "Windows 8 x64" radio button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Tools.BootCDs.CreateBootCDDialog.Windows7X86Click">
+            <summary>
+            Clicks "Windows 7 x86" radio button
+            </summary>
+        </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Tools.BootCDs.CreateBootCDDialog.AddDriver">
             <summary>
             Clicks "Add a Driver" button
@@ -7351,6 +7522,27 @@
             </summary>
             <param name="value">Notification group exact name</param>
         </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.ConfigEventsTab.DeleteNotificationGroup(System.String)">
+            <summary>
+            Delete specific notification group
+            </summary>
+            <param name="notificationGroupName">Notification group exact name</param>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.ConfigEventsTab.UseCoreAlertSettingsRadioButtonClick">
+            <summary>
+            Clicks UseCoreAlertSettings RadioButton
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.ConfigEventsTab.UseCustomAlertSettingsRadioButtonClick">
+            <summary>
+            Clicks UseCustomAlertSettingsRadioButton RadioButton
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.ConfigEventsTab.Apply">
+            <summary>
+            Applies changes and closes the dialog
+            </summary>
+        </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.ConfigEventsTab.AddNotificationGroupDialog">
             <summary>
             Gets "Add Notification Group" dialog
@@ -7595,7 +7787,20 @@
             Initializes a new instance of the SettingsTab class
             </summary>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.SettingsTab.RemoveLinkClick">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.SettingsTab.SelectTraceLog(System.String)">
+            <summary>
+            Selects trace log by filter name
+            </summary>
+            <param name="name">Filter name</param>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.SettingsTab.SetTraceLogCheckBoxState(System.String,WebGuiAutomation.WebElements.CheckBoxElement.CheckBoxState)">
+            <summary>
+            Sets selected tracelog's checkbox state
+            </summary>
+            <param name="traceLogName">Trace Log displayed Filter</param>
+            <param name="state">Checkbox state</param>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.SettingsTab.RemoveTraceLogLinkClick">
             <summary>
             Clicks "Remove" link
             </summary>
@@ -7603,6 +7808,11 @@
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.SettingsTab.GeneralSettingsDialog">
             <summary>
             Gets General Settings dialog
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.SettingsTab.UpdatesSettingsDialog">
+            <summary>
+            Gets Updates Settings dialog
             </summary>
         </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.SettingsTab.NightlyJobsSettingsDialog">
@@ -7650,9 +7860,24 @@
             Gets "Database Connection Settings" dialog
             </summary>
         </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.SettingsTab.EditSmtpSettingsDialog">
+            <summary>
+            Gets "Change SMTP Server Settings" dialog
+            </summary>
+        </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.SettingsTab.AddTraceLogDialog">
             <summary>
             Gets "Add Trace Log" dialog
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.SettingsTab.SelectedTraceLog">
+            <summary>
+            Gets current "Trace Log"
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.SettingsTab.AllTraceLogsCheckBox">
+            <summary>
+            Gets or sets "All TraceLogs" checkbox state
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Licensing.ChangeLicenseKeyDialog">
@@ -7784,44 +8009,24 @@
             Clicks "Close" button
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ClientTimeoutSettingsDialog.ConnectionTimeoutMinutesTextBox">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ClientTimeoutSettingsDialog.ConnectionTimeoutTextBox">
             <summary>
-            Gets or sets "Connection Timeout" minutes textbox value
+            Gets or sets "Connection Timeout" textbox value
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ClientTimeoutSettingsDialog.ConnectionTimeoutSecondsTextBox">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ClientTimeoutSettingsDialog.ReadWriteTimeoutTextBox">
             <summary>
-            Gets or sets "Connection Timeout" seconds textbox value
+            Gets or sets "Read/Write Timeout" textbox value
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ClientTimeoutSettingsDialog.ReadWriteTimeoutMinutesTextBox">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ClientTimeoutSettingsDialog.ConnectionUITimeoutTextBox">
             <summary>
-            Gets or sets "Read/Write Timeout" minutes textbox value
+            Gets or sets "Connection UI Timeout" textbox value
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ClientTimeoutSettingsDialog.ReadWriteTimeoutSecondsTextBox">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ClientTimeoutSettingsDialog.ReadWriteUITimeoutTextBox">
             <summary>
-            Gets or sets "Read/Write Timeout" seconds textbox value
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ClientTimeoutSettingsDialog.ConnectionUITimeoutMinutesTextBox">
-            <summary>
-            Gets or sets "Connection UI Timeout" minutes textbox value
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ClientTimeoutSettingsDialog.ConnectionUITimeoutSecondsTextBox">
-            <summary>
-            Gets or sets "Connection UI Timeout" seconds textbox value
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ClientTimeoutSettingsDialog.ReadWriteUITimeoutMinutesTextBox">
-            <summary>
-            Gets or sets "Read/Write UI Timeout" minutes textbox value
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ClientTimeoutSettingsDialog.ReadWriteUITimeoutSecondsTextBox">
-            <summary>
-            Gets or sets "Read/Write UI Timeout" seconds textbox value
+            Gets or sets "Read/Write UI Timeout" textbox value
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.DeduplicationCacheConfigurationDialog">
@@ -7833,6 +8038,12 @@
             <summary>
             Initializes a new instance of the DeduplicationCacheConfigurationDialog class
             </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.DeduplicationCacheConfigurationDialog.SetDedupeCacheSizeType(System.String)">
+            <summary>
+            Expands size combo box and clicks necessary size
+            </summary>
+            <param name="dedupeCacheSizeType">MB, GB or TB</param>
         </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.DeduplicationCacheConfigurationDialog.Ok">
             <summary>
@@ -7849,6 +8060,11 @@
             Clicks "Close" button
             </summary>
         </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.DeduplicationCacheConfigurationDialog.RemoveYourself">
+            <summary>
+            Removes current tab or dialog from its parent
+            </summary>
+        </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.DeduplicationCacheConfigurationDialog.PrimaryCacheLocationTextBox">
             <summary>
             Gets or sets "Primary Cache Location" textbox value
@@ -7862,6 +8078,11 @@
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.DeduplicationCacheConfigurationDialog.MetadataCacheLocationTextBox">
             <summary>
             Gets or sets "Metadata Cache Location" textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.DeduplicationCacheConfigurationDialog.DedupeCacheSizeTextBox">
+            <summary>
+            Gets or sets "Dedupe Cache Size" textbox value
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.GeneralSettingsDialog">
@@ -7974,39 +8195,9 @@
             Gets or sets "Downloading The Logs From The Protected Machines" checkbox state
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.RollupPriorityTextBox">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.CheckRecoveryPointsIntegrityCheckBox">
             <summary>
-            Gets or sets "Rollup" textbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.AttachAbilityCheckJobPriorityTextBox">
-            <summary>
-            Gets or sets "Attachability Check Job" textbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.ChecksumCheckJobPriorityTextBox">
-            <summary>
-            Gets or sets "Checksum Check Job" textbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.LogTruncationJobPriorityTextBox">
-            <summary>
-            Gets or sets "Log Truncation Job" textbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.LogRepositoryStatisticsPriorityTextBox">
-            <summary>
-            Gets or sets "Log Repository Statistics" textbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.DeletingOldEventsAndJobsPriorityTextBox">
-            <summary>
-            Gets or sets "Deleting Old Events And Jobs" textbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.DownloadingLogsFromProtectedMachinesPriorityTextBox">
-            <summary>
-            Gets or sets "Downloading The Logs From The Protected Machines" textbox state
+            Gets or sets "Check Recovery Points Integrity" checkbox state
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ReplayEngineConfigurationDialog">
@@ -8084,34 +8275,14 @@
             Gets or sets "Send Buffer Size" textbox value
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ReplayEngineConfigurationDialog.ReadTimeoutHoursTextBox">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ReplayEngineConfigurationDialog.ReadTimeoutTextBox">
             <summary>
-            Gets or sets "Read Timeout (Hours)" textbox value
+            Gets or sets "Read Timeout" textbox value
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ReplayEngineConfigurationDialog.ReadTimeoutMinutesTextBox">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ReplayEngineConfigurationDialog.WriteTimeoutTextBox">
             <summary>
-            Gets or sets "Read Timeout (Minutes)" textbox value
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ReplayEngineConfigurationDialog.ReadTimeoutSecondsTextBox">
-            <summary>
-            Gets or sets "Read Timeout (Seconds)" textbox value
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ReplayEngineConfigurationDialog.WriteTimeoutHoursTextBox">
-            <summary>
-            Gets or sets "Write Timeout (Hours)" textbox value
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ReplayEngineConfigurationDialog.WriteTimeoutMinutesTextBox">
-            <summary>
-            Gets or sets "Write Timeout (Minutes)" textbox value
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ReplayEngineConfigurationDialog.WriteTimeoutSecondsTextBox">
-            <summary>
-            Gets or sets "Write Timeout (Seconds)" textbox value
+            Gets or sets "Write Timeout" textbox value
             </summary>
         </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ReplayEngineConfigurationDialog.SetNoDelayCheckBox">
@@ -8840,9 +9011,14 @@
             Gets "Edit Notification Group" dialog
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.EventsConfigurationTab.EditSmtpSettingsDialog">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.EventsConfigurationTab.EditEmailNotificationDialog">
             <summary>
             Gets "Change Email Notifications" dialog
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.EventsConfigurationTab.EditSmtpSettingsDialog">
+            <summary>
+            Gets "Change SMTP Server Settings" dialog
             </summary>
         </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.EventsConfigurationTab.ChangeRepetitionReductionDialog">

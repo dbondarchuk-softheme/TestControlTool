@@ -3,6 +3,8 @@
 @{
     Layout = null;
 }
+<script src="~/Scripts/select2.js"></script>
+<link href="~/Content/select2.css" rel="stylesheet" />
 
 <div class="modal hide fade" id="NewTestModal" tabindex="-1" role="dialog" aria-labelledby="New Test" aria-hidden="true">
     <div class="modal-header">
@@ -38,7 +40,7 @@
 <div style="display: block" id="ListItemsModalDiv"></div>
 
 <script type="text/javascript">
-    /*   $('#NewTestType').select2({
+    /*$('#NewTestType').select2({
            dropdownContainer: $("#NewTestType").closest(".modal")
        });*/
 
@@ -64,7 +66,7 @@
         if ($('#NewTestType').val() != '-1') {
             $('#testFormDiv').fadeOut('slow', function () {
                 $('#spinner').show();
-                $('#testFormDiv').load("/Task/TestForm", { testName: type }, function () {
+                $('#testFormDiv').load("@Url.Action("TestForm", "Task")", { testName: type, Trunk: isTrunk  }, function () {
                     $('#spinner').hide();
                     $('#testFormDiv').fadeIn('slow');
                     callback();
@@ -80,6 +82,8 @@
     }
 
     function saveTest() {
+        if ($('#NewTestType').val() == -1) return false;
+        
         if (!isEditTestModal) {
             addNewTest();
         } else {
@@ -90,8 +94,12 @@
     function addNewTest() {
         var attributes = "";
 
-        $('#testFormDiv').find('input, select').each(function () {
+        $('#testFormDiv').find('input[type!=checkbox][type!=hidden], select').each(function () {
             attributes += " " + $(this).attr('id') + "='" + $(this).val() + "'";
+        });
+        
+        $('#testFormDiv').find('input[type=checkbox]').each(function () {
+            attributes += " " + $(this).attr('id') + "='" + $(this).is(':checked') + "'";
         });
         
         var li = "<li testType='" + $('#NewTestType').val() + "'" + attributes + "><a href='#' onclick='editTestModal(this)'>" +
@@ -105,7 +113,7 @@
             li += list.wrap('<p>').parent().html();;
         });
 
-        li += "<button type='button' class='close' aria-hidden='true' onclick='removeTest(this)'>×</button></li>";
+        li += "<button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>";
 
         $('#testsList').append(li);
 
@@ -115,8 +123,12 @@
     function editTest() {
         var attributes = "";
 
-        $('#testFormDiv').find('input').each(function () {
+        $('#testFormDiv').find('input[type!=checkbox][type!=hidden], select').each(function () {
             attributes += " " + $(this).attr('id') + "='" + $(this).val() + "'";
+        });
+
+        $('#testFormDiv').find('input[type=checkbox]').each(function () {
+            attributes += " " + $(this).attr('id') + "='" + $(this).is(':checked') + "'";
         });
 
         var li = "<li testType='" + $('#NewTestType').val() + "'" + attributes + "><a href='#' onclick='editTestModal(this)'>" +
@@ -130,7 +142,7 @@
             li += list.wrap('<p>').parent().html();;
         });
 
-        li += "<button type='button' class='close' aria-hidden='true' onclick='removeTest(this)'>×</button></li>";
+        li += "<button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>";
 
         testToEdit.replaceWith(li);
 

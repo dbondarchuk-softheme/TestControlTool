@@ -1,0 +1,56 @@
+﻿@using BootstrapSupport
+@using BootstrapSupport.HtmlHelpers
+@using TestControlTool.Web.Models
+@model IEnumerable<ServerModel>   
+@{
+    ViewBag.Title = "VM Servers list";
+}
+    <h4>VM Servers</h4>
+<table class="table table-striped">
+    <caption></caption>
+    <thead>
+        <tr>
+            @foreach (var property in Model.VisiblePropertiesFromList(ServerModel.ShownProperties))
+            {
+                <th>
+                    @property.GetLabel().ToSeparatedWords()
+                </th>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    @{ int index = 0; }
+    @foreach (var serverModel in Model)
+    {
+        ViewData[index.ToString()] = serverModel;
+        <tr>
+            @foreach (var property in serverModel.VisiblePropertiesFromList(ServerModel.ShownProperties))
+            {
+                <td>
+                    @Html.Link(property, property.GetValue(serverModel).ToString(), new { Id = serverModel.Id })
+                </td>                    
+            }
+            <td>
+                <a href="@Url.Action("Details", "Server", new { Id = serverModel.Id })" data-toggle="tooltip" title="Details" rel="tooltip"><i class="icon-th-list"></i></a>
+            </td>
+            <td>
+                <a href="@Url.Action("Edit", "Server", new { Id = serverModel.Id })" data-toggle="tooltip" title="Edit server" rel="tooltip"><i class="icon-pencil"></i></a>
+            </td>
+            <td>
+               <button rel="tooltip" type='button' class='close' aria-hidden='true' style="float: none" onclick="removeServer('@serverModel.Id');" title="Delete server" data-toggle="tooltip">×</button>
+            </td>
+        </tr>
+            index++;
+    }
+
+</table>
+<p>
+    @Html.ActionLink("Create New", "Create", "Server", null, new {@class = "btn"})
+</p>
+<script type="text/javascript">
+    function removeServer(id) {
+        window.location.href = '@Url.Action("Delete", "Server")/' + id;
+    }
+
+    ShowMachines();
+</script>

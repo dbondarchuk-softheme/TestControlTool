@@ -5,16 +5,17 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.ServiceProcess;
 using System.Web;
 using System.Web.Mvc;
 using BootstrapMvcSample.Controllers;
+using Ionic.Zip;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TestControlTool.Core;
 using TestControlTool.Core.Contracts;
 using TestControlTool.Core.Exceptions;
+using TestControlTool.Core.Implementations;
 using TestControlTool.Core.Models;
-using TestControlTool.Management;
 using TestControlTool.Web.Models;
 
 namespace TestControlTool.Web.Controllers
@@ -28,7 +29,7 @@ namespace TestControlTool.Web.Controllers
 
         public ActionResult Create()
         {
-            return View(new TaskChildsModel()
+            return View(new TaskChildsModel
                 {
                     ChildTasks = new Collection<ChildTaskModel>(),
                     Task = new TaskModel()
@@ -37,7 +38,7 @@ namespace TestControlTool.Web.Controllers
 
         public ActionResult Edit(Guid id)
         {
-            var account = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name);
+            var account = TestControlToolApplication.AccountController.Accounts.Single(x => x.Login == User.Identity.Name);
             var task = account.Tasks.SingleOrDefault(x => x.Id == id);
 
             if (task == null)
@@ -45,15 +46,43 @@ namespace TestControlTool.Web.Controllers
                 throw new NoSuchTaskException(id);
             }
 
+            if (task.Status == TaskStatus.Running)
+            {
+                Information("Sorry, but you can't edit task, while it is running.");
+
+                return RedirectToAction("Index", "Task");
+            }
+
             var childs = task.GetTaskChildsFromFile();
 
             var taskChildsModel = new TaskChildsModel
                 {
                     ChildTasks = childs,
-                    Task = TaskModel.FromITask(task)
+                    Task = task.ToModel()
                 };
 
             return View(taskChildsModel);
+        }
+
+        public ActionResult Delete(Guid id)
+        {
+            if (!TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Tasks.Any(x => x.Id == id))
+            {
+                throw new UnauthorizedAccessException("You haven't needed rights to remove this task");
+            }
+
+            TestControlToolApplication.AccountController.RemoveTask(id);
+
+            Success("Your task was deleted");
+
+            var machinesCount = TestControlToolApplication.AccountController.CachedAccounts.First(x => x.Login == User.Identity.Name).Tasks.Count;
+
+            if (machinesCount == 0)
+            {
+                Attention("You have deleted all tasks! Create a new one to continue.");
+            }
+
+            return RedirectToAction("Index", "Task");
         }
 
         /// <summary>
@@ -77,14 +106,7 @@ namespace TestControlTool.Web.Controllers
 
             return PartialView(machines);
         }
-
-        public ActionResult GetAvailableTestTasks()
-        {
-            var tests = TestControlToolApplication.AvailableTests;
-
-            return View(tests);
-        }
-
+        
         public ActionResult DeployInstallJobModal()
         {
             var machines = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Machines;
@@ -92,16 +114,17 @@ namespace TestControlTool.Web.Controllers
             return PartialView(machines);
         }
 
-        public ActionResult NewTestModal()
+        public ActionResult NewTestModal(bool trunk = true)
         {
-            var tests = TestControlToolApplication.AvailableTests;
+            var tests = trunk ? TestControlToolApplication.TypesHelper.AvailableTrunkTests : TestControlToolApplication.TypesHelper.AvailableReleaseTests;
 
             return PartialView(tests);
         }
 
-        public ActionResult TestForm(string testName)
+        public ActionResult TestForm(string testName, bool trunk = true)
         {
-            var test = TestControlToolApplication.AvailableTests.Single(x => x.Name == testName);
+            var test = (trunk ? TestControlToolApplication.TypesHelper.AvailableTrunkTests : TestControlToolApplication.TypesHelper.AvailableReleaseTests)
+                .Single(x => x.Name == testName);
 
             return PartialView(test);
         }
@@ -113,14 +136,14 @@ namespace TestControlTool.Web.Controllers
 
         public JsonResult Run(Guid id)
         {
-            var task = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Tasks.SingleOrDefault(x => x.Id == id);
+            var task = TestControlToolApplication.AccountController.Accounts.Single(x => x.Login == User.Identity.Name).Tasks.SingleOrDefault(x => x.Id == id);
 
             if (task == null)
             {
                 throw new NoSuchTaskException("You don't have such task");
             }
 
-            if (TestControlToolApplication.AccountController.Tasks.Single(x => x.Id == id).Status == TaskStatus.Running)
+            if (task.Status == TaskStatus.Running)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
@@ -143,14 +166,14 @@ namespace TestControlTool.Web.Controllers
 
         public JsonResult Stop(Guid id)
         {
-            var task = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Tasks.SingleOrDefault(x => x.Id == id);
+            var task = TestControlToolApplication.AccountController.Accounts.Single(x => x.Login == User.Identity.Name).Tasks.SingleOrDefault(x => x.Id == id);
 
             if (task == null)
             {
                 throw new NoSuchTaskException("You don't have such task");
             }
 
-            if (TestControlToolApplication.AccountController.Tasks.Single(x => x.Id == id).Status != TaskStatus.Running)
+            if (task.Status != TaskStatus.Running)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
@@ -179,42 +202,47 @@ namespace TestControlTool.Web.Controllers
 
             TestControlToolApplication.AccountController.SetTaskEnabled(id, enabled);
 
-            var taskEnabled = TestControlToolApplication.AccountController.CachedTasks.Single(x => x.Id == id).IsEnabled;
+            var task = TestControlToolApplication.AccountController.CachedTasks.Single(x => x.Id == id).ToModel();
 
-            return Json(taskEnabled, JsonRequestBehavior.AllowGet);
+            return Json(new {enabled = task.IsEnabled, nextStart = task.NextRun}, JsonRequestBehavior.AllowGet);
         }
         
         public PartialViewResult GetLogs(Guid id)
         {
+            var task = TestControlToolApplication.AccountController.Accounts.Single(x => x.Login == User.Identity.Name).Tasks.SingleOrDefault(x => x.Id == id);
+
+            if (task == null)
+            {
+                throw new NoSuchTaskException("You don't have such task");
+            }
+            
+            var logs = "Task '" + task.Name + "', Status : " + task.Status + "<hr>\n";
+
             try
             {
                 using (var reader = new StreamReader(new FileStream(ConfigurationManager.AppSettings["LogsFolder"] + "\\" + id + ".log", FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
                 {
-                    var logs = reader.ReadToEnd();
-
-                    var status = TestControlToolApplication.AccountController.Tasks.Single(x => x.Id == id).Status;
-
-                    logs = "Task Status : " + status + "\n" + logs;
-
-                    if (status == TaskStatus.Running)
+                    logs += reader.ReadToEnd();
+                    
+                    if (task.Status == TaskStatus.Running)
                     {
                         logs += "\n<img src='" + Url.Content("~/Content/images/select2-spinner.gif") + "' />";
                     }
-
-                    return PartialView("GetLogs", logs);
                 }
 
             }
             catch (IOException)
             {
-                return PartialView("GetLogs", string.Empty);
+                logs += "Sorry, but this task doesn't have any log";
             }
+
+            return PartialView("GetLogs", logs);
         }
 
         public JsonResult GetStatuses()
         {
             var userId = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Id;
-            var statuses = TestControlToolApplication.AccountController.Tasks.Where(x => x.Owner == userId).ToDictionary(x => x.Id.ToString(), y => y.Status.ToString());
+            var statuses = TestControlToolApplication.AccountController.Tasks.Where(x => x.Owner == userId).Select(x => x.ToModel()).ToDictionary(x => x.Id.ToString(), x => new {status = x.Status.ToString(), lastRun = x.LastRunExtended.ToString()});
 
             return Json(statuses, JsonRequestBehavior.AllowGet);
         }
@@ -235,24 +263,69 @@ namespace TestControlTool.Web.Controllers
                 throw new NoSuchTaskException("You haven't such child task");
             }
 
-            var file = ConfigurationManager.AppSettings["TasksFolder"] + "\\" + childTask.File;
-
-            var contentDisposition = new System.Net.Mime.ContentDisposition
+            if (childTask.TaskType == TaskType.DeployInstall)
             {
-                // for example foo.bak
-                FileName = childTask.File,
+                var xmlParser = new XmlTaskParser(TestControlToolApplication.AccountController);
+                xmlParser.ParseAutoDeployFiles(ConfigurationManager.AppSettings["TasksFolder"] + "\\" + childTask.File, ".new2");
 
-                // always prompt the user for downloading, set to true if you want 
-                // the browser to try to show the file inline
-                Inline = false,
-            };
+                var filesToZip = Core.Extensions.DeserializeFromFile<DeployInstallTaskContainer>(ConfigurationManager.AppSettings["TasksFolder"] + "\\" + childTask.File)
+                    .Files.Select(x => new FileInfo(ConfigurationManager.AppSettings["TasksFolder"] + "\\" + x.Value + ".new2"));
 
-            Response.AppendHeader("Content-Disposition", contentDisposition.ToString());
-            return File(file, "text/xml");
+                var fileName = ConfigurationManager.AppSettings["TasksFolder"] + "\\" + task.Id + "." + childTask.Name + ".zip";
+                
+                using (var zip = new ZipFile())
+                {
+                    foreach (var file in filesToZip)
+                    {
+                        try
+                        {
+                            var zippedFile = zip.AddFile(file.FullName, "");
+                            zippedFile.FileName = zippedFile.FileName.Remove(zippedFile.FileName.LastIndexOf(".new2", StringComparison.Ordinal));
+                        }
+                        catch (Exception e)
+                        {
+                        }
+                    }
+
+                    zip.Save(fileName);
+
+                    var contentDisposition = new System.Net.Mime.ContentDisposition
+                    {
+                        // for example foo.bak
+                        FileName = fileName,
+
+                        // always prompt the user for downloading, set to true if you want 
+                        // the browser to try to show the file inline
+                        Inline = false,
+                    };
+
+                    Response.AppendHeader("Content-Disposition", contentDisposition.ToString());
+                    return File(fileName, "application/zip");
+                }
+
+                
+            }
+            else
+            {
+                var file = ConfigurationManager.AppSettings["TasksFolder"] + "\\" + childTask.File;
+
+                var contentDisposition = new System.Net.Mime.ContentDisposition
+                    {
+                        // for example foo.bak
+                        FileName = childTask.File,
+
+                        // always prompt the user for downloading, set to true if you want 
+                        // the browser to try to show the file inline
+                        Inline = false,
+                    };
+
+                Response.AppendHeader("Content-Disposition", contentDisposition.ToString());
+                return File(file, "text/xml");
+            }
         }
 
         [HttpPost]
-        public ActionResult UploadTestSuiteXml(Guid id, HttpPostedFileBase file)
+        public ActionResult UploadTestSuiteXml(Guid id, Guid machine, HttpPostedFileBase file, bool trunk = true)
         {
             var ownerId = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Id;
             
@@ -263,7 +336,7 @@ namespace TestControlTool.Web.Controllers
 
             if (!file.FileName.EndsWith(".xml"))
             {
-                return Content(/*"Wrong extension. Please, upload xml file"*/ "error2");
+                return Content("error2");
             }
 
             var fileName = id + "." + file.FileName;
@@ -272,11 +345,11 @@ namespace TestControlTool.Web.Controllers
             {
                 file.SaveAs(ConfigurationManager.AppSettings["TasksFolder"] + "\\" + fileName);
 
-                var model = TestSuiteModel.GetFromXmlFile(fileName);
+                var model = TestSuiteModel.GetFromXmlFile(fileName, trunk, machine);
 
                 return View("UploadedTestSuite", model);
             }
-            catch
+            catch (Exception e)
             {
                 return Content("error3");
             }
@@ -297,19 +370,21 @@ namespace TestControlTool.Web.Controllers
             {
                 SaveChildsFromJson(jsonModel);
 
-                var task = model.ToITask();
+                var task = model.ToEntitiy();
 
                 TestControlToolApplication.AccountController.AddTask(task);
 
                 Success("Task was succesfully created!");
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
-            catch (AddExistingTaskException)
+            catch (AddExistingTaskException e)
             {
+                System.IO.File.WriteAllText(@"D:\error.txt", e.Message);
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                System.IO.File.WriteAllText(@"D:\error.txt", e.Message);
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
         }
@@ -324,7 +399,7 @@ namespace TestControlTool.Web.Controllers
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
 
-            TestControlToolApplication.AccountController.EditTask(model.Id, model.ToITask());
+            TestControlToolApplication.AccountController.EditTask(model.Id, model.ToEntitiy());
 
             SaveChildsFromJson(jsonModel);
 
@@ -333,9 +408,12 @@ namespace TestControlTool.Web.Controllers
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ListItemModal(string typeName)
+        public ActionResult ListItemModal(string typeName, bool trunk = true)
         {
-            var type = TestControlToolApplication.TestPerformerTypes.SingleOrDefault(x => x.Name.ToLowerInvariant() == typeName.ToLowerInvariant());
+            var standartType = Type.GetType(typeName);
+
+            var type = standartType ?? ((trunk ? TestControlToolApplication.TypesHelper.ScriptsTrunkTypes : TestControlToolApplication.TypesHelper.ScriptsReleaseTypes)
+                .SingleOrDefault(x => x.FullName == typeName));
 
             return View("ListItemModal", type);
         }
@@ -368,7 +446,7 @@ namespace TestControlTool.Web.Controllers
                     var deployInstallTaskModel = new DeployInstallTaskModel
                     {
                         Machines = TestControlToolApplication.AccountController.CachedMachines.Where(x => task.Value["machines"].Split(';').Contains(x.Id.ToString())).Select(x => x.Id)/* task.Value["machines"].Split(';').Select(x => new Guid(x))*/,
-                        Type = (AutodeployJobType)Enum.Parse(typeof(AutodeployJobType), task.Value["deploytype"], true),
+                        Type = (DeployInstallType)Enum.Parse(typeof(DeployInstallType), task.Value["deploytype"], true),
                         Name = task.Value["id"],
                         Version = task.Value["version"]
                     };
@@ -377,13 +455,18 @@ namespace TestControlTool.Web.Controllers
 
                     deployInstallTaskModel.SaveToFile(file, User.Identity.Name);
                 }
-                else if (task.Value["type"].ToUpperInvariant() == TaskType.TestSuite.ToString().ToUpperInvariant())
+                else if (task.Value["type"].ToUpperInvariant() == TaskType.TestSuiteTrunk.ToString().ToUpperInvariant()
+                    || task.Value["type"].ToUpperInvariant() == TaskType.TestSuiteRelease.ToString().ToUpperInvariant())
                 {
                     var testsList = new List<object>();
 
+                    var isTrunk = task.Value["type"].ToUpperInvariant() == TaskType.TestSuiteTrunk.ToString().ToUpperInvariant();
+
                     foreach (var testKey in tests.Single(x => x.Key == task.Value["id"]).Value)
                     {
-                        var testType = TestControlToolApplication.AvailableTests.Single(x => x.Name == testKey["testtype"]);
+                        var testType = (isTrunk ? TestControlToolApplication.TypesHelper.AvailableTrunkTests : TestControlToolApplication.TypesHelper.AvailableReleaseTests)
+                            .Single(x => x.Name == testKey["testtype"]);
+
                         var properties = testType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead).ToList();
 
                         var test = Activator.CreateInstance(testType);
@@ -411,6 +494,13 @@ namespace TestControlTool.Web.Controllers
 
                                 property.SetValue(test, value);
                             }
+                            else if (property.PropertyType == typeof(bool))
+                            {
+                                bool value;
+                                bool.TryParse(attribute.Value, out value);
+
+                                property.SetValue(test, value);
+                            }
                         }
 
                         foreach (var parameters in allParameters.Where(x => x.Key.ToUpperInvariant() == testKey["id"].ToUpperInvariant()).Select(x => x.Value))
@@ -434,16 +524,23 @@ namespace TestControlTool.Web.Controllers
 
                                     if (genericArgumentType == typeof(string))
                                     {
-                                        argument = item["value"];
+                                        argument = item["item"];
                                     }
                                     else if (genericArgumentType.IsEnum)
                                     {
-                                        argument = item["value"].ConvertToEnum(genericArgumentType);
+                                        argument = item["item"].ConvertToEnum(genericArgumentType);
                                     }
                                     else if (genericArgumentType == typeof(int))
                                     {
                                         int value;
-                                        int.TryParse(item["value"], out value);
+                                        int.TryParse(item["item"], out value);
+
+                                        argument = value;
+                                    }
+                                    else if (genericArgumentType == typeof(bool))
+                                    {
+                                        bool value;
+                                        bool.TryParse(item["item"], out value);
 
                                         argument = value;
                                     }
@@ -465,6 +562,20 @@ namespace TestControlTool.Web.Controllers
                                             {
                                                 argumentProperty.SetValue(argument, attribute.Value.ConvertToEnum(argumentProperty.PropertyType));
                                             }
+                                            else if (argumentProperty.PropertyType == typeof(int))
+                                            {
+                                                int value;
+                                                int.TryParse(attribute.Value, out value);
+
+                                                argumentProperty.SetValue(argument, value);
+                                            }
+                                            else if (argumentProperty.PropertyType == typeof(bool))
+                                            {
+                                                bool value;
+                                                bool.TryParse(attribute.Value, out value);
+
+                                                argumentProperty.SetValue(argument, value);
+                                            }
                                         }
                                     }
 
@@ -481,10 +592,12 @@ namespace TestControlTool.Web.Controllers
                     var testSuiteModel = new TestSuiteModel
                         {
                             Name = task.Value["id"],
-                            Tests = testsList
+                            Tests = testsList, 
+                            IsTrunk = isTrunk,
+                            Machine =  new Guid(task.Value["machine"])
                         };
 
-                    taskType = TaskType.TestSuite;
+                    taskType = isTrunk ? TaskType.TestSuiteTrunk : TaskType.TestSuiteRelease;
 
                     testSuiteModel.SaveToFile(file);
                 }

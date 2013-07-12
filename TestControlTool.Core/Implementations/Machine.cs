@@ -19,6 +19,11 @@ namespace TestControlTool.Core.Implementations
         public Guid Owner { get; set; }
 
         /// <summary>
+        /// Server's id
+        /// </summary>
+        public Guid Server { get; set; }
+
+        /// <summary>
         /// Machine's name
         /// </summary>
         public string Name { get; set; }

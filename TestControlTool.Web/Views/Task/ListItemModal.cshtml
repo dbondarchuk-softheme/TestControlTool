@@ -18,19 +18,29 @@
         @if (Model == typeof(string) || Model == typeof(int))
         {
             <div class="control-group">
-            <label class="control-label" for="newItemTextBox">
+            <label class="control-label" for="newItemEditorBox">
                 Add item&nbsp;&nbsp;&nbsp;
-                <input type="text" id="newItemTextBox" />
+                <input type="text" id="newItemEditorBox" class="input-xlarge" />
                 <span class="help-inline error" id="newItemTextBoxValidation"></span>
+            </label>
+        </div>
+        }
+        @if (Model == typeof(bool))
+        {
+            <div class="control-group">
+            <label class="control-label" for="newItemCheckBox">
+                Add item&nbsp;&nbsp;&nbsp;
+                @Html.CheckBox("newItemCheckBox")
+                <span class="help-inline error" id="newItemCheckBoxValidation"></span>
             </label>
         </div>
         }
         @if (Model.IsEnum)
         {
             <div class="control-group">
-            <label class="control-label" for="newItemDropDown">
+            <label class="control-label" for="newItemEditorBox">
                 Add item&nbsp;&nbsp;&nbsp;
-                @Html.EnumDropDownList("newItemDropDown", Model)
+                @Html.EnumDropDownList("newItemEditorBox", Model)
                 <span class="help-inline error" id="newItemDropDownValidation"></span>
             </label>
         </div>
@@ -44,6 +54,11 @@
                     @if (property.PropertyType == typeof(string) || property.PropertyType == typeof(int))
                     {
                         @Html.TextBox(property.Name, "", new { @class = "input-xlarge" })
+                        @Html.ValidationMessage(property.Name, null, new { @class = "help-inline error" })
+                    }
+                    else if (property.PropertyType == typeof(bool))
+                    {
+                        @Html.CheckBox(property.Name, false, new { @class = "input-xlarge" })
                         @Html.ValidationMessage(property.Name, null, new { @class = "help-inline error" })
                     }
                     else if (property.PropertyType.IsEnum)
@@ -75,23 +90,35 @@
         }
 
         var attributes = "";
-        var name = $($('#itemsProperties').find('input,select')[0]).val();
+        var obj = $($('#itemsProperties').find('input[type!=hidden],select')[0]);
+        var name = obj.val();
 
-        @if (Model == typeof(string) || Model.IsEnum)
+        @if (Model == typeof(string) || Model == typeof(int) || Model.IsEnum)
         {
             <text>
-            attrributes = ' value = "' + name + '"';
+                attributes = ' item = "' + name + '"';
             </text> 
-        }else{
-            <text>
-
-        $('#itemsProperties').find('input,select').each(function () {
-            attributes += " " + $(this).attr('id') + "='" + $(this).val() + "'";
-        });
-        </text>
         }
+        else if (Model == typeof(bool))
+        {
+            <text>
+                attributes = ' item = "' + obj.is(':checked') + '"';
+            </text> 
+        }
+        else
+        {
+            <text>
+                $('#itemsProperties').find('input[type!=hidden][type!=checkbox],select').each(function () {
+                    attributes += " " + $(this).attr('id') + "='" + $(this).val() + "'";
+                });
 
-        listItemToEdit.replaceWith("<li" + attributes + "><a href='#' onclick=\"editListItem('@Model.Name', this); return false;\">" + name + "</a><button type='button' class='close' aria-hidden='true' onclick='removeTest(this)'>×</button></li>");
+                $('#itemsProperties').find('input[type=checkbox],select').each(function () {
+                    attributes += " " + $(this).attr('id') + "='" + $(this).is(':checked') + "'";
+                });
+            </text>
+        }
+        
+        listItemToEdit.replaceWith("<li" + attributes + "><a href='#' onclick=\"editListItem('@Model.FullName', this); return false;\">" + name + "</a><button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>");
         
         $('#ListItemsModal').modal('hide');
     }
@@ -102,23 +129,35 @@
         }
 
         var attributes = "";
-        var name = $($('#itemsProperties').find('input,select')[0]).val();
-        
-        @if (Model == typeof(string) || Model.IsEnum)
+        var obj = $($('#itemsProperties').find('input[type!=hidden],select')[0]);
+        var name = obj.val();
+
+        @if (Model == typeof(string) || Model == typeof(int) || Model.IsEnum)
         {
             <text>
-            attrributes = ' value = "' + name + '"';
+                attributes = ' item = "' + name + '"';
             </text> 
-        }else{
+        }
+        else if (Model == typeof(bool))
+        {
             <text>
+                attributes = ' item = "' + obj.is(':checked') + '"';
+            </text> 
+        }
+        else
+        {
+            <text>
+                $('#itemsProperties').find('input[type!=hidden][type!=checkbox],select').each(function () {
+                    attributes += " " + $(this).attr('id') + "='" + $(this).val() + "'";
+                });
 
-            $('#itemsProperties').find('input,select').each(function () {
-                attributes += " " + $(this).attr('id') + "='" + $(this).val() + "'";
-            });
+                $('#itemsProperties').find('input[type=checkbox],select').each(function () {
+                    attributes += " " + $(this).attr('id') + "='" + $(this).is(':checked') + "'";
+                });
             </text>
         }
         
-        $('#' + listName).append("<li" + attributes + "><a href='#' onclick=\"editListItem('@Model.Name', this); return false;\">" + name + "</a><button type='button' class='close' aria-hidden='true' onclick='removeTest(this)'>×</button></li>");
+        $('#' + listName).append("<li" + attributes + "><a href='#' onclick=\"editListItem('@Model.FullName', this); return false;\">" + name + "</a><button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>");
         $('#' + listName).height('auto');
         $('#' + listName).collapse('show');
 

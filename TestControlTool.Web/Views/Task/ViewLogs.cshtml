@@ -2,9 +2,9 @@
 @{
     ViewBag.Title = "View logs";
 }
-<div>
+@*<div>
     <button class="btn" onclick="refreshLogs();"><i class="icon-refresh"></i>Refresh</button>
-</div>
+</div>*@
 <div id="logs">
     @{
         Html.RenderAction("GetLogs", Model);

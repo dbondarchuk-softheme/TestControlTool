@@ -1,5 +1,6 @@
 ﻿var isEditDeployInstallModal = false;
 var isEditTestSuiteModal = false;
+var isTrunk = true;
 
 function editDeployTask(name) {
     isEditDeployInstallModal = true;
@@ -9,7 +10,7 @@ function editDeployTask(name) {
     $('#DeployInstallJobType').val($('#' + name).attr('deployType'));
     $('#DeployInstallJobVersion').val($('#' + name).attr('version'));
     $('#EditDeployInstallJobName').val(name);
-    $('#SaveDeployInstallJobButton').val('Edit');
+    $('#SaveDeployInstallJobButton').val('Apply');
 
     var machines = $('#' + name).attr('machines').split(';');
 
@@ -20,13 +21,19 @@ function editDeployTask(name) {
     $('#DeployInstallJobModal').modal('show');
 }
 
-function editTestSuiteTask(name) {
+function editTestSuiteTask(obj) {
     isEditTestSuiteModal = true;
-
-    $('#TestSuiteLabel').text('Edit Test Suite');
+    
+    var parent = $(obj).parent();
+    
+    var name = parent.attr('id');
+    isTrunk = parent.attr('type') == 'TestSuiteTrunk';
+    
+    $('#TestSuiteLabel').text('Edit Test Suite ' + (isTrunk ? 'Trunk' : 'Release'));
     $('#TestSuiteName').val(name);
     $('#EditTestSuiteName').val(name);
-    $('#SaveTestSuiteButton').val('Edit');
+    $('#TestSuiteMachine').val(parent.attr('machine'));
+    $('#SaveTestSuiteButton').val('Apply');
 
     $('#' + name).find('ol').first().children('li').each(function (index) {
         $('#testsList').append($(this).clone());
@@ -35,10 +42,20 @@ function editTestSuiteTask(name) {
     $('#TestSuiteModal').modal('show');
 }
 
+function showNewTestSuite(trunk) {
+    isTrunk = trunk;
+
+    $('#TestSuiteLabel').text('Add new Test Suite ' + (trunk ? 'Trunk' : 'Release'));
+
+    $('#TestSuiteModal').modal('show');
+}
+
 var alreadyChildren = new Array();
 
-function showUploadTestSuiteModal() {
+function showUploadTestSuiteModal(trunk) {
     alreadyChildren = new Array();
+
+    isTrunk = trunk;
 
     $('#currentTasks').children('li').each(function () {
         alreadyChildren.push($(this).attr('id'));
@@ -47,15 +64,14 @@ function showUploadTestSuiteModal() {
     $('#UploadTestSuiteXmlModal').modal('show');
 }
 
-function removeTask(id) {
-    var task = $("#" + id);
-
-    task.fadeOut('slow', function () {
-        task.remove();
+function removeItem(obj) {
+    $(obj).parent().fadeOut('slow', function () {
+        $(this).remove();
     });
 }
 
 function saveTasks(id, urlToSave, urlToRedirect) {
+    $('#taskForm').validate().element($('#Task_Name'));
     var val = $('#taskForm').validate();
     val.showErrors();
     if (!val.valid()) {
@@ -93,7 +109,7 @@ function getTasks() {
     var global = {};
     var tasks = {};
 
-    $('#currentTasks').children().each(function () {
+    $('#currentTasks').children('li').each(function () {
         if ($(this).is(":visible")) {
             var attributes = {};
 
@@ -113,7 +129,7 @@ function getTasks() {
     var listTests = {};
     var listComplexParameters = { };
 
-    $('#currentTasks').find('[type=TestSuite]').each(function () {
+    $('#currentTasks').find('[type^=TestSuite]').each(function () {
         var tests = $(this).find('ol').first();
         
         var listOl = new Array();
@@ -203,10 +219,7 @@ $('#Task_StartTime').blur(function () {
 
 function validate() {
 
-    var isValid = false;
-
-    isValid = $('#taskForm').validate().element($('#Task_Name'));
-    isValid = $('#taskForm').validate().element($('#Task_StartTime')) ? isValid : false;
+    var isValid =  $('#taskForm').validate().element($('#Task_Name'));
 
     return isValid;
 }

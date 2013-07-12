@@ -17,7 +17,7 @@ namespace TestControlTool.TaskService
         public void ProcessReport(Guid taskId, string taskName, string ownerName)
         {
             var report = GetZippedReports(taskId, taskName);
-
+            
             SendEmail(ownerName, taskName, report);
         }
 
@@ -66,9 +66,8 @@ namespace TestControlTool.TaskService
                 {
                     info.Delete();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    File.WriteAllText(@"D:\f.txt", e.Message);
                 }
             }
 
@@ -78,9 +77,8 @@ namespace TestControlTool.TaskService
                 {
                     info.Delete(true);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    File.WriteAllText(@"D:\f.txt", e.Message);
                 }
             }
 
@@ -99,7 +97,7 @@ namespace TestControlTool.TaskService
                         mail.To.Add(to);
                         mail.Subject = string.Format("TestControlTool. Report. {0}", DateTime.Now);
                         mail.Body = "Look into the attachments";
-
+                        
                         var attachment = new Attachment(attachmentFileName);
                         mail.Attachments.Add(attachment);
 

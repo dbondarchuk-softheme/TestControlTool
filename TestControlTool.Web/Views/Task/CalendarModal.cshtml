@@ -9,7 +9,7 @@
 <div class="modal hide fade" id="CalendarModal" tabindex="-1" role="dialog" aria-labelledby="Calendar" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="NewTestLabel">Change Schedule</h3>
+        <h3 id="ChangeScheduleLabel">Change Schedule</h3>
     </div>
     <div class="modal-body">
         <div class="control-group">
@@ -25,7 +25,7 @@
             <label class="control-label" for="StartTime" style="display: inline; margin-left: 1em;">
                 Start Time&nbsp;&nbsp;&nbsp;
                 <div id="StartTime" class="input-append">
-                    <input data-format="HH:mm:ss PP" type="text" class="input-small" />
+                    <input data-format="HH:mm PP" type="text" class="input-small" />
                     <span class="add-on">
                         <i data-time-icon="icon-time"></i>
                     </span>
@@ -131,7 +131,7 @@
         $('#StartTime').datetimepicker({
             language: 'en',
             pick12HourFormat: true,
-            pickSeconds: true,
+            pickSeconds: false,
             pickDate: false
         });
         $('#EndDate').datetimepicker({

@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "Help";
+}
+<style>
+    .padding
+    {
+        padding-left: 1%;
+        text-indent: 20px;
+    }
+</style>
+<div class="span6">
+    <h2>Help</h2>
+    <div>
+        <ol style="list-style-type: upper-roman">
+            <li>
+                <h3 id="BasicSteps">Basic steps to start</h3>
+                <ol>
+                    <li>
+                        <h4 id="AddingVMServer">Adding VM server</h4>
+                        <p class="padding">
+                            What is VM server? It can be a VCenter (i.e. 10.35.20.20 - our Applab) or HyperV (Challenger or Columbia).
+                        </p>
+                        <p class="padding">
+                            Select type of the server and specify its IP address and your own credentials to connect. 
+                        </p>
+                        <p class="padding">
+                            <img src="@Url.Content("~/Content/images/AddVMServer.PNG")" alt="Adding VM Server"/>
+                        </p>
+                    </li>
+                    <li>
+                        <h4 id="AddingMachine">Adding virtual machines</h4>
+                        <p class="padding">
+                            After successfull creation of the VM Server, you can add your virtual machines on this server (HyperV or VCenter). This machines will be used for the autodeployment tasks.
+                        </p>
+                        <p class="padding">
+                            Specify all needed parameters for the machine, following the instructions
+                        </p>
+                        <p class="padding">
+                            Also, we recomend add some virtual machine, called VM manager. Read it in the <a href="#AddingTestSuite">Adding Test Suite</a> section                        
+                        </p>
+                        <p class="padding">
+                            <img src="@Url.Content("~/Content/images/AddMachine.PNG")" alt="Adding virtual machines"/>
+                        </p>
+                    </li>
+                    <li>
+                        <h4 id="AddingTask">Adding Tasks</h4>
+                        <p class="padding">
+                            Now, we are at the most interesting point - Tasks. What is the Task?
+                        </p>
+                        <blockquote class="padding">
+                            Task - is powerfull instrument, which allows users to deploy their virtual machines and run different test suits by schedule or manually
+                        </blockquote>
+                        <p class="padding">
+                            To create Task you should provide its name, schedule and add some child jobs. 
+                            Schedule allows you run your tasks at the matched time and days of week between Start Day and End Day. 
+                            So, after End Day, Task will be automatically disabled.
+                        </p>
+                        <p class="padding">
+                            <img src="@Url.Content("~/Content/images/Schedule.PNG")" alt="Schedule"/>
+                        </p>
+                        <p class="padding">
+                            This Schedule means, that Task runs on Saturday, Sunday and Monday at 04:34 PM every week, starting from 07/02/2013 to 07/02/2014  
+                        </p>
+                        <p class="padding">
+                            Task can be disabled with unchecking special checkbox or at the main Task View, by pressing <i class="icon-off"></i> button. 
+                            But this doesn't mean, that you can't run it manually by pressing <i class="icon-play"></i> button
+                        </p>
+                    </li>
+                </ol>
+            </li>
+            <li>
+                <h3 id="AddingChildJobs">Adding child jobs</h3>
+                <ol>
+                    <li>
+                        <h4 id="AddingDeployInstallJob">Adding DeployInstall Job</h4>
+                        <p class="padding">
+                            Test Control Tool allows you to deploy your machines and install AppAssure products automatically.
+                        </p>
+                        <p class="padding">
+                            Press 'Add new' -> 'DeployInstall Task'. Specify name, type (DeployInstall - deploy machine and install products, Deploy - only deploy machine, Install - only install product onto machine), Version and select machines to deploy (admit, that you can select both types of the machines - HyperV and VCenter, deploy will be run at the parallel mode)
+                        </p>
+                    </li>
+                    <li>
+                        <h4 id="AddingTestSuite">Adding Test Suite</h4>
+                        <p class="padding">
+                            Test Control Tool supports running tests from WebGuiAutomation for trunk and release versions.
+                        </p>
+                        <p class="padding">
+                            Press 'Add new' -> 'Test Suite for Trunk' or 'Test Suite for Release', depending on your environment. Specify name and virtual machine, on which will be browser run. Admit, that needed files will be copied to the machine's share folder, and all files in it will be deleted
+                        </p>
+                        <p class="padding">
+                            Then add tests to the suit. Admit, that first test must be a 'Initialize browser' and the last - 'Close browser'
+                        </p>
+                    </li>
+                </ol>
+            </li>
+            <li>
+                <h3 id="Logs">Logs</h3>
+                <ol>
+                    <li>
+                        <h4 id="GettingLogs">Getting Logs</h4>
+                        <p class="padding">
+                            Test Control Tool will send you email with all reports and logs generated during the task execution. Admit, that we= don't keep logs at the server.
+                        </p>
+                        <p class="padding">
+                            Another way - press 'View Logs' link and get the general log in the UI. This log is also available during task execution
+                        </p>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+    </div>
+</div>

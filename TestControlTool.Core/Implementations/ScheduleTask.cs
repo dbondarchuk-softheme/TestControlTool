@@ -244,7 +244,13 @@ namespace TestControlTool.Core.Implementations
             return new[] { single };
         }
 
-        private static IEnumerable<int> GenerateInterval(int start, int end)
+        /// <summary>
+        /// Generates array of sequence from <paramref name="start"/> to <paramref name="end"/>
+        /// </summary>
+        /// <param name="start">Sequence's start</param>
+        /// <param name="end">Sequence's end (included)</param>
+        /// <returns>Array of sequence from <paramref name="start"/> to <paramref name="end"/></returns>
+        public static IEnumerable<int> GenerateInterval(int start, int end)
         {
             var result = new List<int>();
 

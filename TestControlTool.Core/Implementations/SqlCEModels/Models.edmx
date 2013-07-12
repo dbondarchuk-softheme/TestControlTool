@@ -7,15 +7,33 @@
       <Schema Namespace="SqlCEModels.Store" Alias="Self" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="SqlCEModelsStoreContainer">
           <EntitySet Name="Accounts" EntityType="SqlCEModels.Store.Accounts" store:Type="Tables" />
-          <EntitySet Name="Machines" EntityType="SqlCEModels.Store.Machines" store:Type="Tables" />
+          <EntitySet Name="HyperVMachines" EntityType="SqlCEModels.Store.HyperVMachines" store:Type="Tables" />
+          <EntitySet Name="Servers" EntityType="SqlCEModels.Store.Servers" store:Type="Tables" />
           <EntitySet Name="Tasks" EntityType="SqlCEModels.Store.Tasks" store:Type="Tables" />
-          <AssociationSet Name="Machines1" Association="SqlCEModels.Store.Machines1">
+          <EntitySet Name="VCenterMachines" EntityType="SqlCEModels.Store.VCenterMachines" store:Type="Tables" />
+          <AssociationSet Name="HyperVMachines1" Association="SqlCEModels.Store.HyperVMachines1">
             <End Role="Accounts" EntitySet="Accounts" />
-            <End Role="Machines" EntitySet="Machines" />
+            <End Role="HyperVMachines" EntitySet="HyperVMachines" />
+          </AssociationSet>
+          <AssociationSet Name="HyperVServers" Association="SqlCEModels.Store.HyperVServers">
+            <End Role="Servers" EntitySet="Servers" />
+            <End Role="HyperVMachines" EntitySet="HyperVMachines" />
+          </AssociationSet>
+          <AssociationSet Name="Servers1" Association="SqlCEModels.Store.Servers1">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Servers" EntitySet="Servers" />
           </AssociationSet>
           <AssociationSet Name="Tasks1" Association="SqlCEModels.Store.Tasks1">
             <End Role="Accounts" EntitySet="Accounts" />
             <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="VCenterMachines1" Association="SqlCEModels.Store.VCenterMachines1">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="VCenterMachines" EntitySet="VCenterMachines" />
+          </AssociationSet>
+          <AssociationSet Name="VCenterServer" Association="SqlCEModels.Store.VCenterServer">
+            <End Role="Servers" EntitySet="Servers" />
+            <End Role="VCenterMachines" EntitySet="VCenterMachines" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Accounts">
@@ -26,25 +44,33 @@
           <Property Name="Login" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="PasswordHash" Type="nvarchar" Nullable="false" MaxLength="100" />
         </EntityType>
-        <EntityType Name="Machines">
+        <EntityType Name="HyperVMachines">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Owner" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Type" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Host" Type="nvarchar" MaxLength="100" />
           <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="Share" Type="nvarchar" Nullable="true" MaxLength="100" />
+          <Property Name="Share" Type="nvarchar" MaxLength="100" />
+          <Property Name="VirtualMachineName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Snapshot" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Server" Type="nvarchar" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Servers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="Owner" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="TemplateVMName" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="TemplateInventoryPath" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="VirtualMachineVMName" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="VirtualMachineInventoryPath" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="VirtualMachineResourcePool" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="VirtualMachineDatastore" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="Host" Type="nvarchar" MaxLength="100" />
+          <Property Name="ServerName" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="Type" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="ServerUsername" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="ServerPassword" Type="nvarchar" Nullable="false" MaxLength="100" />
         </EntityType>
         <EntityType Name="Tasks">
           <Key>
@@ -52,24 +78,71 @@
           </Key>
           <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="StartTime" Type="datetime" Nullable="false" />
-          <Property Name="EndTime" Type="datetime" Nullable="false" />
-          <Property Name="Frequency" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="IsEnabled" Type="bit" Nullable="false" />
           <Property Name="Owner" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="Status" Type="nvarchar" Nullable="false" MaxLength="100" DefaultValue="Undefined" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Status" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="LastRun" Type="datetime" Nullable="false" />
+          <Property Name="Frequency" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="EndTime" Type="datetime" Nullable="false" />
+          <Property Name="IsEnabled" Type="bit" Nullable="false" />
         </EntityType>
-        <Association Name="Machines1">
+        <EntityType Name="VCenterMachines">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Owner " Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Type" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Host" Type="nvarchar" MaxLength="100" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Share" Type="nvarchar" MaxLength="100" />
+          <Property Name="TemplateVMName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="TemplateInventoryPath" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="VirtualMachineVMName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="VirtualMachineInventoryPath" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="VirtualMachineResourcePool" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="VirtualMachineDatastore" Type="nvarchar" MaxLength="100" />
+          <Property Name="Server" Type="nvarchar" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <Association Name="HyperVMachines1">
           <End Role="Accounts" Type="SqlCEModels.Store.Accounts" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Machines" Type="SqlCEModels.Store.Machines" Multiplicity="*" />
+          <End Role="HyperVMachines" Type="SqlCEModels.Store.HyperVMachines" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Accounts">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Machines">
+            <Dependent Role="HyperVMachines">
+              <PropertyRef Name="Owner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="HyperVServers">
+          <End Role="Servers" Type="SqlCEModels.Store.Servers" Multiplicity="1" />
+          <End Role="HyperVMachines" Type="SqlCEModels.Store.HyperVMachines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Servers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HyperVMachines">
+              <PropertyRef Name="Server" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Servers1">
+          <End Role="Accounts" Type="SqlCEModels.Store.Accounts" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Servers" Type="SqlCEModels.Store.Servers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Servers">
               <PropertyRef Name="Owner" />
             </Dependent>
           </ReferentialConstraint>
@@ -88,6 +161,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="VCenterMachines1">
+          <End Role="Accounts" Type="SqlCEModels.Store.Accounts" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VCenterMachines" Type="SqlCEModels.Store.VCenterMachines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VCenterMachines">
+              <PropertyRef Name="Owner " />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VCenterServer">
+          <End Role="Servers" Type="SqlCEModels.Store.Servers" Multiplicity="1" />
+          <End Role="VCenterMachines" Type="SqlCEModels.Store.VCenterMachines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Servers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VCenterMachines">
+              <PropertyRef Name="Server" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
@@ -95,15 +194,33 @@
       <Schema Namespace="SqlCEModels" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="AccountsEntities" p1:LazyLoadingEnabled="true">
           <EntitySet Name="Accounts" EntityType="SqlCEModels.AccountModel" />
-          <EntitySet Name="Machines" EntityType="SqlCEModels.MachineModel" />
+          <EntitySet Name="HyperVMachines" EntityType="SqlCEModels.HyperVMachineModel" />
+          <EntitySet Name="Servers" EntityType="SqlCEModels.ServerModel" />
           <EntitySet Name="Tasks" EntityType="SqlCEModels.TaskModel" />
-          <AssociationSet Name="Machines1" Association="SqlCEModels.Machines1">
+          <EntitySet Name="VCenterMachines" EntityType="SqlCEModels.VCenterMachineModel" />
+          <AssociationSet Name="HyperVMachines1" Association="SqlCEModels.HyperVMachines1">
             <End Role="Accounts" EntitySet="Accounts" />
-            <End Role="Machines" EntitySet="Machines" />
+            <End Role="HyperVMachines" EntitySet="HyperVMachines" />
+          </AssociationSet>
+          <AssociationSet Name="Servers1" Association="SqlCEModels.Servers1">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Servers" EntitySet="Servers" />
           </AssociationSet>
           <AssociationSet Name="Tasks1" Association="SqlCEModels.Tasks1">
             <End Role="Accounts" EntitySet="Accounts" />
             <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="VCenterMachines1" Association="SqlCEModels.VCenterMachines1">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="VCenterMachines" EntitySet="VCenterMachines" />
+          </AssociationSet>
+          <AssociationSet Name="HyperVServers" Association="SqlCEModels.HyperVServers">
+            <End Role="Servers" EntitySet="Servers" />
+            <End Role="HyperVMachines" EntitySet="HyperVMachines" />
+          </AssociationSet>
+          <AssociationSet Name="VCenterServer" Association="SqlCEModels.VCenterServer">
+            <End Role="Servers" EntitySet="Servers" />
+            <End Role="VCenterMachines" EntitySet="VCenterMachines" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="AccountModel">
@@ -113,55 +230,106 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="Login" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="PasswordHash" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Machines" Relationship="SqlCEModels.Machines1" FromRole="Accounts" ToRole="Machines" />
+          <NavigationProperty Name="HyperVMachines" Relationship="SqlCEModels.HyperVMachines1" FromRole="Accounts" ToRole="HyperVMachines" />
+          <NavigationProperty Name="Servers" Relationship="SqlCEModels.Servers1" FromRole="Accounts" ToRole="Servers" />
           <NavigationProperty Name="Tasks" Relationship="SqlCEModels.Tasks1" FromRole="Accounts" ToRole="Tasks" />
+          <NavigationProperty Name="VCenterMachines" Relationship="SqlCEModels.VCenterMachines1" FromRole="Accounts" ToRole="VCenterMachines" />
         </EntityType>
-        <EntityType Name="MachineModel">
+        <EntityType Name="HyperVMachineModel">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Owner" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Host" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="Password" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Share" Type="String" Nullable="true" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Share" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="VirtualMachineName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Snapshot" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Server" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Account" Relationship="SqlCEModels.HyperVMachines1" FromRole="HyperVMachines" ToRole="Accounts" />
+          <NavigationProperty Name="ServerModel" Relationship="SqlCEModels.HyperVServers" FromRole="HyperVMachines" ToRole="Servers" />
+        </EntityType>
+        <EntityType Name="ServerModel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="Owner" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="TemplateVMName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="TemplateInventoryPath" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="VirtualMachineVMName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="VirtualMachineInventoryPath" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="VirtualMachineResourcePool" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="VirtualMachineDatastore" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Host" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="ServerName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="Type" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Account" Relationship="SqlCEModels.Machines1" FromRole="Machines" ToRole="Accounts" />
+          <Property Name="ServerUsername" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="ServerPassword" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Account" Relationship="SqlCEModels.Servers1" FromRole="Servers" ToRole="Accounts" />
+          <NavigationProperty Name="HyperVMachines" Relationship="SqlCEModels.HyperVServers" FromRole="Servers" ToRole="HyperVMachines" />
+          <NavigationProperty Name="VCenterMachines" Relationship="SqlCEModels.VCenterServer" FromRole="Servers" ToRole="VCenterMachines" />
         </EntityType>
         <EntityType Name="TaskModel">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Owner" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Status" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" DefaultValue="Undefined" />
-          <Property Name="LastRun" Type="DateTime" Nullable="false" />
-          <Property Name="StartTime" Type="DateTime" Nullable="false" />
-          <Property Name="EndTime" Type="DateTime" Nullable="false" />
-          <Property Name="Frequency"  Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false"  />
+          <Property Name="Name" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="LastRun" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Frequency" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsEnabled" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Account" Relationship="SqlCEModels.Tasks1" FromRole="Tasks" ToRole="Accounts" />
         </EntityType>
-        <Association Name="Machines1">
+        <EntityType Name="VCenterMachineModel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Owner" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Host" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Share" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="TemplateVMName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="TemplateInventoryPath" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="VirtualMachineVMName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="VirtualMachineInventoryPath" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="VirtualMachineResourcePool" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="VirtualMachineDatastore" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Server" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Account" Relationship="SqlCEModels.VCenterMachines1" FromRole="VCenterMachines" ToRole="Accounts" />
+          <NavigationProperty Name="ServerModel" Relationship="SqlCEModels.VCenterServer" FromRole="VCenterMachines" ToRole="Servers" />
+        </EntityType>
+        <Association Name="HyperVMachines1">
           <End Role="Accounts" Type="SqlCEModels.AccountModel" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Machines" Type="SqlCEModels.MachineModel" Multiplicity="*" />
+          <End Role="HyperVMachines" Type="SqlCEModels.HyperVMachineModel" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Accounts">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Machines">
+            <Dependent Role="HyperVMachines">
+              <PropertyRef Name="Owner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Servers1">
+          <End Role="Accounts" Type="SqlCEModels.AccountModel" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Servers" Type="SqlCEModels.ServerModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Servers">
               <PropertyRef Name="Owner" />
             </Dependent>
           </ReferentialConstraint>
@@ -180,6 +348,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="VCenterMachines1">
+          <End Role="Accounts" Type="SqlCEModels.AccountModel" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VCenterMachines" Type="SqlCEModels.VCenterMachineModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VCenterMachines">
+              <PropertyRef Name="Owner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="HyperVServers">
+          <End Role="Servers" Type="SqlCEModels.ServerModel" Multiplicity="1" />
+          <End Role="HyperVMachines" Type="SqlCEModels.HyperVMachineModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Servers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HyperVMachines">
+              <PropertyRef Name="Server" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VCenterServer">
+          <End Role="Servers" Type="SqlCEModels.ServerModel" Multiplicity="1" />
+          <End Role="VCenterMachines" Type="SqlCEModels.VCenterMachineModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Servers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VCenterMachines">
+              <PropertyRef Name="Server" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -195,24 +401,33 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Machines">
-            <EntityTypeMapping TypeName="SqlCEModels.MachineModel">
-              <MappingFragment StoreEntitySet="Machines">
+          <EntitySetMapping Name="HyperVMachines">
+            <EntityTypeMapping TypeName="SqlCEModels.HyperVMachineModel">
+              <MappingFragment StoreEntitySet="HyperVMachines">
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Host" ColumnName="Host" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Share" ColumnName="Share" />
+                <ScalarProperty Name="VirtualMachineName" ColumnName="VirtualMachineName" />
+                <ScalarProperty Name="Snapshot" ColumnName="Snapshot" />
+                <ScalarProperty Name="Server" ColumnName="Server" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Servers">
+            <EntityTypeMapping TypeName="SqlCEModels.ServerModel">
+              <MappingFragment StoreEntitySet="Servers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="TemplateVMName" ColumnName="TemplateVMName" />
-                <ScalarProperty Name="TemplateInventoryPath" ColumnName="TemplateInventoryPath" />
-                <ScalarProperty Name="VirtualMachineVMName" ColumnName="VirtualMachineVMName" />
-                <ScalarProperty Name="VirtualMachineInventoryPath" ColumnName="VirtualMachineInventoryPath" />
-                <ScalarProperty Name="VirtualMachineResourcePool" ColumnName="VirtualMachineResourcePool" />
-                <ScalarProperty Name="VirtualMachineDatastore" ColumnName="VirtualMachineDatastore" />
-                <ScalarProperty Name="Host" ColumnName="Host" />
+                <ScalarProperty Name="ServerName" ColumnName="ServerName" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ServerUsername" ColumnName="ServerUsername" />
+                <ScalarProperty Name="ServerPassword" ColumnName="ServerPassword" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -228,6 +443,28 @@
                 <ScalarProperty Name="Frequency" ColumnName="Frequency" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VCenterMachines">
+            <EntityTypeMapping TypeName="SqlCEModels.VCenterMachineModel">
+              <MappingFragment StoreEntitySet="VCenterMachines">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Owner" ColumnName="Owner " />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Host" ColumnName="Host" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Share" ColumnName="Share" />
+                <ScalarProperty Name="TemplateVMName" ColumnName="TemplateVMName" />
+                <ScalarProperty Name="TemplateInventoryPath" ColumnName="TemplateInventoryPath" />
+                <ScalarProperty Name="VirtualMachineVMName" ColumnName="VirtualMachineVMName" />
+                <ScalarProperty Name="VirtualMachineInventoryPath" ColumnName="VirtualMachineInventoryPath" />
+                <ScalarProperty Name="VirtualMachineResourcePool" ColumnName="VirtualMachineResourcePool" />
+                <ScalarProperty Name="VirtualMachineDatastore" ColumnName="VirtualMachineDatastore" />
+                <ScalarProperty Name="Server" ColumnName="Server" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

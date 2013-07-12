@@ -1,9 +1,9 @@
-[0.000][INFO]:      ChromeDriver 26.0.1383.0 D:\Projects\Appasure\replay\testing\WebGuiAutomation\WebGuiAutomation.TestPerformer\bin\Release\chromedriver.exe
-[1.245][FINE]:      Initializing session with capabilities {
+[0.000][INFO]:      ChromeDriver 26.0.1383.0 D:\ProjectsGit\Trunk\replay\testing\WebGuiAutomation\WebGuiAutomation.TestPerformer\bin\Release\chromedriver.exe
+[1.228][FINE]:      Initializing session with capabilities {
    "browserName": "chrome",
-   "chrome.switches": [ "start-maximized" ],
+   "chrome.switches": [ "start-maximized", "ignore-certificate-errors" ],
    "chromeOptions": {
-      "args": [ "start-maximized" ],
+      "args": [ "start-maximized", "ignore-certificate-errors" ],
       "extensions": [  ]
    },
    "javascriptEnabled": true,
@@ -11,11 +11,11 @@
    "version": ""
 }
 
-[1.246][INFO]:      Launching chrome: "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-hang-monitor --disable-prompt-on-repost --dom-automation --full-memory-crash-report --no-default-browser-check --no-first-run --disable-background-networking --disable-sync --disable-translate --disable-web-resources --safebrowsing-disable-auto-update --safebrowsing-disable-download-protection --disable-client-side-phishing-detection --disable-component-update --disable-default-apps --enable-logging --log-level=1 --ignore-certificate-errors --start-maximized about:blank
-[4.235][INFO]:      Connected to Chrome successfully. Version: 27.0.1453.94
-[4.240][FINE]:      Command received (/session/0fdaf88cf7b9a17e48f10b1f0983dfec)
-[4.240][FINE]:      Command finished (/session/0fdaf88cf7b9a17e48f10b1f0983dfec) with response {
-   "sessionId": "0fdaf88cf7b9a17e48f10b1f0983dfec",
+[1.229][INFO]:      Launching chrome: "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-hang-monitor --disable-prompt-on-repost --dom-automation --full-memory-crash-report --no-default-browser-check --no-first-run --disable-background-networking --disable-sync --disable-translate --disable-web-resources --safebrowsing-disable-auto-update --safebrowsing-disable-download-protection --disable-client-side-phishing-detection --disable-component-update --disable-default-apps --enable-logging --log-level=1 --ignore-certificate-errors --start-maximized --ignore-certificate-errors about:blank
+[1.581][INFO]:      Connected to Chrome successfully. Version: 27.0.1453.116
+[1.588][FINE]:      Command received (/session/9bc2a9cc8510bca732c43f879b17d54e)
+[1.588][FINE]:      Command finished (/session/9bc2a9cc8510bca732c43f879b17d54e) with response {
+   "sessionId": "9bc2a9cc8510bca732c43f879b17d54e",
    "status": 0,
    "value": {
       "acceptSslCerts": false,
@@ -32,9 +32,30 @@
       "platform": "windows",
       "rotatable": false,
       "takesScreenshot": true,
-      "version": "27.0.1453.94",
+      "version": "27.0.1453.116",
       "webStorageEnabled": true
    }
 }
 
-[18.438][FINE]:     Command received (/session/0fdaf88cf7b9a17e48f10b1f0983dfec/window)
+[1.686][FINE]:      Command received (/session/9bc2a9cc8510bca732c43f879b17d54e/url) with params {
+   "url": "https://Administrator:123asdQ@10.35.174.116:8006/apprecovery/admin"
+}
+
+[1.686][FINER]:     Waiting for all views to stop loading...
+[1.686][FINER]:     Done waiting for all views to stop loading
+[3.390][FINER]:     Waiting for all views to stop loading...
+[3.402][FINER]:     Done waiting for all views to stop loading
+[3.402][FINE]:      Command finished (/session/9bc2a9cc8510bca732c43f879b17d54e/url) with response {
+   "sessionId": "9bc2a9cc8510bca732c43f879b17d54e",
+   "status": 0,
+   "value": {
+
+   }
+}
+
+[3.446][FINE]:      Command received (/session/9bc2a9cc8510bca732c43f879b17d54e/execute) with params {
+   "args": [  ],
+   "script": "return typeof jQuery == 'function'"
+}
+
+[3.446][FINER]:     Waiting for all views to stop loading...

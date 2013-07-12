@@ -47,7 +47,6 @@ namespace TestControlTool.Core.Helpers
             }
             catch (Exception e)
             {
-                File.WriteAllText(@"D:\error2.txt", e.Message + "\n" + e.StackTrace);
                return;
             }
             

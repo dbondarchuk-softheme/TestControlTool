@@ -1,4 +1,5 @@
 ﻿@using AutodeploymentServices.Jobs
+@using TestControlTool.Core.Models
 @using TestControlTool.Web.Models
 @model IEnumerable<TestControlTool.Core.Contracts.IMachine>
 @{
@@ -25,7 +26,7 @@
             <label class="control-label" for="DeployInstallJobType">
                 Type&nbsp;&nbsp;&nbsp;&nbsp;
                 <select id="DeployInstallJobType">
-                    @foreach (var type in Enum.GetNames(typeof(AutodeployJobType)))
+                    @foreach (var type in Enum.GetNames(typeof(DeployInstallType)))
                     {
                         <option>@type</option>
                     }
@@ -75,7 +76,7 @@
 
     $('#DeployInstallJobModal').on('hidden', function () {
         $('#DeployInstallJobName').val('');
-        $('#DeployInstallJobType').val('@Enum.GetNames(typeof(AutodeployJobType)).First()');
+        $('#DeployInstallJobType').val('@Enum.GetNames(typeof(DeployInstallType)).First()');
         $('#DeployInstallJobVersion').val('5.4.1');
 
         $('ul#DeployInstallJobMachines li').each(function (i) {
@@ -83,7 +84,7 @@
             checkbox.attr('checked', false);
         });
 
-        $('#DeployInstallJobNameValidation').hide(500);
+        $('#DeployInstallJobNameValidation').text('');
         $('#DeployInstallJobMachinesValidation').hide(500);
         $('#DeployInstallJobLabel').text('Add DeployInstall Job');
         $('#SaveDeployInstallJobButton').val('Add');
@@ -118,9 +119,9 @@
         $('#' + name).attr('deployType', $('#DeployInstallJobType').val());
         $('#' + name).attr('version', $('#DeployInstallJobVersion').val());
         $('#' + name).attr('machines', machines);
-        $('#' + name).find('a').first().attr('ondblclick', "editDeployTask('" + $('#DeployInstallJobName').val() +"');");
+        $('#' + name).find('a').first().attr('onclick', "editDeployTask('" + $('#DeployInstallJobName').val() +"');");
         $('#' + name).find('a').first().text($('#DeployInstallJobName').val());
-        $('#' + name).find('button').first().attr('onclick', "removeTask('" + $('#DeployInstallJobName').val() + "');");
+        $('#' + name).find('button').first().attr('onclick', "removeItem(this);");
         $('#' + name).attr('id', $('#DeployInstallJobName').val());
 
         $('#DeployInstallJobModal').modal('hide');
@@ -147,8 +148,8 @@
 
         $('#currentTasks').append("<li id='" + $('#DeployInstallJobName').val() + "' type='DeployInstall' deployType='" + $('#DeployInstallJobType').val() + "' version='"
             + $('#DeployInstallJobVersion').val() + "' machines='" + machines +
-            "'><a ondblclick=\"editDeployTask('" + $('#DeployInstallJobName').val() + "')\" href='#'>" + $('#DeployInstallJobName').val() + "</a>" +
-            "<button type='button' class='close' aria-hidden='true' onclick=\"removeTask('" + $('#DeployInstallJobName').val() + "')\">×</button></li>"
+            "'><a onclick=\"editDeployTask('" + $('#DeployInstallJobName').val() + "')\" href='#'>" + $('#DeployInstallJobName').val() + "</a>" +
+            "<button type='button' class='close' aria-hidden='true' onclick=\"removeItem(this)\">×</button></li>"
         );
 
         $('#DeployInstallJobModal').modal('hide');

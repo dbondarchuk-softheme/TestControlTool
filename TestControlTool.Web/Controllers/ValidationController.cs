@@ -62,7 +62,16 @@ namespace TestControlTool.Web.Controllers
         {
             if (String.IsNullOrEmpty(templateVMName)) return Json(true, JsonRequestBehavior.AllowGet);
 
-            var result = !TestControlToolApplication.AccountController.CachedMachines.Any(x => x.TemplateVMName == templateVMName.Trim() && x.Id != id);
+            //var result = !TestControlToolApplication.AccountController.CachedMachines.Any(x => x.TemplateVMName == templateVMName.Trim() && x.Id != id);
+
+            return Json(/*result*/ true, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ValidateUniqueServerAddress(string serverName, Guid id)
+        {
+            if (String.IsNullOrEmpty(serverName)) return Json(true, JsonRequestBehavior.AllowGet);
+
+            var result = !TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).VMServers.Any(x => x.ServerName == serverName.Trim() && x.Id != id);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }

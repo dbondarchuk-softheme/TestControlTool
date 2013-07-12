@@ -26,7 +26,9 @@ namespace TestControlTool.Core.Implementations.SqlCEModels
         }
     
         public DbSet<AccountModel> Accounts { get; set; }
-        public DbSet<MachineModel> Machines { get; set; }
+        public DbSet<HyperVMachineModel> HyperVMachines { get; set; }
+        public DbSet<ServerModel> Servers { get; set; }
         public DbSet<TaskModel> Tasks { get; set; }
+        public DbSet<VCenterMachineModel> VCenterMachines { get; set; }
     }
 }

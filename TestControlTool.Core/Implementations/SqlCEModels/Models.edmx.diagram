@@ -4,12 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="60436b50967c400e8f74f592f95256b0" Name="Diagram1">
-        <EntityTypeShape EntityType="SqlCEModels.AccountModel" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SqlCEModels.MachineModel" Width="3" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SqlCEModels.TaskModel" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
-        <AssociationConnector Association="SqlCEModels.Machines1" ManuallyRouted="false" />
+      <Diagram DiagramId="4c271d5f022e47a09e18d531b1cf68f6" Name="Diagram1">
+        <EntityTypeShape EntityType="SqlCEModels.Account" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SqlCEModels.HyperVMachine" Width="1.5" PointX="4.125" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SqlCEModels.Server" Width="1.5" PointX="5.625" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SqlCEModels.Task" Width="1.5" PointX="1.125" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SqlCEModels.VCenterMachine" Width="1.5" PointX="9.25" PointY="8.625" IsExpanded="true" />
+        <AssociationConnector Association="SqlCEModels.HyperVMachines1" ManuallyRouted="false" />
+        <AssociationConnector Association="SqlCEModels.Servers1" ManuallyRouted="false" />
         <AssociationConnector Association="SqlCEModels.Tasks1" ManuallyRouted="false" />
+        <AssociationConnector Association="SqlCEModels.VCenterMachines1" ManuallyRouted="false" />
+        <AssociationConnector Association="SqlCEModels.HyperVServers" ManuallyRouted="false" />
+        <AssociationConnector Association="SqlCEModels.VCenterServer" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

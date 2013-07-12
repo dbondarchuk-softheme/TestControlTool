@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using TestControlTool.Core.Contracts;
+using TestControlTool.Core.Models;
 
 namespace TestControlTool.Core.Implementations
 {
@@ -17,40 +20,63 @@ namespace TestControlTool.Core.Implementations
         public string FileName { get; set; }
 
         /// <summary>
+        /// Folder with logs
+        /// </summary>
+        public string ReportName { get; set; }
+        
+        /// <summary>
         /// Emits when child task got new output data
         /// </summary>
         public event OutputDataGot OutputDataGotHandler;
+
+        /// <summary>
+        /// Creates new task for the deploying machines
+        /// </summary>
+        /// <param name="fileName">Xml file for the task</param>
+        /// <param name="reportName">Folder with logs</param>
+        public DeployInstallTask(string fileName, string reportName)
+        {
+            FileName = fileName;
+            ReportName = reportName;
+        }
 
         /// <summary>
         /// Runs the child task
         /// </summary>
         public void Run()
         {
-            var startInfo = new ProcessStartInfo(ConfigurationManager.AppSettings["AutoDeploymentConsole"], FileName + " " + "1")
+            var children = Extensions.DeserializeFromFile<DeployInstallTaskContainer>(FileName);
+
+            var childTasks = new List<Task>();
+            
+            foreach (var child in children.Files)
+            {
+                IChildTask childTask = null;
+
+                if (child.Key == VMServerType.VCenter)
                 {
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                };
+                    childTask = new VCenterDeployInstallTask
+                        {
+                            FileName = child.Value
+                        };
 
-            var process = Process.Start(startInfo);
+                    childTask.OutputDataGotHandler += OutputDataGotHandler;
+                }
+                else if (child.Key == VMServerType.HyperV)
+                {
+                    childTask = new HyperVDeployInstallTask
+                        {
+                            FileName = child.Value,
+                            ReportFolder = ConfigurationManager.AppSettings["LogsFolder"] + "\\" + ReportName
+                        };
+                }
 
-            if (OutputDataGotHandler != null)
-            {
-                process.OutputDataReceived += (obj, args) => OutputDataGotHandler(args.Data);
+                childTask.OutputDataGotHandler += OutputDataGotHandler;
+
+                childTasks.Add(Task.Factory.StartNew(childTask.Run));
             }
 
-            if (process == null)
-            {
-                throw new InvalidProgramException("Can't start process for autodeployment");
-            }
-
-            File.WriteAllText(FileName + ".process", process.Id.ToString());
-
-            process.BeginOutputReadLine();
-
-            process.WaitForExit();
+            Task.WaitAll(childTasks.ToArray());
         }
 
         /// <summary>
@@ -58,22 +84,33 @@ namespace TestControlTool.Core.Implementations
         /// </summary>
         public void Stop()
         {
-            try
+            var children = Extensions.DeserializeFromFile<DeployInstallTaskContainer>(FileName);
+            
+            foreach (var child in children.Files)
             {
-                var processId = int.Parse(File.ReadAllText(FileName + ".process"));
+                IChildTask childTask = null;
 
-                var process = Process.GetProcessById(processId);
-
-                process.Kill();
-
-                if (OutputDataGotHandler != null)
+                if (child.Key == VMServerType.VCenter)
                 {
-                    OutputDataGotHandler("Process was terminated by request");
+                    childTask = new VCenterDeployInstallTask
+                        {
+                            FileName = child.Value
+                        };
+
+                    childTask.OutputDataGotHandler += OutputDataGotHandler;
                 }
-            }
-            catch (Exception e)
-            {
-                return;
+                else if (child.Key == VMServerType.HyperV)
+                {
+                    childTask = new HyperVDeployInstallTask
+                        {
+                            FileName = child.Value
+                        };
+
+                }
+
+                childTask.OutputDataGotHandler += OutputDataGotHandler;
+
+                childTask.Stop();
             }
         }
     }

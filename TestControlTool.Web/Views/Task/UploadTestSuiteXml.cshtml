@@ -10,15 +10,15 @@
     <form id="UploadTestSuiteXmlForm" method="POST" enctype="multipart/form-data">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="TestSuiteLabel">Upload Test Suite Xml</h3>
+            <h3 id="UploadTestSuiteLabel">Upload Test Suite Xml</h3>
         </div>
         <div class="modal-body">
             <div class="control-group">
-                <label class="control-label" for="TestSuiteName">
-                    Select file to upload
+                <label class="control-label" style="display: inline;">
+                    Select file to upload&nbsp;&nbsp;&nbsp;
                 </label>
-                <div class="controls">
-                    <div class="fileupload fileupload-new" data-provides="fileupload">
+                <div class="controls" style="display: inline;">
+                    <div class="fileupload fileupload-new" data-provides="fileupload" style="display: inline;">
                         <div class="input-append">
                             <div class="uneditable-input span3"><i class="icon-file fileupload-exists"></i><span class="fileupload-preview" id="fileName"></span></div>
                             <span class="btn btn-file"><span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span><input type="file" name="file" id="file" /></span>
@@ -28,10 +28,24 @@
                     <span class="help-inline error" id="UploadTestSuiteXmlValidation"></span>
                 </div>
             </div>
+            <div class="control-group">
+            <label class="control-label" for="UploadTestSuiteMachine" style="display: inline;">Machine&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <div class="controls" style="display: inline;">
+                <select id="UploadTestSuiteMachine" onchange="CheckUploadTestSuiteMachine()">
+                          <option value="-1">Please select machine</option>
+                          @foreach (var machine in TestControlTool.Web.TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Machines)
+                          {
+                              <option value="@machine.Id">@machine.Name</option>
+                          }
+                      </select>
+                <a href="#" id="UploadTestSuiteMachineHelp" onclick="return false;" data-toogle="popover" data-content="Your tasks are executed on this machine. It's good to have a separate VM for this purpose." data-title="What's this?" rel="popover" data-trigger="hover"><i class="icon-question-sign"></i></a>
+                <span class="help-inline error" id="UploadTestSuiteMachineValidation"></span>
+            </div>
+       </div>
         </div>
         <div class="modal-footer">
             <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-            <input type="submit" class="btn btn-primary" value="Upload" id="UploadTestSuiteXmlButton" />
+            <input type="button" class="btn btn-primary" value="Upload" id="UploadTestSuiteXmlButton" />
         </div>
     </form>
 </div>
@@ -43,15 +57,19 @@
         $('#RemoveFileButton').click();
         $('#UploadTestSuiteXmlValidation').text('');
     });
+    
+    $('#UploadTestSuiteXmlModal').on('show', function () {
+        $('#UploadTestSuiteLabel').text(isTrunk ? 'Upload Trunk Test Suite Xml' : 'Upload Release Test Suite Xml');
+    });
 
-    $(document).ready(function() { 
-        var options = { 
+    $('#UploadTestSuiteXmlButton').on('click', function () {
+       var options = { 
             //target:        '#output1',   // target element(s) to be updated with server response 
             beforeSubmit:  showRequest,  // pre-submit callback 
             success: showResponse,  // post-submit callback 
  
             // other available options: 
-            url:       "@Url.Action("UploadTestSuiteXml", "Task")" + "/" + taskId,         // override for form's 'action' attribute 
+            url: "@Url.Action("UploadTestSuiteXml", "Task")" + "/" + taskId + "?trunk=" + isTrunk + "&machine=" + $('#UploadTestSuiteMachine').val(),         // override for form's 'action' attribute 
             //type:      type        // 'get' or 'post', override for form's 'method' attribute 
             //dataType:  'text',        // 'xml', 'script', or 'json' (expected server response type) 
             clearForm: true,        // clear all form fields after successful submit 
@@ -62,7 +80,8 @@
         }; 
  
         // bind form using 'ajaxForm' 
-        $('#UploadTestSuiteXmlForm').ajaxForm(options); 
+        $('#UploadTestSuiteXmlForm').ajaxForm(options);
+        $('#UploadTestSuiteXmlForm').submit();
     });
     
     function showRequest(formData, jqForm, options) {
@@ -74,9 +93,12 @@
         }
 
         $('#UploadTestSuiteXmlValidation').text();
+        $('#UploadTestSuiteMachineValidation').text();
         var fileName = $('#fileName').text();
         var splitted = fileName.split('.');
         var extension = "." + splitted[splitted.length - 1];
+        
+        if (!CheckUploadTestSuiteMachine()) return false;
         
         for (var i = 0; i < alreadyChildren.length; i++) {
             if (alreadyChildren[i] + extension == fileName) {
@@ -109,5 +131,22 @@
             $('#UploadTestSuiteXmlModal').modal('hide');
         }
     }
+    
+    function CheckUploadTestSuiteMachine() {
+        if ($('#UploadTestSuiteMachine').val() == "-1") {
+            $('#UploadTestSuiteMachineValidation').text('Please, select the machine');
+
+            canSave = false;
+            return false;
+        }
+
+        $('#UploadTestSuiteMachineValidation').text('');
+        canSave = true;
+        return true;
+    }
+    
+    $("#UploadTestSuiteMachineHelp").on("hide", function (e) {
+        e.stopPropagation(); //Once popover is hidden stop the event from going to parent
+    });
 </script>
 

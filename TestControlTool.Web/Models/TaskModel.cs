@@ -13,7 +13,7 @@ namespace TestControlTool.Web.Models
     {
         public static readonly string[] ShownProperties = new[] { "Name", "Status", "LastRun"};
 
-        public static readonly string[] NotShownProperties = new[] { "Id", "Owner", "Frequency", "IsEnabled", "StartTime", "EndTime" };
+        public static readonly string[] NotShownProperties = new[] { "Id", "Owner", "Frequency", "IsEnabled", "StartTime", "EndTime", "LastRun", "Schedule" };
 
         [HiddenInput(DisplayValue = false)]
         public Guid Id { get; set; }
@@ -29,15 +29,19 @@ namespace TestControlTool.Web.Models
         public string Schedule { get { return GetSchedule(); }}
 
         [Link(Action = "Edit", Controller = "Task", Title = "Edit Task")]
+        [Display(Name = "Next Run")]
+        public string NextRun { get { return GetNextRun(); } }
+
+        [Link(Action = "Edit", Controller = "Task", Title = "Edit Task")]
         [Required]
         [DataType(DataType.DateTime)]
-        [Display(Name = "Start time")]
+        [Display(Name = "Start Time")]
         public DateTime StartTime { get; set; }
 
         [Link(Action = "Edit", Controller = "Task", Title = "Edit Task")]
         [Required]
         [DataType(DataType.DateTime)]
-        [Display(Name = "Start time")]
+        [Display(Name = "End Time")]
         public DateTime EndTime { get; set; }
 
         [Required]
@@ -45,17 +49,21 @@ namespace TestControlTool.Web.Models
         public string Frequency { get; set; }
 
         [Link(Action = "Pause", Controller = "Task", Title = "Pause Task")]
-        [Display(Name = "Schedule Start")]
+        [Display(Name = "Enabled")]
         public bool IsEnabled { get; set; }
-
-        [Link(Action = "ViewLogs", Controller = "Task", Title = "View Logs")]
-        [Display(Name = "Status")]
-        public TaskStatus Status { get; set; }
 
         [Link(Action = "ViewLogs", Controller = "Task", Title = "View Logs")]
         [Display(Name = "Last Run")]
         public DateTime LastRun { get; set; }
 
+        [Link(Action = "ViewLogs", Controller = "Task", Title = "View Logs")]
+        [Display(Name = "Last Run")]
+        public string LastRunExtended { get { return LastRun.Year < 2000 ? "Never" : LastRun.ToString(); } }
+
+        [Link(Action = "ViewLogs", Controller = "Task", Title = "View Logs")]
+        [Display(Name = "Status")]
+        public TaskStatus Status { get; set; }
+        
         [HiddenInput(DisplayValue = false)]
         public Guid Owner { get; set; }
 
@@ -83,39 +91,7 @@ namespace TestControlTool.Web.Models
             LastRun = (jObject["lastRun"] == null) ? new DateTime(1970, 1, 1) : DateTime.Parse(jObject["lastRun"].ToString()); ;
             Owner = (jObject["owner"] == null) ? Guid.Empty : new Guid(jObject["owner"].ToString());
         }
-
-        public static TaskModel FromITask(IScheduleTask task)
-        {
-            return new TaskModel
-                {
-                    Id = task.Id,
-                    Owner = task.Owner,
-                    Name = task.Name,
-                    StartTime = task.StartTime,
-                    EndTime = task.EndTime,
-                    Frequency = task.Frequency,
-                    IsEnabled = task.IsEnabled,
-                    Status = task.Status,
-                    LastRun = task.LastRun
-                };
-        }
-
-        public IScheduleTask ToITask()
-        {
-            return new ScheduleTask
-                {
-                    Id = Id,
-                    Name = Name,
-                    StartTime = StartTime,
-                    EndTime = EndTime,
-                    Frequency = Frequency,
-                    IsEnabled = IsEnabled,
-                    Owner = Owner,
-                    Status = Status,
-                    LastRun = LastRun
-                };
-        }
-
+        
         private string GetSchedule()
         {
             var days = Enum.GetNames(typeof (DayOfWeek));
@@ -130,9 +106,42 @@ namespace TestControlTool.Web.Models
 
             repetition = repetition.Trim(',', ' ');
 
-            repetition += " at " + StartTime.ToString("hh:mm tt"); ;
+            repetition += " at " + StartTime.ToString("hh:mm tt");
 
             return repetition;
+        }
+
+        private string GetNextRun()
+        {
+            if (!IsEnabled) return "Disabled";
+
+            var frequency = Frequency.Split(' ')[2];
+
+            if (frequency == "!") return "Never";
+
+            var intervals = frequency == "*" ? ScheduleTask.GenerateInterval(0, 6).ToArray() : ScheduleTask.GetInterval(Frequency.Split(' ')[2], 2).ToArray();
+
+            var currentDay = (int)DateTime.Now.DayOfWeek;
+
+            if (intervals.Contains(currentDay) && (StartTime.TimeOfDay > DateTime.Now.TimeOfDay)) return "Today at " + StartTime.ToString("hh:mm tt");
+
+            if (intervals.Contains((currentDay + 1) % 7)) return "Tomorrow at " + StartTime.ToString("hh:mm tt");
+
+            return ((DayOfWeek)GetNearestDay(currentDay, intervals)) + " at " + StartTime.ToString("hh:mm tt");
+        }
+
+        private int GetNearestDay(int day, int[] intervals)
+        {
+            var i = day + 1;
+
+            while (i != day)
+            {
+                if (intervals.Contains(i)) break;
+
+                i = (i + 1)%7;
+            }
+
+            return i;
         }
     }
 }

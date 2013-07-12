@@ -46,12 +46,26 @@ namespace BootstrapSupport
 
         public static PropertyInfo[] VisibleProperties(this Object model, IEnumerable<string> notShown)
         {
-            return model.GetType().GetProperties().Where(info => info.Name != model.IdentifierPropertyName() && !notShown.Contains(info.Name)).ToArray();
+            var visibleProperties = model.GetType().GetProperties().Where(info => info.Name != model.IdentifierPropertyName() && !notShown.Contains(info.Name)).ToList();
+            visibleProperties = visibleProperties.Where(x => x.DeclaringType != model.GetType()).Union(visibleProperties.Where(x => x.DeclaringType == model.GetType())).ToList();
+
+            return visibleProperties.ToArray();
         }
 
         public static PropertyInfo[] VisiblePropertiesFromList(this Object model, IEnumerable<string> shown)
         {
-            return model.GetType().GetProperties().Where(info => info.Name != model.IdentifierPropertyName() && shown.Contains(info.Name)).ToArray();
+            var visibleProperties = model.GetType().GetProperties().Where(info => info.Name != model.IdentifierPropertyName() && shown.Contains(info.Name)).ToList();
+            visibleProperties = visibleProperties.Where(x => x.DeclaringType != model.GetType()).Union(visibleProperties.Where(x => x.DeclaringType == model.GetType())).ToList();
+
+            return visibleProperties.ToArray();
+        }
+
+        public static PropertyInfo[] VisibleProperties(this Type model, IEnumerable<string> notShown)
+        {
+            var visibleProperties = model.GetProperties().Where(info => info.Name != model.IdentifierPropertyName() && !notShown.Contains(info.Name)).ToList();
+            visibleProperties = visibleProperties.Where(x => x.DeclaringType != model).Union(visibleProperties.Where(x => x.DeclaringType == model)).ToList();
+
+            return visibleProperties.ToArray();
         }
 
         public static PropertyInfo[] HiddenProperties(this Object model, IEnumerable<string> notShown)

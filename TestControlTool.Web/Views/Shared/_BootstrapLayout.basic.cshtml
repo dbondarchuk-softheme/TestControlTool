@@ -39,11 +39,13 @@
                     <ul class="nav">
                         <li><a href="@Url.Action("Tasks", "Home")">Tasks</a></li>
                         <li><a href="@Url.Action("Machines", "Home")">Machines</a></li>
+                        <li><a href="@Url.Action("Servers", "Home")">VM Servers</a></li>
                     </ul>
                     <ul class="nav pull-right">
-                        <li><a href="#" onclick="return false;"><i class="icon-user"></i>@User.Identity.Name</a></li>
+                        <li><a href="#" onclick="return false;" style="cursor: default;"><i class="icon-user"></i>@User.Identity.Name</a></li>
                         <li><a href="@Url.Action("ChangePassword", "Account")">Change password</a></li>
                         @Html.Navigation()
+                        <li><a href="@Url.Action("Help", "Home")" id="HelpButton"><i class="icon-question-sign"></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -99,5 +101,22 @@
 <script type="text/javascript">
     $(function () {
         $("[rel='tooltip']").tooltip();
+        $("[rel='popover']").popover();
+        
+        $('#HelpButton').popover({
+            title: 'Help',
+            content: 'First time here? Read our quick guide!',
+            trigger: 'hover',
+            placement: 'bottom'
+        });
     });
 </script>
+@{
+    var account = TestControlTool.Web.TestControlToolApplication.AccountController.CachedAccounts.SingleOrDefault(x => x.Login == User.Identity.Name);
+    if (account != null && !account.VMServers.Any() && !account.Machines.Any() && !account.Tasks.Any())
+    {
+        <script type="text/javascript">
+            $(document).ready(function() { $('#HelpButton').popover('show'); });
+        </script>
+    }
+}

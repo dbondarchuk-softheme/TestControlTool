@@ -100,7 +100,7 @@ namespace TestControlTools.Tests
                         },*/
                     new ChildTaskModel
                             {
-                                TaskType = TaskType.TestSuite,
+                                TaskType = TaskType.TestSuiteTrunk,
                                 File = "Tests2.xml",
                                 Name = "Test"
                             }

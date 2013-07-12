@@ -39,6 +39,11 @@ namespace TestControlTool.Core.Contracts
         Guid Owner { get; set; }
 
         /// <summary>
+        /// Server's id
+        /// </summary>
+        Guid Server { get; set; }
+
+        /// <summary>
         /// Machine's name
         /// </summary>
         string Name { get; set; }
@@ -72,35 +77,5 @@ namespace TestControlTool.Core.Contracts
         /// Share folder on the machine
         /// </summary>
         string Share { get; set; }
-
-        /// <summary>
-        /// Name of the template of the machine
-        /// </summary>
-        string TemplateVMName { get; set; }
-
-        /// <summary>
-        /// Inventory path of the template
-        /// </summary>
-        string TemplateInventoryPath { get; set; }
-
-        /// <summary>
-        /// Name of the virtual machine on the VCenter
-        /// </summary>
-        string VirtualMachineVMName { get; set; }
-
-        /// <summary>
-        /// Inventory path of the virtual machine
-        /// </summary>
-        string VirtualMachineInventoryPath { get; set; }
-
-        /// <summary>
-        /// Resource pool of the virtual machine
-        /// </summary>
-        string VirtualMachineResourcePool { get; set; }
-
-        /// <summary>
-        /// Datastore for the virtual machine
-        /// </summary>
-        string VirtualMachineDatastore { get; set; }
     }
 }

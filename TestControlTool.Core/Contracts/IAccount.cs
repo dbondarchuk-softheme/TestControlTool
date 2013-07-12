@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TestControlTool.Core.Implementations;
 
 namespace TestControlTool.Core.Contracts
 {
@@ -32,5 +33,10 @@ namespace TestControlTool.Core.Contracts
         /// Account's tasks
         /// </summary>
         ICollection<IScheduleTask> Tasks { get; }
+
+        /// <summary>
+        /// Account's binded VM servers
+        /// </summary>
+        ICollection<VMServer> VMServers { get; }
     }
 }

@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Text;
+using System.Threading;
 using System.Xml;
 using System.Xml.Serialization;
 using TestControlTool.Core.Contracts;
 using TestControlTool.Core.Models;
 
-namespace TestControlTool.Management
+namespace TestControlTool.Core
 {
     public static class Extensions
     {
@@ -38,22 +41,21 @@ namespace TestControlTool.Management
         /// <summary>
         /// Serialize object to xml file
         /// </summary>
-        /// <typeparam name="T">Type of the object</typeparam>
         /// <param name="obj">Object to seriailize</param>
         /// <param name="file">File name</param>
         /// <param name="extraTypes">Extra types to serialize</param>
-        public static void SerializeToFile<T>(this T obj, string file, IEnumerable<Type> extraTypes)
+        public static void SerializeToFile(this object obj, string file, IEnumerable<Type> extraTypes)
         {
             using (var fileStream = File.Open(file, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
             {
-                var machinesListDeserializer = new XmlSerializer(typeof(T), extraTypes.ToArray());
+                var serializer = new XmlSerializer(obj.GetType(), extraTypes.ToArray());
 
                 var xmlTextWriter = new XmlTextWriter(fileStream, Encoding.Unicode)
                 {
                     Formatting = Formatting.Indented
                 };
 
-                machinesListDeserializer.Serialize(xmlTextWriter, obj);
+                serializer.Serialize(xmlTextWriter, obj);
             }
         }
 
@@ -87,6 +89,23 @@ namespace TestControlTool.Management
                 var deserializer = new XmlSerializer(typeof(T), extraTypes.ToArray());
 
                 return (T)deserializer.Deserialize(fileStream);
+            }
+        }
+
+        /// <summary>
+        /// Deserialize object from the file
+        /// </summary>
+        /// <param name="type">Type to deserialize</param>
+        /// <param name="file">File path</param>
+        /// <param name="extraTypes">Extra types for deserialize</param>
+        /// <returns>Object</returns>
+        public static object DeserializeFromFile(this Type type, string file, IEnumerable<Type> extraTypes)
+        {
+            using (var fileStream = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                var deserializer = new XmlSerializer(type, extraTypes.ToArray());
+
+                return deserializer.Deserialize(fileStream);
             }
         }
 
@@ -164,6 +183,47 @@ namespace TestControlTool.Management
             catch
             {
                 return Enum.GetValues(enumType).GetValue(0);
+            }
+        }
+
+        /// <summary>
+        /// Kill process and it's children by process id
+        /// </summary>
+        /// <param name="processId">Process id to kill</param>
+        public static void KillProcessAndChildren(int processId)
+        {
+            var searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + processId);
+            var moc = searcher.Get();
+
+            foreach (ManagementObject mo in moc)
+            {
+                KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
+            }
+
+            try
+            {
+                var process = Process.GetProcessById(processId);
+                process.Kill();
+            }
+            catch (ArgumentException)
+            {
+                // Process already exited.
+            }
+        }
+
+        /// <summary>
+        /// Waits until file is not created
+        /// </summary>
+        /// <param name="file">File path</param>
+        /// <param name="sleep">Time to sleep between asking file existence</param>
+        /// <param name="times">Count of attempts</param>
+        public static void WaitForFileCreation(string file, TimeSpan sleep, int times)
+        {
+            var info = new FileInfo(file);
+
+            for (var i = 0; i < times && !info.Exists; i++)
+            {
+                Thread.Sleep(sleep);
             }
         }
     }

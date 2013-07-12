@@ -10,15 +10,29 @@
     </div>
     <div class="modal-body">
         <div class="control-group">
-            <label class="control-label" for="TestSuiteName">
-                Name&nbsp;&nbsp;&nbsp;
-                <input type="text" id="TestSuiteName" onblur="CheckTestSuiteName()" onfocus="$('#TestSuiteNameValidation').text('');" />
+            <label class="control-label" for="TestSuiteName" style="display: inline;">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <div class="controls" style="display: inline;">
+                <input type="text" id="TestSuiteName" onblur="CheckTestSuiteName()" onfocus="$('#TestSuiteNameValidation').text('');" />    
                 <span class="help-inline error" id="TestSuiteNameValidation"></span>
-            </label>
+            </div>
         </div>
         <input type="hidden" id="EditTestSuiteName" />
         <div class="control-group">
-            <label class="control-label" for="TestSuiteTests">
+            <label class="control-label" for="TestSuiteMachine" style="display: inline;">Machine&nbsp;&nbsp;&nbsp;</label>
+            <div class="controls" style="display: inline;">
+                <select id="TestSuiteMachine" onchange="CheckTestSuiteMachine()">
+                          <option value="-1">Please select machine</option>
+                          @foreach (var machine in TestControlTool.Web.TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Machines)
+                          {
+                              <option value="@machine.Id">@machine.Name</option>
+                          }
+                      </select>
+                <a href="#" id="TestSuiteMachineHelp" onclick="return false;" data-toogle="popover" data-content="Your tasks are executed on this machine. It's good to have a separate VM for this purpose." data-title="What's this?" rel="popover" data-trigger="hover"><i class="icon-question-sign"></i></a>
+                <span class="help-inline error" id="TestSuiteMachineValidation"></span>
+            </div>
+       </div>
+        <div class="control-group">
+            <label class="control-label" for="TestSuiteTests" style="cursor: default;">
                 Tests:&nbsp;&nbsp;&nbsp;
             <button type="button" class="close" aria-hidden="true" onclick="addTest();" title="Add new test">+</button>
             </label>
@@ -34,10 +48,8 @@
         <input type="submit" class="btn btn-primary" value="Add" id="SaveTestSuiteButton" onclick="saveTestSuiteJob()" />
     </div>
 </div>
+<div id="NewTestModalDiv" style="display: none;"></div>
 
-    @{
-        Html.RenderAction("NewTestModal", "Task");
-    }
 
 <script type="text/javascript">
     $(function () {
@@ -48,10 +60,15 @@
     var isEditTestModal = false;
     var testToEdit;
     
+    $("#TestSuiteMachineHelp").on("hidden", function (e) {
+        e.stopPropagation(); //Once popover is hidden stop the event from going to parent
+    });
+    
     $('#TestSuiteModal').on('hidden', function () {
         $('#TestSuiteName').val('');
+        $('#TestSuiteMachine').val('-1');
 
-        $('#TestSuiteNameValidation').hide(500);
+        $('#TestSuiteNameValidation').text('');
         $('#TestSuiteLabel').text('Add new Test Suite');
         $('#SaveTestSuiteButton').val('Add');
         $('#testsList').text('');
@@ -59,6 +76,12 @@
         $('#EditTestSuiteName').val('');
 
         isEditTestSuiteModal = false;
+    });
+    
+    $('#TestSuiteModal').on('show', function () {
+        var url = isTrunk ? '@Url.Action("NewTestModal", "Task", new { trunk = true })' : '@Url.Action("NewTestModal", "Task", new { trunk = false })';
+
+        $('#NewTestModalDiv').load(url);
     });
 
     function addTest() {
@@ -74,13 +97,15 @@
     }
     
     function addTestSuite() {
-        if (!CheckTestSuiteName()) {
+        if (!CheckTestSuiteName() || !CheckTestSuiteMachine()) {
             return false;
         }
         var name = $('#TestSuiteName').val();
+
+        var type = isTrunk ? 'TestSuiteTrunk' : 'TestSuiteRelease';
         
-        $('#currentTasks').append("<li id='" + name + "' type='TestSuite'><a ondblclick=\"editTestSuiteTask('" + name + "')\" href='#'>" + name + "</a>" +
-            "<button type='button' class='close' aria-hidden='true' onclick=\"removeTask('" + name + "')\">×</button></li>"
+        $('#currentTasks').append("<li id='" + name + "' type='" + type + "' machine='" + $('#TestSuiteMachine').val() + "'><a onclick=\"editTestSuiteTask(this)\" href='#'>" + name + "</a>" +
+            "<button type='button' class='close' aria-hidden='true' onclick=\"removeItem(this)\">×</button></li>"
         );
 
         var list = $('#testsList').clone();
@@ -93,17 +118,16 @@
     }
     
     function editTestSuite() {
-        if (!CheckTestSuiteName()) {
+        if (!CheckTestSuiteName() || !CheckTestSuiteMachine()) {
             return false;
         }
         
         var name = $('#TestSuiteName').val();
         var oldName = $('#EditTestSuiteName').val();
         
-        $('#' + oldName).find('a').first().attr('ondblclick', "editTestSuiteTask('" + name + "');");
         $('#' + oldName).find('a').first().text(name);
-        $('#' + oldName).find('button').first().attr('onclick', "removeTask('" + name + "');");
         $('#' + oldName).attr('id', name);
+        $('#' + oldName).attr('machine', $('#TestSuiteMachine').val());
 
         $('#' + name).find('ol').first().remove();
 
@@ -143,23 +167,34 @@
         canSave = true;
         return true;
     }
+    
+    function CheckTestSuiteMachine() {
+        if ($('#TestSuiteMachine').val() == "-1") {
+            $('#TestSuiteMachineValidation').text('Please, select the machine');
 
-    function removeTest(object) {
-        $(object).parent().fadeOut('slow', function() {
-            $(this).remove();
-        });
+            canSave = false;
+            return false;
+        }
+
+        $('#TestSuiteMachineValidation').text('');
+        canSave = true;
+        return true;
     }
     
     function editTestModal(object) {
         $('#NewTestLabel').text('Edit Test');
-        $('#AddTestButton').val('Edit');
+        $('#AddTestButton').val('Apply');
         $('#NewTestType').val($(object).parent().attr('testtype'));
         $('#NewTestType').prop('disabled', 'disabled');
         testToEdit = $(object).parent();
 
         loadTestFormForType($(object).parent().attr('testtype'), function() {
-            $('#testFormDiv').find('input,select').each(function() {
+            $('#testFormDiv').find('input[type!=checkbox][type!=hidden],select').each(function() {
                 $(this).val($(object).parent().attr($(this).attr('id')));
+            });
+            
+            $('#testFormDiv').find('input[type=checkbox]').each(function () {
+                $(this).attr('checked', $(object).parent().attr($(this).attr('id')).toLowerCase() == 'true');
             });
 
             $(object).parent().find('ul').each(function() {
@@ -173,16 +208,10 @@
                 list.find('li').each(function() {
                     $('#' + tosearch).append($(this));
                 });
-
-                $('#' + tosearch).height(0);
             });
             
             isEditTestModal = true;
             $('#NewTestModal').modal('show');
-            $('#testFormDiv').find('.collapse').collapse('show');
-            $('#testFormDiv').find('.collapse').each(function() {
-                $(this).height('auto');
-            });
         });
     }
 </script>

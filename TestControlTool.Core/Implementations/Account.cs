@@ -41,5 +41,10 @@ namespace TestControlTool.Core.Implementations
         /// Account's tasks
         /// </summary>
         public ICollection<IScheduleTask> Tasks { get; set; }
+
+        /// <summary>
+        /// Account's binded VM servers
+        /// </summary>
+        public ICollection<VMServer> VMServers { get; set; }
     }
 }

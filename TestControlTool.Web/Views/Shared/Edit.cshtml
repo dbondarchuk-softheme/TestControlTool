@@ -12,7 +12,7 @@
     @Html.ValidationSummary(true)
     <fieldset class="form-horizontal">
         <legend>@Model.GetLabel() <small>Details</small></legend>
-        @foreach (var property in Model.VisibleProperties(MachineModel.NotShownProperties))
+        @foreach (var property in Model.VisibleProperties(VCenterMachineModel.NotShownProperties))
         {
             using(Html.ControlGroupFor(property.Name)){
                 @Html.Label(property.Name.ToSeparatedWords(), new { @class = "control-label" })
@@ -22,7 +22,7 @@
                  </div>
             }
         }
-        @foreach(var property in Model.HiddenProperties(MachineModel.NotShownProperties))
+        @foreach(var property in Model.HiddenProperties(VCenterMachineModel.NotShownProperties))
         {
             @Html.Editor(property.Name)
         }
