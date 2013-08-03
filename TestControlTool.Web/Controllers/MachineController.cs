@@ -88,7 +88,7 @@ namespace TestControlTool.Web.Controllers
 
             var model = TestControlToolApplication.AccountController.CachedMachines.Single(x => x.Id == id).ToModel();
             
-            model.DeployOn = GetServers(model is VCenterMachineModel ? VMServerType.VCenter : VMServerType.HyperV).ToSelectList(x => x.ServerName, x => x.Id.ToString(), x => x.Id == id);
+            model.DeployOn = GetServers(model is VCenterMachineModel ? VMServerType.VCenter : VMServerType.HyperV).ToSelectList(x => x.ServerName, x => x.Id.ToString(), x => x.Id == model.Server);
 
             return View(model);
         }
@@ -119,9 +119,41 @@ namespace TestControlTool.Web.Controllers
             }
 
             var model = TestControlToolApplication.AccountController.CachedMachines.Single(x => x.Id == id).ToModel();
-            model.DeployOn = GetServers(model is VCenterMachineModel ? VMServerType.VCenter : VMServerType.HyperV).ToSelectList(x => x.ServerName, x => x.Id.ToString(), x => x.Id == id);
+            model.DeployOn = GetServers(model is VCenterMachineModel ? VMServerType.VCenter : VMServerType.HyperV).ToSelectList(x => x.ServerName, x => x.Id.ToString(), x => x.Id == model.Server);
 
             return View(model);
+        }
+
+        public JsonResult Configure(Guid id)
+        {
+            var machine = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Machines.SingleOrDefault(x => x.Id == id);
+
+            if (machine == null)
+            {
+                throw new NoSuchMachineException(id);
+            }
+
+            var taskWcfServiceClient = new TaskWcfServiceClient();
+            taskWcfServiceClient.Open();
+
+            var result = taskWcfServiceClient.ConfigureMachine(id);
+
+            taskWcfServiceClient.Close();
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetMachinesConfiguringStatuses()
+        {
+            var taskWcfServiceClient = new TaskWcfServiceClient();
+            taskWcfServiceClient.Open();
+
+            var result = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Machines
+                .ToDictionary(x => x.Id.ToString(), y => taskWcfServiceClient.GetStatusOfConfiguring(y.Id).ToString());
+
+            taskWcfServiceClient.Close();
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         private IEnumerable<ServerModel> GetServers(VMServerType type)

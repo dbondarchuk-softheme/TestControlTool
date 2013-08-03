@@ -78,6 +78,7 @@
     <Compile Include="Exceptions\AddExistingVMServerException.cs" />
     <Compile Include="Exceptions\NoSuchVMServerException.cs" />
     <Compile Include="Implementations\HyperVDeployInstallTask.cs" />
+    <Compile Include="Implementations\MachineConfigurationTask.cs" />
     <Compile Include="Implementations\SqlCEModels\AccountModel.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>

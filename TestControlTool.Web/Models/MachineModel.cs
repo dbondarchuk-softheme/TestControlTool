@@ -69,7 +69,7 @@ namespace TestControlTool.Web.Models
         public string Share { get; set; }
 
         [HiddenInput(DisplayValue = false)]
-        [Display(Name = "Deploy On")]
+        [Display(Name = "Machine Type")]
         [Link(Action = "Edit", Controller = "Machine", Title = "Edit Machine")]
         public abstract string DestinationType { get; }
     }

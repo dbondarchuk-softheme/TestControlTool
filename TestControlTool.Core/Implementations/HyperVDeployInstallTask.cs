@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Threading;
 using TestControlTool.Core.Contracts;
 using TestControlTool.Core.Helpers;
 
@@ -24,6 +25,11 @@ namespace TestControlTool.Core.Implementations
         public string ReportFolder { get; set; }
 
         /// <summary>
+        /// Name of the task
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Emits when child task got new output data
         /// </summary>
         public event OutputDataGot OutputDataGotHandler;
@@ -34,7 +40,7 @@ namespace TestControlTool.Core.Implementations
         public void Run()
         {
             if (!string.IsNullOrWhiteSpace(ReportFolder)) Directory.CreateDirectory(ReportFolder);
-
+            
             var arguments = "powershell \"" + ConfigurationManager.AppSettings["HyperVDeploySctipt"] + "\" 1 \"" + FileName + "\" \"" + ReportFolder + "\"";
 
             var processId = ProcessAsUser.Launch(arguments);
@@ -57,7 +63,7 @@ namespace TestControlTool.Core.Implementations
 
             watcher.Dispose();
         }
-
+        
         /// <summary>
         /// Stops the child task
         /// </summary>

@@ -386,6 +386,10 @@ function WaitWhileJobsRun ([System.Collections.ArrayList]$Jobs)
 			}
 		}
 		
+		Write-Log "Waiting..."
+		
+		Start-Sleep -s 10
+		
 		$Jobs = $Jobs -ne $null
 	}
 	

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using TestControlTool.Core.Contracts;
 using TestControlTool.Core.Models;
@@ -23,7 +24,12 @@ namespace TestControlTool.Core.Implementations
         /// Folder with logs
         /// </summary>
         public string ReportName { get; set; }
-        
+
+        /// <summary>
+        /// Name of the task
+        /// </summary>
+        public string Name { get; set; }
+
         /// <summary>
         /// Emits when child task got new output data
         /// </summary>
@@ -57,28 +63,28 @@ namespace TestControlTool.Core.Implementations
                 {
                     childTask = new VCenterDeployInstallTask
                         {
-                            FileName = child.Value
+                            FileName = child.Value,
+                            Name = Name + "/VCenter"
                         };
-
-                    childTask.OutputDataGotHandler += OutputDataGotHandler;
                 }
                 else if (child.Key == VMServerType.HyperV)
                 {
                     childTask = new HyperVDeployInstallTask
                         {
                             FileName = child.Value,
-                            ReportFolder = ConfigurationManager.AppSettings["LogsFolder"] + "\\" + ReportName
+                            ReportFolder = ConfigurationManager.AppSettings["LogsFolder"] + "\\" + ReportName,
+                            Name = Name + "/HyperV"
                         };
                 }
 
-                childTask.OutputDataGotHandler += OutputDataGotHandler;
+                childTask.OutputDataGotHandler += output => Logger(output, child.Key);
 
                 childTasks.Add(Task.Factory.StartNew(childTask.Run));
             }
 
             Task.WaitAll(childTasks.ToArray());
         }
-
+        
         /// <summary>
         /// Stops the child task
         /// </summary>
@@ -108,9 +114,19 @@ namespace TestControlTool.Core.Implementations
 
                 }
 
-                childTask.OutputDataGotHandler += OutputDataGotHandler;
+                childTask.OutputDataGotHandler += output => Logger(output, child.Key);
 
                 childTask.Stop();
+            }
+        }
+
+        private void Logger(string message, VMServerType type)
+        {
+            if (OutputDataGotHandler != null)
+            {
+                var newMessage = message.Trim().Split('\n').Select(line => string.Format("[{0}]. {1}", type, line)).Aggregate(string.Empty, (seed, line) => seed + line + "\n").Trim();
+
+                OutputDataGotHandler(newMessage);
             }
         }
     }

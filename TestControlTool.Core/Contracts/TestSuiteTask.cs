@@ -24,6 +24,11 @@ namespace TestControlTool.Core.Contracts
         public string ReportFileName { get; set; }
 
         /// <summary>
+        /// Name of the task
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Emits when child task got new output data
         /// </summary>
         public event OutputDataGot OutputDataGotHandler;

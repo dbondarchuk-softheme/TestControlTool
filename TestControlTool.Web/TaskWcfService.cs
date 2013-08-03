@@ -26,6 +26,18 @@ public interface ITaskWcfService
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskWcfService/StopTask", ReplyAction="http://tempuri.org/ITaskWcfService/StopTaskResponse")]
     System.Threading.Tasks.Task<bool> StopTaskAsync(System.Guid id);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskWcfService/ConfigureMachine", ReplyAction="http://tempuri.org/ITaskWcfService/ConfigureMachineResponse")]
+    bool ConfigureMachine(System.Guid id);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskWcfService/ConfigureMachine", ReplyAction="http://tempuri.org/ITaskWcfService/ConfigureMachineResponse")]
+    System.Threading.Tasks.Task<bool> ConfigureMachineAsync(System.Guid id);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskWcfService/GetStatusOfConfiguring", ReplyAction="http://tempuri.org/ITaskWcfService/GetStatusOfConfiguringResponse")]
+    int GetStatusOfConfiguring(System.Guid id);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskWcfService/GetStatusOfConfiguring", ReplyAction="http://tempuri.org/ITaskWcfService/GetStatusOfConfiguringResponse")]
+    System.Threading.Tasks.Task<int> GetStatusOfConfiguringAsync(System.Guid id);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -80,5 +92,25 @@ public partial class TaskWcfServiceClient : System.ServiceModel.ClientBase<ITask
     public System.Threading.Tasks.Task<bool> StopTaskAsync(System.Guid id)
     {
         return base.Channel.StopTaskAsync(id);
+    }
+    
+    public bool ConfigureMachine(System.Guid id)
+    {
+        return base.Channel.ConfigureMachine(id);
+    }
+    
+    public System.Threading.Tasks.Task<bool> ConfigureMachineAsync(System.Guid id)
+    {
+        return base.Channel.ConfigureMachineAsync(id);
+    }
+    
+    public int GetStatusOfConfiguring(System.Guid id)
+    {
+        return base.Channel.GetStatusOfConfiguring(id);
+    }
+    
+    public System.Threading.Tasks.Task<int> GetStatusOfConfiguringAsync(System.Guid id)
+    {
+        return base.Channel.GetStatusOfConfiguringAsync(id);
     }
 }

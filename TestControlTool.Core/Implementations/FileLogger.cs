@@ -21,7 +21,10 @@ namespace TestControlTool.Core.Implementations
         /// <param name="append">If true - appends to the end of the log</param>
         public FileLogger(string file, bool append = false)
         {
-            _writer = new StreamWriter(File.Open(file, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.ReadWrite));
+            _writer = new StreamWriter(File.Open(file, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                {
+                    AutoFlush = true
+                };
         }
 
         /// <summary>
@@ -59,6 +62,15 @@ namespace TestControlTool.Core.Implementations
         public void Exception(string message, Exception exception)
         {
             _writer.WriteLine(string.Format(FormatString, DateTime.Now, "EXCEPTION", message + "\n" + exception.Message + "\nStacktrace:\n" + exception.StackTrace));
+        }
+
+        /// <summary>
+        /// Writes only message (with out additional info) to the log
+        /// </summary>
+        /// <param name="message">Message</param>
+        public void Message(string message)
+        {
+            _writer.WriteLine(message);
         }
 
         /// <summary>

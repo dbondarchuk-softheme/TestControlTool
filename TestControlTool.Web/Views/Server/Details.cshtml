@@ -1,5 +1,6 @@
 @using BootstrapSupport
 @using TestControlTool.Web.Models
+@using TestControlTool.Web.BootstrapSupport.HtmlHelpers
 @model ServerModel
 @{
     ViewBag.Title = "Server details";
@@ -13,14 +14,14 @@
                 @property.GetLabel().ToSeparatedWords()
             </dt>
             <dd>
-                @Html.Display(property.Name)                
+                @Html.Display(property.Name, true)              
             </dd>
         }
     </dl>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", "Machine", Model.GetIdValue(), null) |
-    @Html.ActionLink("Back to List", "Machines", "Home")
+    @Html.ActionLink("Edit", "Edit", "Server", Model.GetIdValue(), null) |
+    @Html.ActionLink("Back to List", "Servers", "Home")
 </p>
 <script type="text/javascript">
     ShowMachines();

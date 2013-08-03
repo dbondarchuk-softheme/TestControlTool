@@ -239,7 +239,7 @@ namespace TestControlTool.Web.Controllers
             return PartialView("GetLogs", logs);
         }
 
-        public JsonResult GetStatuses()
+       public JsonResult GetStatuses()
         {
             var userId = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Id;
             var statuses = TestControlToolApplication.AccountController.Tasks.Where(x => x.Owner == userId).Select(x => x.ToModel()).ToDictionary(x => x.Id.ToString(), x => new {status = x.Status.ToString(), lastRun = x.LastRunExtended.ToString()});

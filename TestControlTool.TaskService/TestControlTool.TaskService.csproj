@@ -90,6 +90,7 @@
     <Compile Include="EmailReportService.cs" />
     <Compile Include="IReportService.cs" />
     <Compile Include="ITaskWCFService.cs" />
+    <Compile Include="MachineConfigurationService.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -190,7 +190,7 @@ namespace TestControlTool.Web
                 {
                     Text = text(f),
                     Value = value(f),
-                    Selected = selectedItem != null && f.Equals(selectedItem(f))
+                    Selected = selectedItem != null && selectedItem(f)
                 }).ToList();
 
             if (defaultOption != null) items.Insert(0, new SelectListItem()

@@ -46,24 +46,33 @@ namespace TestControlTool.Core.Implementations
                     case TaskType.DeployInstall:
                         ParseAutoDeployFiles(newFile);
 
-                        task = new DeployInstallTask(newFile + ".new", id + "." + childTask.Name);
+                        task = new DeployInstallTask(newFile + ".new", id + "." + childTask.Name)
+                            {
+                                Name = childTask.Name
+                            };
 
                         break;
 
                     case TaskType.TestSuiteTrunk:
                         ParseTestPerformerFiles(newFile);
 
-                        task = new TestSuiteTrunkTask(newFile + ".new", id + "." + childTask.Name);
+                        task = new TestSuiteTrunkTask(newFile + ".new", id + "." + childTask.Name)
+                            {
+                                Name = childTask.Name
+                            };
                         break;
 
                     case TaskType.TestSuiteRelease:
                         ParseTestPerformerFiles(newFile);
 
-                        task = new TestSuiteReleaseTask(newFile + ".new", id + "." + childTask.Name);
+                        task = new TestSuiteReleaseTask(newFile + ".new", id + "." + childTask.Name)
+                            {
+                                Name = childTask.Name
+                            };
 
                         break;
                 }
-
+                
                 task.OutputDataGotHandler += output => Logger(logger, childTask.TaskType.ToString(), output);
 
                 result.Add(task);
@@ -74,8 +83,7 @@ namespace TestControlTool.Core.Implementations
 
         private static void Logger(ILogger logger, string childTaskName, string message)
         {
-            Console.WriteLine(message);
-            logger.Info(childTaskName + ".\t" + message);
+            logger.Message(message.Trim());
         }
 
         /// <summary>

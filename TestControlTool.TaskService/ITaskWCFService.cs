@@ -18,5 +18,13 @@ namespace TestControlTool.TaskService
         [OperationContract]
         [WebGet(UriTemplate = "/StopTask/?id={id}", ResponseFormat = WebMessageFormat.Json)]
         bool StopTask(Guid id);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "/ConfigureMachine/?id={id}", ResponseFormat = WebMessageFormat.Json)]
+        bool ConfigureMachine(Guid id);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "/GetStatusOfConfiguring/?id={id}", ResponseFormat = WebMessageFormat.Json)]
+        int GetStatusOfConfiguring(Guid id);
     }
 }

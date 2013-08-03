@@ -136,10 +136,10 @@ foreach ($machine in $currentVMList.machine)
 			. .\Logging.ps1 $($args[17]) $($args[5])
 			. .\Functions.ps1
 			Write-Log "Log started"
-			PrepareEnvironment $($args[1]) $($args[2]) $($args[3]) $($args[4]) $($args[5]) $($args[6]) $($args[7]) $($args[8]) $($args[9]) $($args[10]) $($args[11]) $($args[12]) $($args[13]) $($args[14]) $($args[15]) $($args[16]) $($args[18])
+			PrepareEnvironment $($args[1]) $($args[2]) $($args[3]) $($args[4]) $($args[5]) $($args[6]) $($args[7]) $($args[8]) $($args[9]) $($args[10]) $($args[11]) $($args[12]) $($args[13]) $($args[14]) $($args[15]) $($args[16]) $($args[18]) $($args[19])
 			Write-Log "Total errors - $errorcount, warnings - $warningcount"
 			Write-Log "End of log"
-		} -ArgumentList $location, $source.Source.PrepareVm.ServerName, $source.Source.PrepareVm.ServerUserName, $source.Source.PrepareVm.ServerPassword, $machine.snapshot, $machine.vmname, $machine.ip, $machine.username, $machine.password, ("\\" + $machine.ip + "\" + $machine.share), $fileToExecute, $source.Source.PrepareVm.InstallerSourcePath, $source.Source.PrepareVm.SourcePathUserName, $source.Source.PrepareVm.SourcePathPassword, $arguments, $serviceName, $isLinux, $LogFolder, $source.Source.PrepareVm.Action
+		} -ArgumentList $location, $source.Source.PrepareVm.ServerName, $source.Source.PrepareVm.ServerUserName, $source.Source.PrepareVm.ServerPassword, $machine.snapshot, $machine.vmname, $machine.ip, $machine.username, $machine.password, ("\\" + $machine.ip + "\" + $machine.share), $fileToExecute, $source.Source.PrepareVm.InstallerSourcePath, $source.Source.PrepareVm.SourcePathUserName, $source.Source.PrepareVm.SourcePathPassword, $arguments, $serviceName, $isLinux, $LogFolder, $source.Source.PrepareVm.Action, $machine.share
 	}
 	else {
 		$job = Start-Job {
@@ -147,10 +147,10 @@ foreach ($machine in $currentVMList.machine)
 			. .\Logging.ps1 $($args[17]) $($args[5])
 			. .\Functions.ps1
 			Write-Log "Log started"
-			PrepareEnvironment $($args[1]) $($args[2]) $($args[3]) $($args[4]) $($args[5]) $($args[6]) $($args[7]) $($args[8]) $($args[9]) $($args[10]) $($args[11]) $($args[12]) $($args[13]) $($args[14]) $($args[15]) $($args[16]) $($args[18])
+			PrepareEnvironment $($args[1]) $($args[2]) $($args[3]) $($args[4]) $($args[5]) $($args[6]) $($args[7]) $($args[8]) $($args[9]) $($args[10]) $($args[11]) $($args[12]) $($args[13]) $($args[14]) $($args[15]) $($args[16]) $($args[18]) $($args[19])
 			Write-Log "Total errors - $errorcount, warnings - $warningcount"
 			Write-Log "End of log"
-		} -ArgumentList $location, $source.Source.PrepareVm.ServerName, $source.Source.PrepareVm.ServerUserName, $source.Source.PrepareVm.ServerPassword, $machine.snapshot, $machine.vmname, $machine.name, $machine.username, $machine.password, ("\\" + $machine.name + "\" + $machine.share), $fileToExecute, $source.Source.PrepareVm.InstallerSourcePath, $source.Source.PrepareVm.SourcePathUserName, $source.Source.PrepareVm.SourcePathPassword, $arguments, $serviceName, $isLinux, $LogFolder, $source.Source.PrepareVm.Action
+		} -ArgumentList $location, $source.Source.PrepareVm.ServerName, $source.Source.PrepareVm.ServerUserName, $source.Source.PrepareVm.ServerPassword, $machine.snapshot, $machine.vmname, $machine.name, $machine.username, $machine.password, ("\\" + $machine.name + "\" + $machine.share), $fileToExecute, $source.Source.PrepareVm.InstallerSourcePath, $source.Source.PrepareVm.SourcePathUserName, $source.Source.PrepareVm.SourcePathPassword, $arguments, $serviceName, $isLinux, $LogFolder, $source.Source.PrepareVm.Action, $machine.share
 	}
 	
 	$jobList.Add($job) | Out-Null

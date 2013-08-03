@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using BootstrapSupport;
+using TestControlTool.Core.Models;
 
 namespace BootstrapMvcSample.Controllers
 {
@@ -26,22 +28,43 @@ namespace BootstrapMvcSample.Controllers
 
         public void Attention(string message)
         {
-            TempData.Add(message, Alerts.ATTENTION);
+            AddMessage(message, Alerts.ATTENTION);
         }
 
         public void Success(string message)
         {
-            TempData.Add(Alerts.SUCCESS, message);
+            AddMessage(message, Alerts.SUCCESS);
         }
 
         public void Information(string message)
         {
-            TempData.Add(Alerts.INFORMATION, message);
+            AddMessage(message, Alerts.INFORMATION);
         }
 
         public void Error(string message)
         {
-            TempData.Add(Alerts.ERROR, message);
+            AddMessage(message, Alerts.ERROR);
+        }
+
+        private void AddMessage(string message, string type)
+        {
+            if (!TempData.ContainsKey("Alerts"))
+            {
+                var data = new List<Pair<string, string>>
+                    {
+                        new Pair<string, string>(type, message)
+                    };
+
+                TempData.Add("Alerts", data);
+            }
+            else
+            {
+                var data = TempData["Alerts"] as List<Pair<string, string>> ?? new List<Pair<string, string>>();
+
+                data.Add(new Pair<string, string>(type, message));
+
+                TempData["Alerts"] = data;
+            }
         }
     }
 }

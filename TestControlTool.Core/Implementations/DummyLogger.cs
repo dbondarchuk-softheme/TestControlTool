@@ -53,5 +53,13 @@ namespace TestControlTool.Core.Implementations
         {
             
         }
+
+        /// <summary>
+        /// Writes only message (with out additional info) to the log
+        /// </summary>
+        /// <param name="message">Message</param>
+        public void Message(string message)
+        {
+        }
     }
 }

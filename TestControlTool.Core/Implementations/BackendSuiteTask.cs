@@ -21,6 +21,11 @@ namespace TestControlTool.Core.Implementations
         public string SuiteName { get; set; }
 
         /// <summary>
+        /// Name of the task
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Emits when child task got new output data
         /// </summary>
         public event OutputDataGot OutputDataGotHandler;

@@ -31,5 +31,11 @@ namespace TestControlTool.Core.Contracts
         /// <param name="message">Message</param>
         /// <param name="exception">Exception</param>
         void Exception(string message, Exception exception);
+
+        /// <summary>
+        /// Writes only message (with out additional info) to the log
+        /// </summary>
+        /// <param name="message">Message</param>
+        void Message(string message);
     }
 }

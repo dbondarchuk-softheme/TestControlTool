@@ -25,5 +25,15 @@ namespace TestControlTool.TaskService
         {
             return TaskService.StopTask(id);
         }
+
+        public bool ConfigureMachine(Guid id)
+        {
+            return MachineConfigurationService.ConfigureMachine(id);
+        }
+
+        public int GetStatusOfConfiguring(Guid id)
+        {
+            return MachineConfigurationService.GetStatusOfConfiguring(id);
+        }
     }
 }

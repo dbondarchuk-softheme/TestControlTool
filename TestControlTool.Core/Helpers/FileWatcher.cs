@@ -42,7 +42,7 @@ namespace TestControlTool.Core.Helpers
                 _watcher = new FileSystemWatcher(FileName.Remove(FileName.LastIndexOf('\\')))
                 {
                     Filter = FileName.Split('\\', '/').Last(),
-                    NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size
+                    NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size | NotifyFilters.LastAccess
                 };
             }
             catch (Exception e)
@@ -52,17 +52,17 @@ namespace TestControlTool.Core.Helpers
             
             _watcher.Changed += (sender, args) =>
                 {
-                    if (args.ChangeType == WatcherChangeTypes.Changed || args.ChangeType == WatcherChangeTypes.Created)
+                    if (args.ChangeType != WatcherChangeTypes.Deleted)
                     {
                         using (var streamReader = new StreamReader(new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
                         {
                             streamReader.BaseStream.Seek(_lastSize, SeekOrigin.Begin);
 
-                            var newText = streamReader.ReadToEnd();
-
-                            OnFileChanged(FileName, newText);
+                            var newText = streamReader.ReadToEnd().Replace("\0", "");
 
                             _lastSize = streamReader.BaseStream.Length;
+
+                            OnFileChanged(FileName, newText);
                         }
                     }
                 };

@@ -65,6 +65,11 @@
   display: inherit !important;
 }
 
+.hidden-medium {
+  display: none;
+  width: 31.623931623931625%;
+}
+
 @media (min-width: 768px) and (max-width: 979px) {
   .hidden-desktop {
     display: inherit !important;
@@ -79,6 +84,19 @@
     display: none !important;
   }
 }
+
+@media (max-width: 1400px) { 
+    .hidden-medium {
+        display: block;
+    }
+}
+
+@media (min-width: 1401px) { 
+    .hidden-medium {
+        display: none;
+    }
+}
+
 
 @media (max-width: 767px) {
   .hidden-desktop {

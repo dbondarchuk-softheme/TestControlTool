@@ -189,10 +189,12 @@ function LinuxRemoteExecute($MachineName, $UserName, $Password){
 }
 
 
-function RemoteExecute($MachineName, $UserName, $Password, $FileNameWildcards, $Parameters, $RemoteFolder = "C:\reminst", $PsExec = "C:\Scripts\PsTools\PsExec.exe")
+function RemoteExecute($MachineName, $UserName, $Password, $FileNameWildcards, $Parameters, $ShareFolder, $PsExec = "C:\Scripts\PsTools\PsExec.exe")
 {
 	Write-Log "=== RemoteExecute function started ==="
 	$session, $credentials = CreateRemoteSession $MachineName $UserName $Password
+	
+	$RemoteFolder = Invoke-Command -Session $session -ScriptBlock {Invoke-Expression -Command "(Get-WmiObject Win32_Share -filter `"Name = '$args'`").path"} -ArgumentList $ShareFolder
 	
 	Write-Log "Getting full file path from '$MachineName'"
 	$files = Invoke-Command -Session $session -ScriptBlock {
@@ -330,6 +332,10 @@ function WaitWhileJobsRun ([System.Collections.ArrayList]$Jobs)
 				$jobs[$i] = $null
 			}
 		}
+
+		Write-Log "Waiting..."
+		
+		Start-Sleep -s 10
 		
 		$Jobs = $Jobs -ne $null
 	}
@@ -387,7 +393,7 @@ function GetSnapshot($ServerName, $UserName, $Password, $VmName, $SnapshotName)
 ############################### Function Combinations ###############################
 
 # Prepare Environment #
-function PrepareEnvironment($Server, $ServerUserName, $ServerPassword, $SnapshotName, $VmName, $MachineName, $MachineUserName, $MachinePassword, $MachineShare, $FileToExecute, $SourcePath, $SourcePathUserName, $SourcePathPassword, $Arguments, $ServiceToWait, $isLinux, $Action)
+function PrepareEnvironment($Server, $ServerUserName, $ServerPassword, $SnapshotName, $VmName, $MachineName, $MachineUserName, $MachinePassword, $MachineShare, $FileToExecute, $SourcePath, $SourcePathUserName, $SourcePathPassword, $Arguments, $ServiceToWait, $isLinux, $Action, $ShareFolder)
 {
 	if (($Action -eq "Deploy") -or  ($Action -eq "DeployInstall")){
 		Write-Log "Starting deploy job"
@@ -397,10 +403,10 @@ function PrepareEnvironment($Server, $ServerUserName, $ServerPassword, $Snapshot
 	}
 	if (($Action -eq "Install") -or ($Action -eq "DeployInstall")){
 		Write-Log "Starting installation job"
-
+		
 		CopyFiles $FileToExecute $SourcePath $SourcePathUserName $SourcePathPassword $MachineShare $MachineUserName $MachinePassword $isLinux
 		if ($isLinux -eq 0){
-			RemoteExecute $MachineName $MachineUserName $MachinePassword $FileToExecute $Arguments
+			RemoteExecute $MachineName $MachineUserName $MachinePassword $FileToExecute $Arguments $ShareFolder 
 		}
 		else{
 			LinuxRemoteExecute $MachineName $MachineUserName $MachinePassword

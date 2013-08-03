@@ -11,12 +11,35 @@ using System.Threading;
 using System.Xml;
 using System.Xml.Serialization;
 using TestControlTool.Core.Contracts;
+using TestControlTool.Core.Implementations;
 using TestControlTool.Core.Models;
 
 namespace TestControlTool.Core
 {
+    /// <summary>
+    /// Different helpful extensions
+    /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Initial task message for logging
+        /// </summary>
+        public static readonly string InitialLogMessageFormat = "===========  {0}\t\t TaskName = \"{1}\" \t\t{2}  ===========";
+
+        /// <summary>
+        /// Get machine's server type from it's object
+        /// </summary>
+        /// <param name="machine">Machine's object</param>
+        /// <returns>VMServerType</returns>
+        public static VMServerType GetMachineType(this IMachine machine)
+        {
+            if (machine is VCenterMachine) return VMServerType.VCenter;
+
+            if (machine is HyperVMachine) return VMServerType.HyperV;
+
+            throw new NotSupportedException("Sorry, but this type doesn't supported");
+        }
+
         /// <summary>
         /// Serialize object to xml file
         /// </summary>

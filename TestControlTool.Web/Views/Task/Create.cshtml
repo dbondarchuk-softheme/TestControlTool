@@ -69,46 +69,12 @@
                     <legend>Task <small>Jobs</small>
                     </legend>
                     <ul id="currentTasks" class="sortable">
-                        @foreach (var task in Model.ChildTasks)
-                        {
-                            if (task.TaskType == TaskType.DeployInstall)
-                            {
-                                var taskModel = DeployInstallTaskModel.GetFromXmlFile(task.File);
-                         
-                            <li id="@taskModel.Name" type="DeployInstall" deployType="@taskModel.Type" version="@taskModel.Version" 
-                                machines="@taskModel.Machines.Aggregate("", (s, machine) => s + machine + ";").TrimEnd(';')">
-                                <a ondblclick="editDeployTask('@taskModel.Name')" href="#">@taskModel.Name</a>
-                                <button type="button" class="close" aria-hidden="true" onclick="removeTask('@taskModel.Name')">×</button>
-                            </li>
-                            }
-                            else if (task.TaskType == TaskType.TestSuiteTrunk)
-                            {
-                                var taskModel = TestSuiteModel.GetFromXmlFile(task.File);
-                            <li id="@taskModel.Name" type="TestSuite">
-                                <a ondblclick="editTestSuiteTask('@taskModel.Name')" href="#">@taskModel.Name</a>
-                                <button type="button" class="close" aria-hidden="true" onclick="removeTask('@taskModel.Name')">×</button>
-                                <ol style="display: none">
-                                    @foreach (var test in taskModel.Tests)
-                                    {
-                                        var properties = test.VisibleProperties(new string[0]).Aggregate("", (s, info) => s + " " + info.Name + "=" + info.GetValue(test) + "");
-                                        <li  testtype="@test.GetType().Name" @properties>
-                                            <a href="#" onclick="editTestModal(this)">@test.GetType().Name</a>
-                                            <button type='button' class='close' aria-hidden='true' onclick='removeTest(this)'>×</button>
-                                        </li>
-                                    }
-                                </ol>
-                            </li>
-                            }
-                        }
-                        @if (!Model.ChildTasks.Any())
-                        {
-                            <br />
-                        }
+                        <br />
                     </ul>
                     <div class="btn-group">
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Add new<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a data-toggle="modal" href="#DeployInstallJobModal">DeployInstall Task</a></li>
+                            <li><a data-toggle="modal" href="#DeployInstallJobModal">DeployInstall Job</a></li>
                             <li class="divider"></li>
                             <li><a data-toggle="modal" href="#" onclick="showNewTestSuite(true); return false;">Test Suite for Trunk</a></li>
                             <li><a data-toggle="modal" href="#" onclick="showNewTestSuite(false); return false;">Test Suite for Release</a></li>

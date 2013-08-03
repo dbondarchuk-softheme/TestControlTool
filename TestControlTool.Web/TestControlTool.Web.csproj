@@ -183,6 +183,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BootstrapSupport\ControlGroupExtensions.cs" />
     <Compile Include="BootstrapSupport\HelpAttribute.cs" />
+    <Compile Include="BootstrapSupport\HtmlHelpers\DisplayProperties.cs" />
     <Compile Include="BootstrapSupport\HtmlHelpers\EditorWithHelp.cs" />
     <Compile Include="BootstrapSupport\HtmlHelpers\GlyphIcons.cs" />
     <Compile Include="BootstrapSupport\HtmlHelpers\Linker.cs" />

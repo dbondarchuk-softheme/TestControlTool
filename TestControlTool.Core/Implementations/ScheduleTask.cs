@@ -114,31 +114,33 @@ namespace TestControlTool.Core.Implementations
         {
             return Task.Factory.StartNew(() =>
             {
-                var logger = new FileLogger(ConfigurationManager.AppSettings["LogsFolder"] + "\\" + Id + ".log");
-
-                try
-                {
-                    var childTasks = parser.Parse(Id, logger);
-
-                    foreach (var childTask in childTasks)
+                    try
                     {
-                        childTask.Run();
-
-                        if (cancellationToken.IsCancellationRequested)
+                        using (var logger = new FileLogger(ConfigurationManager.AppSettings["LogsFolder"] + "\\" + Id + ".log"))
                         {
-                            break;
+                            var childTasks = parser.Parse(Id, logger);
+
+                            foreach (var childTask in childTasks)
+                            {
+                                logger.Message(string.Format(Extensions.InitialLogMessageFormat, DateTime.Now, childTask.Name, "Started"));
+
+                                childTask.Run();
+
+                                logger.Message(string.Format(Extensions.InitialLogMessageFormat, DateTime.Now, childTask.Name, "Finished"));
+
+                                if (cancellationToken.IsCancellationRequested)
+                                {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                catch (Exception e)
-                {
-                    logger.Error(e.Message + "\n" + e.StackTrace);
-                    File.WriteAllText(@"D:\tasklog.txt", e.Message + "\n" + e.StackTrace);
+                    catch (Exception e)
+                    {
+                        return false;
+                    }
 
-                    return false;
-                }
-
-                return true;
+                    return true;
             }, cancellationToken);
         }
 
@@ -158,12 +160,14 @@ namespace TestControlTool.Core.Implementations
         {
             try
             {
-                var logger = new FileLogger(ConfigurationManager.AppSettings["LogsFolder"] + "\\" + Id + ".log", true);
-                var childTasks = parser.Parse(Id, logger);
-
-                foreach (var childTask in childTasks)
+                using (var logger = new FileLogger(ConfigurationManager.AppSettings["LogsFolder"] + "\\" + Id + ".log", true))
                 {
-                    childTask.Stop();
+                    var childTasks = parser.Parse(Id, logger);
+
+                    foreach (var childTask in childTasks)
+                    {
+                        childTask.Stop();
+                    }
                 }
             }
             catch (Exception e)

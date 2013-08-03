@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -208,6 +209,13 @@ namespace BootstrapSupport
                 elementType = Model.GetType().GetGenericArguments()[0];
             }
             return LabelFromType(elementType);
+        }
+
+        public static bool IsPassword(this PropertyInfo property)
+        {
+            var attribute = property.GetAttribute<DataTypeAttribute>();
+
+            return attribute != null && attribute.DataType == DataType.Password;
         }
     }
 

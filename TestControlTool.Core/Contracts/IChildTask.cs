@@ -6,6 +6,11 @@
     public interface IChildTask
     {
         /// <summary>
+        /// Name of the task
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
         /// Emits when child task got new output data
         /// </summary>
         event OutputDataGot OutputDataGotHandler;

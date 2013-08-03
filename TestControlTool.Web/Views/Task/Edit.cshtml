@@ -28,7 +28,7 @@
     </div>
     <div class="row-fluid">
         <form id="taskForm">
-            <div class="span4">
+            <div class="span6">
                 <fieldset class="form-horizontal" style="padding: 1px;">
                     <legend>Task <small>Details</small></legend>
                     @using (Html.ControlGroupFor(x => x.Task.Name))
@@ -67,7 +67,7 @@
                 </fieldset>
             </div>
             @Html.EditorFor(x => x.Task.Id)
-            <div class="span4">
+            <div class="span6">
                 <fieldset class="form-horizontal">
                     <legend>Task <small>Jobs</small>
                     </legend>
@@ -78,71 +78,71 @@
                             {
                                 var taskModel = DeployInstallTaskModel.GetFromXmlFile(task.File);
                          
-                            <li id="@taskModel.Name" type="DeployInstall" deployType="@taskModel.Type" version="@taskModel.Version" 
+                                <li id="@taskModel.Name" type="DeployInstall" deployType="@taskModel.Type" version="@taskModel.Version" 
                                     machines="@taskModel.Machines.Aggregate("", (s, machine) => s + machine + ";").TrimEnd(';')">
-                                <a onclick="editDeployTask('@taskModel.Name')" href="#">@taskModel.Name</a>
-                                <a class="pull-right" style="padding-left: 10px" href="@Url.Action("GetXmlFile", "Task", new { taskId = Model.Task.Id, childTaskName = task.Name })">
-                                    <i class="icon-download-alt" data-toggle="tooltip" rel="tooltip" title="Download XML file"></i>
-                                </a>
-                                <button type="button" class="close" aria-hidden="true" onclick="removeItem(this)">×</button>
-                            </li>
+                                    <a onclick="editDeployTask('@taskModel.Name')" href="#">@taskModel.Name</a>
+                                    <a class="pull-right" style="padding-left: 10px" href="@Url.Action("GetXmlFile", "Task", new { taskId = Model.Task.Id, childTaskName = task.Name })">
+                                        <i class="icon-download-alt" data-toggle="tooltip" rel="tooltip" title="Download XML file"></i>
+                                    </a>
+                                    <button type="button" class="close" aria-hidden="true" onclick="removeItem(this)">×</button>
+                                </li>
                             }
                             else if (task.TaskType == TaskType.TestSuiteTrunk || task.TaskType == TaskType.TestSuiteRelease)
                             {
-                                var taskModel = TestSuiteModel.GetFromXmlFile(task.File);
-                            <li id="@taskModel.Name" type="@task.TaskType.ToString()" machine="@taskModel.Machine">
-                                <a onclick="editTestSuiteTask(this)" href="#">@taskModel.Name</a>
-                                <a class="pull-right" data-toggle="tooltip" rel="tooltip" title="Download XML file" style="padding-left: 10px" href="@Url.Action("GetXmlFile", "Task", new { taskId = Model.Task.Id, childTaskName = task.Name })"><i class="icon-download-alt"></i></a>
-                                <button type="button" class="close pull-right" aria-hidden="true" onclick="removeItem(this)">×</button>
-                                <ol style="display: none">
-                                    @foreach (var test in taskModel.Tests)
-                                    {
-                                        var visibleProperties = test.VisibleProperties(new string[0]);
-                                        var properties = visibleProperties.Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)
-                                             || x.PropertyType == typeof(bool)).Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(test) + "'");
-                                        <li  testtype="@test.GetType().Name" @Html.Raw(properties)>
-                                            <a href="#" onclick="editTestModal(this)">@test.GetType().Name</a>
-                                            <button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button>
-                                            @{
-                                        foreach (var property in visibleProperties.Where(x => x.PropertyType.Name.Contains("List")))
+                                var taskModel = TestSuiteModel.GetFromXmlFile(task.File, task.TaskType == TaskType.TestSuiteTrunk);
+                                <li id="@taskModel.Name" type="@task.TaskType.ToString()" machine="@taskModel.Machine">
+                                    <a onclick="editTestSuiteTask(this)" href="#">@taskModel.Name</a>
+                                    <a class="pull-right" data-toggle="tooltip" rel="tooltip" title="Download XML file" style="padding-left: 10px" href="@Url.Action("GetXmlFile", "Task", new { taskId = Model.Task.Id, childTaskName = task.Name })"><i class="icon-download-alt"></i></a>
+                                    <button type="button" class="close pull-right" aria-hidden="true" onclick="removeItem(this)">×</button>
+                                    <ol style="display: none">
+                                        @foreach (var test in taskModel.Tests)
                                         {
-                                                <ul id="@(property.Name + "HiddenList")" style="display: none;" class="sortable">
-
-                                                    @{
-                                            var enumerable = ((IEnumerable)property.GetValue(test)).Cast<object>().Skip(1);
-                                                    }
-                                                    @foreach (var item in enumerable)
+                                            var visibleProperties = test.VisibleProperties(new string[0]);
+                                            var properties = visibleProperties.Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)
+                                                                                          || x.PropertyType == typeof(bool)).Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(test) + "'");
+                                            <li  testtype="@test.GetType().Name" @Html.Raw(properties)>
+                                                <a href="#" onclick="editTestModal(this)">@test.GetType().Name</a>
+                                                <button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button>
+                                                @{
+                                                    foreach (var property in visibleProperties.Where(x => x.PropertyType.Name.Contains("List")))
                                                     {
-                                                        var childPropertyInfos = item.VisibleProperties(new string[0]).Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string)
-                                                            || x.PropertyType == typeof(int) || x.PropertyType == typeof(bool)).ToList();
-                                                        var childProperties = childPropertyInfos.Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(item) + "'");
-                                                        var name = "";
-                                                        var genericType = property.PropertyType.GenericTypeArguments.First();
+                                                        <ul id="@(property.Name + "HiddenList")" style="display: none;" class="sortable">
 
-                                                        if (genericType == typeof(string) || genericType.IsEnum || genericType == typeof(int) || genericType == typeof(bool))
-                                                        {
-                                                            name = @item.ToString();
-                                                            childProperties = "item='" + name + "'";
-                                                        }
-                                                        else
-                                                        {
-                                                            name = @childPropertyInfos.First().GetValue(item).ToString();
-                                                        }
+                                                            @{
+                                                                var enumerable = ((IEnumerable)property.GetValue(test)).Cast<object>().Skip(1);
+                                                            }
+                                                            @foreach (var item in enumerable)
+                                                            {
+                                                                var childPropertyInfos = item.VisibleProperties(new string[0]).Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string)
+                                                                                                                                          || x.PropertyType == typeof(int) || x.PropertyType == typeof(bool)).ToList();
+                                                                var childProperties = childPropertyInfos.Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(item) + "'");
+                                                                var name = "";
+                                                                var genericType = property.PropertyType.GenericTypeArguments.First();
+
+                                                                if (genericType == typeof(string) || genericType.IsEnum || genericType == typeof(int) || genericType == typeof(bool))
+                                                                {
+                                                                    name = @item.ToString();
+                                                                    childProperties = "item='" + name + "'";
+                                                                }
+                                                                else
+                                                                {
+                                                                    name = @childPropertyInfos.First().GetValue(item).ToString();
+                                                                }
                             
-                                                        <li @Html.Raw(childProperties)>
-                                                            <a href='#' onclick="editListItem('@genericType.FullName', this); return false;">
-                                                                @name
-                                                            </a>
-                                                            <button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button>
-                                                        </li>
+                                                                <li @Html.Raw(childProperties)>
+                                                                    <a href='#' onclick="editListItem('@genericType.FullName', this); return false;">
+                                                                        @name
+                                                                    </a>
+                                                                    <button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button>
+                                                                </li>
+                                                            }
+                                                        </ul>
                                                     }
-                                                </ul>
+                                                }
+                                            </li>
                                         }
-                                            }
-                                        </li>
-                                    }
-                                </ol>
-                            </li>
+                                    </ol>
+                                </li>
                             }
                         }
                         @if (!Model.ChildTasks.Any())
@@ -153,7 +153,7 @@
                     <div class="btn-group">
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Add new<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a data-toggle="modal" href="#DeployInstallJobModal">DeployInstall Task</a></li>
+                            <li><a data-toggle="modal" href="#DeployInstallJobModal">DeployInstall Job</a></li>
                             <li class="divider"></li>
                             <li><a data-toggle="modal" href="#" onclick="showNewTestSuite(true); return false;">Test Suite for Trunk</a></li>
                             <li><a data-toggle="modal" href="#" onclick="showNewTestSuite(false); return false;">Test Suite for Release</a></li>
