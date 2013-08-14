@@ -1,12 +1,15 @@
 ﻿@using BootstrapSupport
 @using BootstrapSupport.HtmlHelpers
 @using TestControlTool.Core.Implementations
+@using TestControlTool.Core.Models
 @using TestControlTool.Web.Controllers
 @using TestControlTool.Web.Models
 @model IEnumerable<MachineModel>  
 @{
     ViewBag.Title = "Machines list";
+    Html.RenderPartial("MachineConfiguratingModal", new MachineConfigurationModel());
 }
+<div id="alertArea" style="display: none;"></div>
 <h4>Machines</h4>
 <table class="table table-striped">
     <caption></caption>
@@ -38,9 +41,6 @@
             <td>
                 <a href="@Url.Action("Edit", "Machine", new { Id = machineModel.Id })" data-toggle="tooltip" title="Edit machine" rel="tooltip"><i class="icon-pencil"></i></a>
             </td>
-            <td id ="@("Machine" + machineModel.Id + "Configure")">
-                <a href="#" onclick="ConfigureMachine('@machineModel.Id'); return false;" data-toggle="tooltip" title="Initial machine configuration" rel="tooltip"><i class="icon-cog"></i></a>
-            </td>
             <td>
                 <button rel="tooltip" type='button' class='close' aria-hidden='true' style="float: none" onclick="removeMachine('@machineModel.Id');" title="Delete machine" data-toggle="tooltip">×</button>
             </td>
@@ -53,57 +53,19 @@
     <div class="btn-group">
         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Create new<span class="caret"></span></a>
         <ul class="dropdown-menu">
-            <li><a href="@Url.Action("Create", "Machine", new { destinationType = VMServerType.VCenter})">VCenter Machine</a></li>
-            <li><a href="@Url.Action("Create", "Machine", new { destinationType = VMServerType.HyperV})">HyperV Machine</a></li>
+            <li><a href="@Url.Action("Create", "Machine", new { destinationType = VMServerType.VCenter })">VCenter Machine</a></li>
+            <li><a href="@Url.Action("Create", "Machine", new { destinationType = VMServerType.HyperV })">HyperV Machine</a></li>
         </ul>
     </div>
+    
+    <a class="btn" href="#" onclick="showMachineConfiguratingModal(); return false;">Configure Machine</a>
 </p>
 <script type="text/javascript">
     function removeMachine(id) {
         window.location.href = '@Url.Action("Delete", "Machine")/' + id;
     }
-
-    $(document).ready(function() {
-        RefreshStatuses();
-    });
     
-    function ConfigureMachine(id) {
-        $.ajax({
-            url: '@Url.Action("Configure", "Machine")',
-            data: { Id: id },
-            dataType: 'json'
-        }).done(function () {
-            RefreshStatuses();
-        });
+    function showMachineConfiguratingModal() {
+        $('#MachineConfiguratingModal').modal('show');
     }
-
-    function RefreshStatuses() {
-        $.ajax({
-            url: '@Url.Action("GetMachinesConfiguringStatuses", "Machine")',
-            dataType: 'json'
-        }).done(function (data) {
-            $('td[id^=Machine][id$=Configure]').each(function () {
-                var link = $(this).find('a');
-                var id = $(this).attr('id').replace('Machine', '').replace('Configure', '');
-
-                if (data[id] < 0) {
-                    link.html('<i class="icon-cog"></i>');
-                    link.attr('onclick', 'ConfigureMachine("' + id + '")');
-                    link.attr('title', 'Initial machine configuration');
-                    link.attr('data-original-title', 'Initial machine configuration');
-                } else {
-                    link.html('<img src="@Url.Content("~/Content/images/select2-spinner.gif")">');
-                    link.attr('onclick', 'return false');
-                    link.attr('title', data[id] + '%');
-                    link.attr('data-original-title', data[id] + '%');
-                }
-            });
-        });
-    }
-    
-    setInterval(function () {
-        RefreshStatuses();
-    }, 5000);
-    
-    ShowMachines();
 </script>

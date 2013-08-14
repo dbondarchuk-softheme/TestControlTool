@@ -145,7 +145,7 @@ namespace TestControlTool.Core.Helpers
             //existing desktop.
 
             si.lpDesktop = @"WinSta0\Default"; //Modify as needed
-            si.dwFlags = STARTF_USESHOWWINDOW | STARTF_FORCEONFEEDBACK | STARTF_USESTDHANDLES;
+            si.dwFlags = STARTF_USESHOWWINDOW | STARTF_FORCEONFEEDBACK;
             si.wShowWindow = SW_SHOW;
             //Set other si properties as required.
 

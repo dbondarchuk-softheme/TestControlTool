@@ -10,35 +10,69 @@
     {
         if (property.PropertyType == typeof(string) || property.PropertyType == typeof(int))
         {
-            @Html.Label(property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name })
-            <div class="controls">
-                @Html.TextBox(property.Name, "", new { @class = "input-xlarge" })
-                @Html.ValidationMessage(property.Name, null, new { @class = "help-inline" })
-            </div>
+    @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name })
+    <div class="controls">
+        @Html.TextBox(property.Name, "", new { @class = "input-xlarge" })
+        @Html.ValidationMessage(property.Name, null, new { @class = "help-inline" })
+    </div>
         }
         else if (property.PropertyType.IsEnum)
         {
-            @Html.Label(property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name })
-            <div class="controls">
-                @Html.EnumDropDownList(property.Name, property.PropertyType)
-            </div>
+    @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name })
+    <div class="controls">
+        @Html.EnumDropDownList(property.Name, property.PropertyType)
+    </div>
         }
         else if (property.PropertyType == typeof(bool))
         {
-            @Html.Label(property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name, @style = "display:inline;" })
-            <div class="controls" style="display: inline; margin-left: 1em;">
-                @Html.CheckBox(property.Name, false, new { @class = "input-xlarge" })
-                @Html.ValidationMessage(property.Name, null, new { @class = "help-inline" })
-            </div>
+    @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name, @style = "display:inline;" })
+    <div class="controls" style="display: inline; margin-left: 1em;">
+        @Html.CheckBox(property.Name, false, new { @class = "input-xlarge" })
+        @Html.ValidationMessage(property.Name, null, new { @class = "help-inline" })
+    </div>
         }
         else if (property.PropertyType.Name.Contains("List"))
         {
-            <button type="button" class="close" aria-hidden="true" onclick="loadListItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@property.Name');" title="Add new item">+</button>
-            @Html.Label(property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name })
+    <div class="well">
+        <button type="button" class="close" aria-hidden="true" onclick="loadListItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@property.Name');" title="Add new item">+</button>
+        @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name })
+        <div class="controls">
+            <ul style="padding-left: 20%;" class="sortable" id="@property.Name">
+            </ul>
+        </div>
+    </div>
+        }
+        else
+        {
+    <div class="well" style="margin-left: 5px;">
+        @foreach (var childProperty in property.PropertyType.VisibleProperties(new string[0]))
+        {
+            var childPropertyName = property.Name + "_" + childProperty.Name;
+            if (childProperty.PropertyType == typeof(string) || property.PropertyType == typeof(int))
+            {
+            @Html.Label(childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label", @for = childPropertyName })
             <div class="controls">
-                <ul style="padding-left: 20%;" class="sortable" id="@property.Name">
-                </ul>
+                @Html.TextBox(childPropertyName, "", new { @class = "input-xlarge" })
+                @Html.ValidationMessage(childPropertyName, null, new { @class = "help-inline" })
             </div>
+            }
+            else if (childProperty.PropertyType.IsEnum)
+            {
+            @Html.Label(childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label", @for = childPropertyName })
+            <div class="controls">
+                @Html.EnumDropDownList(childPropertyName, childProperty.PropertyType)
+            </div>
+            }
+            else if (childProperty.PropertyType == typeof(bool))
+            {
+            @Html.Label(childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label", @for = childPropertyName, @style = "display:inline;" })
+            <div class="controls" style="display: inline; margin-left: 1em;">
+                @Html.CheckBox(childPropertyName, false, new { @class = "input-xlarge" })
+                @Html.ValidationMessage(childPropertyName, null, new { @class = "help-inline" })
+            </div>
+            }
+        }
+    </div>
         }
     }
 }
@@ -50,37 +84,37 @@
 
     function editListItem(type, obj) {
         $('#ListItemsModalDiv').load('@Url.Action("ListItemModal", "Task")', { typeName: type, trunk: isTrunk }, function () {
-                $('#ListItemsLabel').text($('#ListItemsLabel').text().replace('Add new', 'Edit'));
-                $('#ListItemsButton').val('Apply');
+            $('#ListItemsLabel').text($('#ListItemsLabel').text().replace('Add new', 'Edit'));
+            $('#ListItemsButton').val('Apply');
 
-                var attributes = $(obj).parent().listAttributes();
+            var attributes = $(obj).parent().listAttributes();
 
-                if (attributes.length == 1 && attributes[0] == 'item') {
-                    $('#itemsProperties').find('input[type!=hidden],select').first().val($(obj).parent().attr('item'));
-                } else {
-                    for (var i = 0; i < attributes.length; i++) {
-                        $('#itemsProperties').find('input[type!=hidden][type!=checkbox],select').each(function () {
-                            if ($(this).attr('id').toLowerCase() == attributes[i].toLowerCase()) {
-                                $(this).val($(obj).parent().attr(attributes[i]));
-                            }
-                        });
-                        $('#itemsProperties').find('input[type=checkbox]').each(function () {
-                            if ($(this).attr('id').toLowerCase() == attributes[i].toLowerCase()) {
-                                $(this).attr('checked', $(obj).parent().attr(attributes[i]).toLowerCase() == 'true');
-                            }
-                        });
-                    }
+            if (attributes.length == 1 && attributes[0] == 'item') {
+                $('#itemsProperties').find('input[type!=hidden],select').first().val($(obj).parent().attr('item'));
+            } else {
+                for (var i = 0; i < attributes.length; i++) {
+                    $('#itemsProperties').find('input[type!=hidden][type!=checkbox],select').each(function () {
+                        if ($(this).attr('id').toLowerCase() == attributes[i].toLowerCase()) {
+                            $(this).val($(obj).parent().attr(attributes[i]));
+                        }
+                    });
+                    $('#itemsProperties').find('input[type=checkbox]').each(function () {
+                        if ($(this).attr('id').toLowerCase() == attributes[i].toLowerCase()) {
+                            $(this).attr('checked', $(obj).parent().attr(attributes[i]).toLowerCase() == 'true');
+                        }
+                    });
                 }
+            }
 
-                listItemToEdit = $(obj).parent();
-                isEditListItem = true;
+            listItemToEdit = $(obj).parent();
+            isEditListItem = true;
 
-                $('#ListItemsModal').modal('show');
-            });
-        }
+            $('#ListItemsModal').modal('show');
+        });
+    }
 
-        function loadListItemsModal(type, list) {
-            $('#ListItemsModalDiv').load('@Url.Action("ListItemModal", "Task")', { typeName: type, trunk: isTrunk }, function () {
+    function loadListItemsModal(type, list) {
+        $('#ListItemsModalDiv').load('@Url.Action("ListItemModal", "Task")', { typeName: type, trunk: isTrunk }, function () {
             listName = list;
             $('#ListItemsModal').modal('show');
         });

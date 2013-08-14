@@ -5,6 +5,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using BootstrapMvcSample.Controllers;
@@ -343,15 +344,20 @@ namespace TestControlTool.Web.Controllers
 
             try
             {
-                file.SaveAs(ConfigurationManager.AppSettings["TasksFolder"] + "\\" + fileName);
+                file.SaveAs(ConfigurationManager.AppSettings["TasksFolder"] + "\\Temp\\" + fileName);
 
-                var model = TestSuiteModel.GetFromXmlFile(fileName, trunk, machine);
+                var model = TestSuiteModel.GetFromXmlFile("Temp\\" + fileName, trunk, machine);
+
+                if (!Regex.IsMatch(model.Name, @"^[a-zA-Z0-9_]+$"))
+                {
+                    return Content("error4");
+                }
 
                 return View("UploadedTestSuite", model);
             }
             catch (Exception e)
             {
-                return Content("error3");
+                return Content("error3\n" + e.Message);
             }
         }
         
@@ -448,7 +454,8 @@ namespace TestControlTool.Web.Controllers
                         Machines = TestControlToolApplication.AccountController.CachedMachines.Where(x => task.Value["machines"].Split(';').Contains(x.Id.ToString())).Select(x => x.Id)/* task.Value["machines"].Split(';').Select(x => new Guid(x))*/,
                         Type = (DeployInstallType)Enum.Parse(typeof(DeployInstallType), task.Value["deploytype"], true),
                         Name = task.Value["id"],
-                        Version = task.Value["version"]
+                        Version = task.Value["version"],
+                        Build = task.Value["build"]
                     };
 
                     taskType = TaskType.DeployInstall;
@@ -473,7 +480,7 @@ namespace TestControlTool.Web.Controllers
 
                         var attributesToIgnore = new[] { "testtype", "style", "class", "id" };
 
-                        foreach (var attribute in testKey.Where(x => !attributesToIgnore.Contains(x.Key.ToLowerInvariant())))
+                        foreach (var attribute in testKey.Where(x => !attributesToIgnore.Contains(x.Key.ToLowerInvariant()) && !x.Key.Contains('.')))
                         {
                             var property = properties.SingleOrDefault(x => x.Name.ToLowerInvariant() == attribute.Key.ToLowerInvariant());
 
@@ -501,6 +508,54 @@ namespace TestControlTool.Web.Controllers
 
                                 property.SetValue(test, value);
                             }
+                        }
+
+                        var complexProperties =
+                            testKey.Where(x => x.Key.Contains('_')).GroupBy(x => x.Key.ToLowerInvariant().Split('_')[0])
+                                .ToDictionary(x => x.Key,
+                                              x => x.Select(y => new KeyValuePair<string, string>(y.Key.ToLowerInvariant().Split('_')[1], y.Value)).ToList());
+                            
+                        foreach (var complexPropertyPair in complexProperties)
+                        {
+                            var property = properties.SingleOrDefault(x => x.Name.ToLowerInvariant() == complexPropertyPair.Key);
+
+                            if (property == null) continue;
+
+                            var instance = Activator.CreateInstance(property.PropertyType);
+                            var childProperties = property.PropertyType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead);
+
+                            foreach (var complexProperty in complexPropertyPair.Value)
+                            {
+                                var childProperty = childProperties
+                                    .SingleOrDefault(x => x.Name.ToLowerInvariant() == complexProperty.Key);
+
+                                if (childProperty == null) continue;
+
+                                if (childProperty.PropertyType == typeof(string))
+                                {
+                                    childProperty.SetValue(instance, complexProperty.Value);
+                                }
+                                else if (childProperty.PropertyType.IsEnum)
+                                {
+                                    childProperty.SetValue(instance, complexProperty.Value.ConvertToEnum(childProperty.PropertyType));
+                                }
+                                else if (childProperty.PropertyType == typeof(int))
+                                {
+                                    int value;
+                                    int.TryParse(complexProperty.Value, out value);
+
+                                    childProperty.SetValue(instance, value);
+                                }
+                                else if (childProperty.PropertyType == typeof(bool))
+                                {
+                                    bool value;
+                                    bool.TryParse(complexProperty.Value, out value);
+
+                                    childProperty.SetValue(instance, value);
+                                }
+                            }
+
+                            property.SetValue(test, instance);
                         }
 
                         foreach (var parameters in allParameters.Where(x => x.Key.ToUpperInvariant() == testKey["id"].ToUpperInvariant()).Select(x => x.Value))

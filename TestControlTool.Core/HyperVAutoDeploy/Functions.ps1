@@ -411,6 +411,6 @@ function PrepareEnvironment($Server, $ServerUserName, $ServerPassword, $Snapshot
 		else{
 			LinuxRemoteExecute $MachineName $MachineUserName $MachinePassword
 		}
+		WaitForServiceToStart $MachineName $MachineUserName $MachinePassword $ServiceToWait
 	}
-	#WaitForServiceToStart $MachineName $MachineUserName $MachinePassword $ServiceToWait
 }

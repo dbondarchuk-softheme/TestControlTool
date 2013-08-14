@@ -49,7 +49,7 @@
         {
             using (Html.ControlGroupFor(property.Name))
             {
-                @Html.Label(property.Name.ToSeparatedWords(), new { @class = "control-label" })
+                @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label" })
                 <div class="controls">
                     @if (property.PropertyType == typeof(string) || property.PropertyType == typeof(int))
                     {

@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CastleResolver.cs" />
+    <Compile Include="HelpAttribute.cs" />
     <Compile Include="Implementations\DummyLogger.cs" />
     <Compile Include="Exceptions\AddExistingVMServerException.cs" />
     <Compile Include="Exceptions\NoSuchVMServerException.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Implementations\TestSuiteTrunkTask.cs" />
     <Compile Include="Models\ChildTaskModel.cs" />
     <Compile Include="Models\DeployInstallTaskContainer.cs" />
+    <Compile Include="Models\MachineConfigurationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +181,15 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Models.edmx</DependentUpon>
       <LastGenOutput>Models.cs</LastGenOutput>
+    </None>
+    <None Include="MachineConfiguring\ConfigureChallengerVM.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MachineConfiguring\ConfigureVCenterMachine.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MachineConfiguring\Logging.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
     <None Include="AutoDeploy\AutodeploymentConsole.exe.config">

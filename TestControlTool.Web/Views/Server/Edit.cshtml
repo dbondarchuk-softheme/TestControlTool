@@ -16,7 +16,7 @@
         @foreach (var property in Model.VisibleProperties(ServerModel.NotShownProperties))
         {
             using(Html.ControlGroupFor(property.Name)){
-                @Html.Label(property.GetLabel(), new { @class = "control-label" })
+                @Html.Label(property.Name, property.GetLabel(), new { @class = "control-label" })
                  <div class="controls">
                      @if (property.PropertyType.IsEnum)
                      {

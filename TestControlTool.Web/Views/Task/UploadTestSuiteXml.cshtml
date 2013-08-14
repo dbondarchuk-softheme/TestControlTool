@@ -124,8 +124,10 @@
             $('#UploadTestSuiteXmlValidation').text('You don\'t have such task');
         } else if (responseText == "error2") {
             $('#UploadTestSuiteXmlValidation').text('Please select xml file');
-        } else if (responseText == "error3") {
-            $('#UploadTestSuiteXmlValidation').text('Some error occured during parsing a file. Please check your xml file');
+        } else if (responseText.split('\n', 1)[0] == "error3") {
+            $('#UploadTestSuiteXmlValidation').html('Some error occured during parsing a file. Please check your xml file.<br>' + responseText.split('\n', 2)[1]);
+        } else if(responseText == "error4") {
+            $('#UploadTestSuiteXmlValidation').text('File\'s name should contain only letters, numbers and \'_\' symbol');
         } else {
             $('#currentTasks').append($(responseText));
             $('#UploadTestSuiteXmlModal').modal('hide');

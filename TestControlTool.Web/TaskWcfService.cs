@@ -8,6 +8,182 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+/*namespace TestControlTool.Core.Models
+{
+    using System.Runtime.Serialization;
+    
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="MachineConfigurationModel", Namespace="http://schemas.datacontract.org/2004/07/TestControlTool.Core.Models")]
+    public partial class MachineConfigurationModel : object, System.Runtime.Serialization.IExtensibleDataObject
+    {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private string AutoLogonPasswordField;
+        
+        private string AutoLogonUserNameField;
+        
+        private string ComputerNameField;
+        
+        private string DefaultGatewayField;
+        
+        private string Dns1Field;
+        
+        private string Dns2Field;
+        
+        private string IPAddressField;
+        
+        private string SharedFolderPathField;
+        
+        private string SubnetMaskField;
+        
+        private string TimeZoneNameField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AutoLogonPassword
+        {
+            get
+            {
+                return this.AutoLogonPasswordField;
+            }
+            set
+            {
+                this.AutoLogonPasswordField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AutoLogonUserName
+        {
+            get
+            {
+                return this.AutoLogonUserNameField;
+            }
+            set
+            {
+                this.AutoLogonUserNameField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ComputerName
+        {
+            get
+            {
+                return this.ComputerNameField;
+            }
+            set
+            {
+                this.ComputerNameField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string DefaultGateway
+        {
+            get
+            {
+                return this.DefaultGatewayField;
+            }
+            set
+            {
+                this.DefaultGatewayField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Dns1
+        {
+            get
+            {
+                return this.Dns1Field;
+            }
+            set
+            {
+                this.Dns1Field = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Dns2
+        {
+            get
+            {
+                return this.Dns2Field;
+            }
+            set
+            {
+                this.Dns2Field = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string IPAddress
+        {
+            get
+            {
+                return this.IPAddressField;
+            }
+            set
+            {
+                this.IPAddressField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SharedFolderPath
+        {
+            get
+            {
+                return this.SharedFolderPathField;
+            }
+            set
+            {
+                this.SharedFolderPathField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SubnetMask
+        {
+            get
+            {
+                return this.SubnetMaskField;
+            }
+            set
+            {
+                this.SubnetMaskField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string TimeZoneName
+        {
+            get
+            {
+                return this.TimeZoneNameField;
+            }
+            set
+            {
+                this.TimeZoneNameField = value;
+            }
+        }
+    }
+}*/
 
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -28,16 +204,10 @@ public interface ITaskWcfService
     System.Threading.Tasks.Task<bool> StopTaskAsync(System.Guid id);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskWcfService/ConfigureMachine", ReplyAction="http://tempuri.org/ITaskWcfService/ConfigureMachineResponse")]
-    bool ConfigureMachine(System.Guid id);
+    bool ConfigureMachine(TestControlTool.Core.Models.MachineConfigurationModel machineConfigurationModel);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskWcfService/ConfigureMachine", ReplyAction="http://tempuri.org/ITaskWcfService/ConfigureMachineResponse")]
-    System.Threading.Tasks.Task<bool> ConfigureMachineAsync(System.Guid id);
-    
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskWcfService/GetStatusOfConfiguring", ReplyAction="http://tempuri.org/ITaskWcfService/GetStatusOfConfiguringResponse")]
-    int GetStatusOfConfiguring(System.Guid id);
-    
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskWcfService/GetStatusOfConfiguring", ReplyAction="http://tempuri.org/ITaskWcfService/GetStatusOfConfiguringResponse")]
-    System.Threading.Tasks.Task<int> GetStatusOfConfiguringAsync(System.Guid id);
+    System.Threading.Tasks.Task<bool> ConfigureMachineAsync(TestControlTool.Core.Models.MachineConfigurationModel machineConfigurationModel);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -94,23 +264,13 @@ public partial class TaskWcfServiceClient : System.ServiceModel.ClientBase<ITask
         return base.Channel.StopTaskAsync(id);
     }
     
-    public bool ConfigureMachine(System.Guid id)
+    public bool ConfigureMachine(TestControlTool.Core.Models.MachineConfigurationModel machineConfigurationModel)
     {
-        return base.Channel.ConfigureMachine(id);
+        return base.Channel.ConfigureMachine(machineConfigurationModel);
     }
     
-    public System.Threading.Tasks.Task<bool> ConfigureMachineAsync(System.Guid id)
+    public System.Threading.Tasks.Task<bool> ConfigureMachineAsync(TestControlTool.Core.Models.MachineConfigurationModel machineConfigurationModel)
     {
-        return base.Channel.ConfigureMachineAsync(id);
-    }
-    
-    public int GetStatusOfConfiguring(System.Guid id)
-    {
-        return base.Channel.GetStatusOfConfiguring(id);
-    }
-    
-    public System.Threading.Tasks.Task<int> GetStatusOfConfiguringAsync(System.Guid id)
-    {
-        return base.Channel.GetStatusOfConfiguringAsync(id);
+        return base.Channel.ConfigureMachineAsync(machineConfigurationModel);
     }
 }

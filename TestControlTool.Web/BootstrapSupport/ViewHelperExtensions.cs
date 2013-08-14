@@ -112,8 +112,14 @@ namespace BootstrapSupport
 
         public static string GetLabel(this PropertyInfo propertyInfo)
         {
-            var meta = ModelMetadataProviders.Current.GetMetadataForProperty(null, propertyInfo.DeclaringType, propertyInfo.Name);
-            return meta.GetDisplayName();
+            var displayAttribute = propertyInfo.GetCustomAttribute<DisplayAttribute>();
+
+            if (displayAttribute != null && !string.IsNullOrEmpty(displayAttribute.Name))
+            {
+                return displayAttribute.Name;
+            }
+
+            return propertyInfo.Name.ToSeparatedWords();
         }
 
         public static string ToSeparatedWords(this string value)

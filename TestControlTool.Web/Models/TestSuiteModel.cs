@@ -37,7 +37,7 @@ namespace TestControlTool.Web.Models
 
             var suiteType = GetTestPerformerType("Suite", isTrunk);
             var testType = GetTestPerformerType("test", isTrunk);
-
+            
             var suite = suiteType.DeserializeFromFile(file, (isTrunk ? TestControlToolApplication.TypesHelper.ScriptsTrunkTypes
                 : TestControlToolApplication.TypesHelper.ScriptsReleaseTypes).Union(new[] { suiteType, testType }).Where(x => !(x.IsAbstract && x.IsSealed)));
 
@@ -45,13 +45,14 @@ namespace TestControlTool.Web.Models
             xmlDocument.Load(file);
 
             var node = xmlDocument.SelectSingleNode("/Suite/Machine");
+            var machine = machineId ?? (node != null ? new Guid(node.Attributes["id"].Value) : Guid.Empty);
 
             var model = new TestSuiteModel
                 {
                     Name = name,
                     Tests = (IEnumerable<object>)(suite.GetType().GetProperty("Tests").GetValue(suite)),
                     IsTrunk = isTrunk,
-                    Machine = machineId ?? new Guid(node.Attributes["id"].Value)
+                    Machine = machine
                 };
 
             return model;
@@ -88,7 +89,7 @@ namespace TestControlTool.Web.Models
             var insertString = "<Machine id=\"MACHINE_ID\" address=\"{$MACHINE_ID/Address}\" username=\"{$MACHINE_ID/UserName}\" password=\"{$MACHINE_ID/Password}\" share=\"{$MACHINE_ID/Share}\" />"
                 .Replace("MACHINE_ID", Machine.ToString());
 
-            content = content.Insert(content.IndexOf("<Name", System.StringComparison.OrdinalIgnoreCase), insertString);
+            content = content.Insert(content.IndexOf("<Tests", System.StringComparison.OrdinalIgnoreCase), insertString);
 
             File.WriteAllText(file, content, new UnicodeEncoding());
 

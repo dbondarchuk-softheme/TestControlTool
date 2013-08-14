@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using BootstrapSupport;
+using TestControlTool.Core;
 using TestControlTool.Core.Contracts;
 using TestControlTool.Web.BootstrapSupport;
 
@@ -35,7 +36,7 @@ namespace TestControlTool.Web.Models
 
         [Required]
         [Display(Name = "Virtual Machine Name")]
-        [Help(Title = "Virtual Machine Name", Message = "Name of the deployed virtual machine, without date and username (  ), i.e. 'Environment1-Core-w12-64-s12-1097 (10.35.174.111)'")]
+        [Help(Title = "Virtual Machine Name", Message = "Name of the deployed virtual machine, without date and username (will be added automatically), i.e. 'Environment1-Core-w12-64-s12-1097 (10.35.174.111)'")]
         public string VirtualMachineVMName { get; set; }
 
         [Required]

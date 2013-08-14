@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using TestControlTool.Core.Exceptions;
 using TestControlTool.Core.Implementations;
+using TestControlTool.Core.Models;
 using TestControlTool.Web.Models;
 
 namespace TestControlTool.Web.Controllers
@@ -124,38 +125,21 @@ namespace TestControlTool.Web.Controllers
             return View(model);
         }
 
-        public JsonResult Configure(Guid id)
+        [HttpPost]
+        public ActionResult Configure(MachineConfigurationModel machineConfigurationModel)
         {
-            var machine = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Machines.SingleOrDefault(x => x.Id == id);
-
-            if (machine == null)
-            {
-                throw new NoSuchMachineException(id);
-            }
+            machineConfigurationModel.OwnerUserName = User.Identity.Name;
 
             var taskWcfServiceClient = new TaskWcfServiceClient();
             taskWcfServiceClient.Open();
 
-            var result = taskWcfServiceClient.ConfigureMachine(id);
+            var result = taskWcfServiceClient.ConfigureMachine(machineConfigurationModel);
 
             taskWcfServiceClient.Close();
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
-        public JsonResult GetMachinesConfiguringStatuses()
-        {
-            var taskWcfServiceClient = new TaskWcfServiceClient();
-            taskWcfServiceClient.Open();
-
-            var result = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Machines
-                .ToDictionary(x => x.Id.ToString(), y => taskWcfServiceClient.GetStatusOfConfiguring(y.Id).ToString());
-
-            taskWcfServiceClient.Close();
-
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
-
+        
         private IEnumerable<ServerModel> GetServers(VMServerType type)
         {
             return TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).VMServers.Where(x => x.Type == type).Select(x => x.ToModel());

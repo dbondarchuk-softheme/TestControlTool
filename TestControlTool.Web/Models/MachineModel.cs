@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using BootstrapSupport;
+using TestControlTool.Core;
 using TestControlTool.Core.Contracts;
 using TestControlTool.Web.BootstrapSupport;
 

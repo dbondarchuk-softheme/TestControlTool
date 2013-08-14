@@ -122,7 +122,7 @@ namespace TestControlTool.Core.Implementations
 
         private void Logger(string message, VMServerType type)
         {
-            if (OutputDataGotHandler != null)
+            if (OutputDataGotHandler != null && message != null)
             {
                 var newMessage = message.Trim().Split('\n').Select(line => string.Format("[{0}]. {1}", type, line)).Aggregate(string.Empty, (seed, line) => seed + line + "\n").Trim();
 

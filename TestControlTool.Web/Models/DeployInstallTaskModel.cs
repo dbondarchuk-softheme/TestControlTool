@@ -21,6 +21,8 @@ namespace TestControlTool.Web.Models
 
         public string Version { get; set; }
 
+        public string Build { get; set; }
+
         public static DeployInstallTaskModel GetFromXmlFile(string file)
         {
             file = ConfigurationManager.AppSettings["TasksFolder"] + "\\" + file;
@@ -35,7 +37,8 @@ namespace TestControlTool.Web.Models
                     Machines = container.Machines,
                     Name = name,
                     Type = container.DeployInstallType,
-                    Version = container.BuildVersion
+                    Version = container.BuildVersion,
+                    Build = container.BuildNumber
                 };
         }
 
@@ -48,6 +51,7 @@ namespace TestControlTool.Web.Models
                     Machines = Machines.ToList(),
                     Files = new List<Pair<VMServerType, string>>(),
                     BuildVersion = Version,
+                    BuildNumber = Build,
                     DeployInstallType = Type
                 };
 
@@ -84,7 +88,7 @@ namespace TestControlTool.Web.Models
         {
             var sourceFile = File.ReadAllText(ConfigurationManager.AppSettings["TasksFolder"] + "\\VCenterAutodeploySource.xml");
 
-            sourceFile = sourceFile.Replace("{$BUILD_VERSION}", Version).Replace("{$ACTION_TYPE}", Type.ToString())
+            sourceFile = sourceFile.Replace("{$BUILD_VERSION}", Version).Replace("{$BUILD_NUMBER}", Build).Replace("{$ACTION_TYPE}", Type.ToString())
                 .Replace("SERVER_ID", item.Key.Id.ToString());
 
             var machineLine = sourceFile.Remove(sourceFile.IndexOf("</VM>", StringComparison.Ordinal))
@@ -111,7 +115,7 @@ namespace TestControlTool.Web.Models
 
             for (var i = 0; i < sourceFile.Length; i++)
             {
-                sourceFile[i] = sourceFile[i].Replace("{$BUILD_VERSION}", Version).Replace("{$ACTION_TYPE}", Type.ToString())
+                sourceFile[i] = sourceFile[i].Replace("{$BUILD_VERSION}", Version).Replace("{$BUILD_NUMBER}", Build).Replace("{$ACTION_TYPE}", Type.ToString())
                     .Replace("SERVER_ID", item.Key.Id.ToString());
             }
 

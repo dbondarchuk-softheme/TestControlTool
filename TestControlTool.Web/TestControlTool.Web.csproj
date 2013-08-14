@@ -182,7 +182,6 @@
     <Compile Include="App_Start\TrimModelBinder.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BootstrapSupport\ControlGroupExtensions.cs" />
-    <Compile Include="BootstrapSupport\HelpAttribute.cs" />
     <Compile Include="BootstrapSupport\HtmlHelpers\DisplayProperties.cs" />
     <Compile Include="BootstrapSupport\HtmlHelpers\EditorWithHelp.cs" />
     <Compile Include="BootstrapSupport\HtmlHelpers\GlyphIcons.cs" />
@@ -434,6 +433,7 @@
     <Content Include="Views\Server\Create.cshtml" />
     <Content Include="Views\Server\Edit.cshtml" />
     <Content Include="Views\Server\Details.cshtml" />
+    <Content Include="Views\Shared\MachineConfiguratingModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -465,7 +465,7 @@
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>18721</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:18723/</IISUrl>
+          <IISUrl>http://localhost:18721/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

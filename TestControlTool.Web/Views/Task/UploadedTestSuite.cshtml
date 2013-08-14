@@ -16,6 +16,14 @@
             var visibleProperties = test.VisibleProperties(new string[0]);
             var properties = visibleProperties.Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)
                 || x.PropertyType == typeof(bool)).Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(test) + "'");
+
+            foreach (var property in visibleProperties.Where(x => !(x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)
+                                                                                           || x.PropertyType == typeof(bool)) && !x.PropertyType.Name.Contains("List")))
+            {
+                properties += property.PropertyType.VisibleProperties(new string[0]).Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)
+                                                      || x.PropertyType == typeof(bool)).Aggregate("", (s, info) => s + " " + property.Name + "_" + info.Name + "='" + info.GetValue(property.GetValue(test)) + "'");
+
+            }
             <li  testtype="@test.GetType().Name" @Html.Raw(properties)>
                 <a href="#" onclick="editTestModal(this)">@test.GetType().Name</a>
                 <button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button>
@@ -55,6 +63,13 @@
                     </ul>
             }
                 }
+                @foreach(var property in visibleProperties.Where(x => !(x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)
+                                                                                          || x.PropertyType == typeof(bool))))
+                                                {
+                                                    var childProperties = visibleProperties.Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)
+                                                                                          || x.PropertyType == typeof(bool)).Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(test) + "'");
+                                                    <property id="@property.Name" @childProperties></property>
+                                                }
             </li>
         }
     </ol>

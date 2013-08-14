@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
+using BootstrapSupport;
 
 namespace TestControlTool.Web.BootstrapSupport.HtmlHelpers
 {
@@ -23,9 +24,13 @@ namespace TestControlTool.Web.BootstrapSupport.HtmlHelpers
             
             if (helpAttribute != null)
             {
+                var title = !string.IsNullOrWhiteSpace(helpAttribute.Title)
+                                ? helpAttribute.Title
+                                : property.Name.ToSeparatedWords();
+
                 additionalInfo.Add("data-toogle", "popover");
                 additionalInfo.Add("data-content", helpAttribute.Message);
-                additionalInfo.Add("data-title", helpAttribute.Title);
+                additionalInfo.Add("data-title", title);
                 additionalInfo.Add("data-trigger", "focus");
                 additionalInfo.Add("rel", "popover");
             }

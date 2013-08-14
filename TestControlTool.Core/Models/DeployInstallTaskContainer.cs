@@ -46,6 +46,11 @@ namespace TestControlTool.Core.Models
         public string BuildVersion { get; set; }
 
         /// <summary>
+        /// Build number to deploy
+        /// </summary>
+        public string BuildNumber { get; set; }
+
+        /// <summary>
         /// Version to deploy
         /// </summary>
         public DeployInstallType DeployInstallType { get; set; }

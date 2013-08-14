@@ -17,8 +17,8 @@ namespace TestControlTool.TaskService
         public void ProcessReport(Guid taskId, string taskName, string ownerName)
         {
             var report = GetZippedReports(taskId, taskName);
-            
-            SendEmail(ownerName, taskName, report);
+
+            SendEmail(ownerName, string.Format("TestControlTool. Report. {0}", DateTime.Now), "Look into the attachments", new[] { report });
         }
 
         private string GetZippedReports(Guid taskId, string taskName)
@@ -85,7 +85,7 @@ namespace TestControlTool.TaskService
             return zipFileName;
         }
 
-        public void SendEmail(string to, string taskName, string attachmentFileName)
+        public void SendEmail(string to, string subject, string body, string[] attachmentsFileName)
         {
             try
             {
@@ -95,11 +95,13 @@ namespace TestControlTool.TaskService
                     {
                         mail.From = new MailAddress(ConfigurationManager.AppSettings["SendFrom"]);
                         mail.To.Add(to);
-                        mail.Subject = string.Format("TestControlTool. Report. {0}", DateTime.Now);
-                        mail.Body = "Look into the attachments";
-                        
-                        var attachment = new Attachment(attachmentFileName);
-                        mail.Attachments.Add(attachment);
+                        mail.Subject = subject;
+                        mail.Body = body;
+
+                        foreach (var attachment in attachmentsFileName.Select(attachmentFileName => new Attachment(attachmentFileName)))
+                        {
+                            mail.Attachments.Add(attachment);
+                        }
 
                         smtpServer.Port = int.Parse(ConfigurationManager.AppSettings["SmtpPort"]);
                         smtpServer.Credentials =

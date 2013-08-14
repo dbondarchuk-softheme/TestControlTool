@@ -38,7 +38,15 @@
                 <select id="DeployInstallJobVersion">
                     <option>5.4.1</option>
                     <option>5.3.3</option>
+                    <option>5.3.4</option>
                 </select></label>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="DeployInstallJobBuild">
+                Build&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="text" id="DeployInstallJobBuild" data-toogle="popover" data-title="Build" data-content="Specify build to install. Leave empty if you want to install the latest build" data-trigger="focus" rel="popover" />
+                <span class="help-inline error" id="DeployInstallJobBuildValidation"></span>
+            </label>
         </div>
         <div class="control-group">
             <label class="control-label">Machines:</label>
@@ -78,6 +86,7 @@
         $('#DeployInstallJobName').val('');
         $('#DeployInstallJobType').val('@Enum.GetNames(typeof(DeployInstallType)).First()');
         $('#DeployInstallJobVersion').val('5.4.1');
+        $('#DeployInstallJobBuild').val('');
 
         $('ul#DeployInstallJobMachines li').each(function (i) {
             var checkbox = $(this).find('input[type=checkbox]');
@@ -118,6 +127,7 @@
         $('#' + name).attr('type', 'DeployInstall');
         $('#' + name).attr('deployType', $('#DeployInstallJobType').val());
         $('#' + name).attr('version', $('#DeployInstallJobVersion').val());
+        $('#' + name).attr('build', $('#DeployInstallJobBuild').val());
         $('#' + name).attr('machines', machines);
         $('#' + name).find('a').first().attr('onclick', "editDeployTask('" + $('#DeployInstallJobName').val() +"');");
         $('#' + name).find('a').first().text($('#DeployInstallJobName').val());
@@ -147,7 +157,7 @@
         }
 
         $('#currentTasks').append("<li id='" + $('#DeployInstallJobName').val() + "' type='DeployInstall' deployType='" + $('#DeployInstallJobType').val() + "' version='"
-            + $('#DeployInstallJobVersion').val() + "' machines='" + machines +
+            + $('#DeployInstallJobVersion').val() + "' build='" + $('#DeployInstallJobBuild').val() + "' machines='" + machines +
             "'><a onclick=\"editDeployTask('" + $('#DeployInstallJobName').val() + "')\" href='#'>" + $('#DeployInstallJobName').val() + "</a>" +
             "<button type='button' class='close' aria-hidden='true' onclick=\"removeItem(this)\">×</button></li>"
         );
@@ -159,7 +169,13 @@
         var name = $('#DeployInstallJobName').val();
 
         if (name.length == 0) {
-            $('#DeployInstallJobNameValidation').text('Please, check task\'s name');
+            $('#DeployInstallJobNameValidation').text('Please, enter job\'s name');
+            canSave = false;
+            return false;
+        }
+        
+        if (!(/^\w+$/.test(name))) {
+            $('#DeployInstallJobNameValidation').text('Job\'s name should contain only letters, numbers and \'_\' symbol');
             canSave = false;
             return false;
         }
@@ -207,4 +223,8 @@
 
         return machines;
     }
+    
+    $("#DeployInstallJobBuild").on("hidden", function (e) {
+        e.stopPropagation(); //Once popover is hidden stop the event from going to parent
+    });
 </script>

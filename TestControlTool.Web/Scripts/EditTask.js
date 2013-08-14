@@ -9,6 +9,7 @@ function editDeployTask(name) {
     $('#DeployInstallJobName').val(name);
     $('#DeployInstallJobType').val($('#' + name).attr('deployType'));
     $('#DeployInstallJobVersion').val($('#' + name).attr('version'));
+    $('#DeployInstallJobBuild').val($('#' + name).attr('build'));
     $('#EditDeployInstallJobName').val(name);
     $('#SaveDeployInstallJobButton').val('Apply');
 
@@ -194,7 +195,9 @@ function showErrorAllert() {
         "<p>Please, verify your data</p>");
 
     $('#errorAlert').bind('closed', function () {
-        $('#alertArea').hide();
+        if ($('#alertArea').children().length == 0) {
+            $('#alertArea').fadeOut('slow');
+        }
     });
 
     $('#alertArea').fadeIn('slow');

@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using System.Threading.Tasks;
+using TestControlTool.Core.Models;
 
 namespace TestControlTool.TaskService
 {
@@ -20,11 +21,7 @@ namespace TestControlTool.TaskService
         bool StopTask(Guid id);
 
         [OperationContract]
-        [WebGet(UriTemplate = "/ConfigureMachine/?id={id}", ResponseFormat = WebMessageFormat.Json)]
-        bool ConfigureMachine(Guid id);
-
-        [OperationContract]
-        [WebGet(UriTemplate = "/GetStatusOfConfiguring/?id={id}", ResponseFormat = WebMessageFormat.Json)]
-        int GetStatusOfConfiguring(Guid id);
+        [WebInvoke(Method = "POST", UriTemplate = "/ConfigureMachine/", ResponseFormat = WebMessageFormat.Json)]
+        bool ConfigureMachine(MachineConfigurationModel machineConfigurationModel);
     }
 }

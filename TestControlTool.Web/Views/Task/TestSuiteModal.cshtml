@@ -144,7 +144,13 @@
         var name = $('#TestSuiteName').val();
 
         if (name.length == 0) {
-            $('#TestSuiteNameValidation').text('Please, check task\'s name');
+            $('#TestSuiteNameValidation').text('Please, check job\'s name');
+            canSave = false;
+            return false;
+        }
+        
+        if (!(/^\w+$/.test(name))) {
+            $('#TestSuiteNameValidation').text('Job\'s name should contain only letters, numbers and \'_\' symbol');
             canSave = false;
             return false;
         }

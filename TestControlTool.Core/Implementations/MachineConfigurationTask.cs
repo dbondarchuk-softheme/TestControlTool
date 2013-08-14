@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestControlTool.Core.Contracts;
+using System.Threading;
+using TestControlTool.Core.Helpers;
+using TestControlTool.Core.Models;
 
 namespace TestControlTool.Core.Implementations
 {
@@ -14,37 +14,108 @@ namespace TestControlTool.Core.Implementations
         /// <summary>
         /// Machine to configure
         /// </summary>
-        public IMachine Machine { get; set; }
+        public MachineConfigurationModel MachineConfigurationModel { get; set; }
 
         /// <summary>
         /// Runs the configuration task
         /// </summary>
         public void Run()
         {
-            File.WriteAllText(ConfigurationManager.AppSettings["TasksFolder"] + "\\" + Machine.Id + ".ConfigurationTask.percentage", "50");
+            RunScript();
+            CopyLog();
         }
 
-        /// <summary>
-        /// Gets the status of the configuring
-        /// </summary>
-        /// <param name="machineId">Machine's id</param>
-        /// <returns>Percantage of the process or -1, if ta</returns>
-        public static int GetStatus(Guid machineId)
+        public string LogName
+        {
+            get { return ConfigurationManager.AppSettings["LogsFolder"] + "\\" + MachineConfigurationModel.ComputerName + ".log"; }
+        }
+
+        private string SharePath
+        {
+            get
+            {
+                return "\\\\" + MachineConfigurationModel.IPAddress + "\\" + MachineConfigurationModel.SharedFolderPath.Split('\\').Last();
+            }
+        }
+
+        /*private void SetExecutionPolicy()
+        {
+            var arguments = "\\\\" + MachineConfigurationModel.IPAddress + " -u " + MachineConfigurationModel.AutoLogonUserName
+                            + " -p " + MachineConfigurationModel.AutoLogonPassword + " powershell Set-ExecutionPolicy UnRestricted -force";
+
+            var startInfo = new ProcessStartInfo(ConfigurationManager.AppSettings["PsExec"], arguments)
+                {
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+            var process = Process.Start(startInfo);
+
+            process.OutputDataReceived += (obj, args) => Logger(args.Data);
+            process.ErrorDataReceived += (obj, args) => Logger(args.Data);
+
+            if (process == null)
+            {
+                throw new InvalidProgramException("Can't start process for set-execution policy");
+            }
+
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+
+            process.WaitForExit();
+        }*/
+
+        private void RunScript()
+        {
+            var arguments = "\\\\" + MachineConfigurationModel.IPAddress + " -u " + MachineConfigurationModel.AutoLogonUserName
+                            + " -p " + MachineConfigurationModel.AutoLogonPassword + " " + "powershell -executionpolicy bypass -file \"" +
+                            ConfigurationManager.AppSettings[
+                                MachineConfigurationModel.MachineType == VMServerType.VCenter
+                                    ? "VCenterMachineConfiguringScript"
+                                    : "HyperVMachineConfiguringScript"]
+                            + "\" \"" + MachineConfigurationModel.ComputerName + "\" \"" +
+                            MachineConfigurationModel.AutoLogonUserName + "\" \"" + MachineConfigurationModel.AutoLogonPassword
+                            + "\" \"" + MachineConfigurationModel.SharedFolderPath + "\" \"" +
+                            MachineConfigurationModel.IPAddress + "\" \"" + MachineConfigurationModel.SubnetMask
+                            + "\" \"" + MachineConfigurationModel.DefaultGateway + "\" \"" + MachineConfigurationModel.Dns1 +
+                            "\" \"" + MachineConfigurationModel.Dns2
+                            + "\" \"" + MachineConfigurationModel.TimeZoneName + "\"";
+
+            var processId = ProcessAsUser.Launch(ConfigurationManager.AppSettings["PsExec"] + " " + arguments);
+
+            var process = Process.GetProcessById(processId);
+            
+            process.WaitForExit();
+        }
+
+        private void CopyLog()
         {
             try
             {
-                var fileInfo = new FileInfo(ConfigurationManager.AppSettings["TasksFolder"] + "\\" + machineId + ".ConfigurationTask.percentage");
+               /* ProcessAsUser.Launch("net use " + SharePath + " /user:" + MachineConfigurationModel.AutoLogonUserName +
+                                     " " +
+                                     MachineConfigurationModel.AutoLogonPassword);*/
 
-                if (!fileInfo.Exists || (DateTime.UtcNow - fileInfo.LastAccessTimeUtc > new TimeSpan(3, 0, 0)))
-                {
-                    return -1;
-                }
+                Process.Start("net", "use " + SharePath + " /user:" + MachineConfigurationModel.AutoLogonUserName +
+                                     " " +
+                                     MachineConfigurationModel.AutoLogonPassword);
 
-                return int.Parse(File.ReadAllText(ConfigurationManager.AppSettings["TasksFolder"] + "\\" + machineId + ".ConfigurationTask.percentage"));
+                Thread.Sleep(2000);
+
+                File.Copy(SharePath + "\\LOG.log", LogName, true);
+
+                /*ProcessAsUser.Launch("net use " + SharePath + " /delete /y" +
+                                     MachineConfigurationModel.AutoLogonPassword);*/
+
+                Process.Start("net", "use " + SharePath + " /delete /y" +
+                                     MachineConfigurationModel.AutoLogonPassword);
             }
-            catch
+            catch(Exception e)
             {
-                return -1;
+                File.WriteAllText(@"D:\error.txt", e.Message);
             }
         }
     }

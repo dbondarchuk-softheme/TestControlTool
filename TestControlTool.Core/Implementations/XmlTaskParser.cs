@@ -83,7 +83,10 @@ namespace TestControlTool.Core.Implementations
 
         private static void Logger(ILogger logger, string childTaskName, string message)
         {
-            logger.Message(message.Trim());
+            if (message != null)
+            {
+                logger.Message(message.Trim());
+            }
         }
 
         /// <summary>

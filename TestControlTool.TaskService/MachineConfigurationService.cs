@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -8,45 +9,33 @@ using System.Threading.Tasks;
 using TestControlTool.Core;
 using TestControlTool.Core.Contracts;
 using TestControlTool.Core.Implementations;
+using TestControlTool.Core.Models;
 
 namespace TestControlTool.TaskService
 {
     public static class MachineConfigurationService
     {
-        private static readonly IAccountController AccountController = CastleResolver.Resolve<IAccountController>();
+        private static readonly EmailReportService EmailReportService = new EmailReportService();
 
-        public static bool ConfigureMachine(Guid id)
+        public static bool ConfigureMachine(MachineConfigurationModel machineConfigurationModel)
         {
             try
             {
-                var machine = AccountController.Machines.Single(x => x.Id == id);
-
                 var task = new MachineConfigurationTask
                     {
-                        Machine = machine
+                        MachineConfigurationModel = machineConfigurationModel
                     };
 
-                Task.Factory.StartNew(task.Run);
+                Task.Factory.StartNew(task.Run).ContinueWith(
+                    _ => EmailReportService.SendEmail(machineConfigurationModel.OwnerUserName, "TestControlTool. Machine configuring",
+                                                      "Log of the '" + machineConfigurationModel.ComputerName +
+                                                      "' configuring", new[] {task.LogName}));
 
                 return true;
             }
             catch
             {
                 return false;
-            }
-        }
-
-        public static int GetStatusOfConfiguring(Guid id)
-        {
-            try
-            {
-                var status = MachineConfigurationTask.GetStatus(id);
-
-                return status >=0 && status <= 100 ? status : -1;
-            }
-            catch
-            {
-                return -1;
             }
         }
     }

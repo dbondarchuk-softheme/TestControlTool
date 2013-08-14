@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TestControlTool.Core;
 using TestControlTool.Core.Contracts;
+using TestControlTool.Core.Models;
 using TaskStatus = TestControlTool.Core.Contracts.TaskStatus;
 
 namespace TestControlTool.TaskService
@@ -26,14 +27,9 @@ namespace TestControlTool.TaskService
             return TaskService.StopTask(id);
         }
 
-        public bool ConfigureMachine(Guid id)
+        public bool ConfigureMachine(MachineConfigurationModel machineConfigurationModel)
         {
-            return MachineConfigurationService.ConfigureMachine(id);
-        }
-
-        public int GetStatusOfConfiguring(Guid id)
-        {
-            return MachineConfigurationService.GetStatusOfConfiguring(id);
+            return MachineConfigurationService.ConfigureMachine(machineConfigurationModel);
         }
     }
 }

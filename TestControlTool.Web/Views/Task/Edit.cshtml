@@ -78,7 +78,7 @@
                             {
                                 var taskModel = DeployInstallTaskModel.GetFromXmlFile(task.File);
                          
-                                <li id="@taskModel.Name" type="DeployInstall" deployType="@taskModel.Type" version="@taskModel.Version" 
+                                <li id="@taskModel.Name" type="DeployInstall" deployType="@taskModel.Type" version="@taskModel.Version" build ="@taskModel.Build"
                                     machines="@taskModel.Machines.Aggregate("", (s, machine) => s + machine + ";").TrimEnd(';')">
                                     <a onclick="editDeployTask('@taskModel.Name')" href="#">@taskModel.Name</a>
                                     <a class="pull-right" style="padding-left: 10px" href="@Url.Action("GetXmlFile", "Task", new { taskId = Model.Task.Id, childTaskName = task.Name })">
@@ -89,7 +89,17 @@
                             }
                             else if (task.TaskType == TaskType.TestSuiteTrunk || task.TaskType == TaskType.TestSuiteRelease)
                             {
-                                var taskModel = TestSuiteModel.GetFromXmlFile(task.File, task.TaskType == TaskType.TestSuiteTrunk);
+                                var taskModel = new TestSuiteModel();
+                                try
+                                {
+                                    taskModel = TestSuiteModel.GetFromXmlFile(task.File, task.TaskType == TaskType.TestSuiteTrunk);
+
+                                }
+                                catch (Exception e)
+                                {
+                                    <script type="text/javascript"> alert('@task.File');</script>
+                                    <script type="text/javascript"> alert('@e.Message');</script>
+                                }
                                 <li id="@taskModel.Name" type="@task.TaskType.ToString()" machine="@taskModel.Machine">
                                     <a onclick="editTestSuiteTask(this)" href="#">@taskModel.Name</a>
                                     <a class="pull-right" data-toggle="tooltip" rel="tooltip" title="Download XML file" style="padding-left: 10px" href="@Url.Action("GetXmlFile", "Task", new { taskId = Model.Task.Id, childTaskName = task.Name })"><i class="icon-download-alt"></i></a>
@@ -100,16 +110,23 @@
                                             var visibleProperties = test.VisibleProperties(new string[0]);
                                             var properties = visibleProperties.Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)
                                                                                           || x.PropertyType == typeof(bool)).Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(test) + "'");
+
+                                            foreach (var property in visibleProperties.Where(x => !(x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)
+                                                                                          || x.PropertyType == typeof(bool)) && !x.PropertyType.Name.Contains("List")))
+                                            {
+                                                properties += property.PropertyType.VisibleProperties(new string[0]).Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)
+                                                                                      || x.PropertyType == typeof(bool)).Aggregate("", (s, info) => s + " " + property.Name + "_" + info.Name + "='" + info.GetValue(property.GetValue(test)) + "'");
+
+                                            }
                                             <li  testtype="@test.GetType().Name" @Html.Raw(properties)>
                                                 <a href="#" onclick="editTestModal(this)">@test.GetType().Name</a>
                                                 <button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button>
-                                                @{
-                                                    foreach (var property in visibleProperties.Where(x => x.PropertyType.Name.Contains("List")))
-                                                    {
+                                                @foreach (var property in visibleProperties.Where(x => x.PropertyType.Name.Contains("List")))
+                                                {
                                                         <ul id="@(property.Name + "HiddenList")" style="display: none;" class="sortable">
 
                                                             @{
-                                                                var enumerable = ((IEnumerable)property.GetValue(test)).Cast<object>().Skip(1);
+                                                    var enumerable = ((IEnumerable)property.GetValue(test)).Cast<object>().Skip(1);
                                                             }
                                                             @foreach (var item in enumerable)
                                                             {
@@ -137,7 +154,13 @@
                                                                 </li>
                                                             }
                                                         </ul>
-                                                    }
+                                                }
+                                                @foreach (var property in visibleProperties.Where(x => !(x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)
+                                                                                          || x.PropertyType == typeof(bool))))
+                                                {
+                                                    var childProperties = visibleProperties.Where(x => x.PropertyType.IsEnum || x.PropertyType == typeof(string) || x.PropertyType == typeof(int)
+                                                                                          || x.PropertyType == typeof(bool)).Aggregate("", (s, info) => s + " " + info.Name + "='" + info.GetValue(test) + "'");
+                                                    <property id="@property.Name" @childProperties></property>
                                                 }
                                             </li>
                                         }
