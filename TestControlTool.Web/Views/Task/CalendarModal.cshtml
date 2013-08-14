@@ -71,9 +71,30 @@
 </div>
 
 <script type="text/javascript">
+    function checkTime() {
+        var startTime = $('#StartTime').data('datetimepicker').getDate();
+
+        if (startTime.getUTCHours() >= 20) {
+            $('#CalendarValidation').text('Sorry, but you can\'t create task, which will start between 8 PM and 12 PM. It is a maintenance time');
+            $('#CalendarValidation').fadeIn('fast');
+
+            return false;
+        }
+        else {
+            $('#CalendarValidation').text('');
+            $('#CalendarValidation').fadeOut('fast');
+
+            return true;
+        }
+    }
+
     function saveSchedule() {
         var startTime = $('#StartTime').data('datetimepicker').getDate();
         var endTime = $('#EndDate').data('datetimepicker').getDate();
+        
+        if (!checkTime()) {
+            return;
+        }
 
         if (startTime > endTime) {
             $('#CalendarValidation').text('Start time should be less then end time');
@@ -174,4 +195,9 @@
             $('#AllDaysCheckBox').attr('checked', true);
         }
     }
+
+    $('#CalendarModal').on('hidden', function() {
+        $('#CalendarValidation').text('');
+        $('#CalendarValidation').fadeOut('fast');
+    });
 </script>

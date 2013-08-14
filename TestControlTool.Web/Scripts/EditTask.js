@@ -76,17 +76,23 @@ function saveTasks(id, urlToSave, urlToRedirect) {
     var val = $('#taskForm').validate();
     val.showErrors();
     if (!val.valid()) {
-        showErrorAllert();
+        showErrorAllert("Please, verify your data");
+        
+        return false;
     }
-
-    if (!val.valid()) return false;
-
+    
     var tasks = getTasks();
     var taskName = $('#Task_Name').val();
     var startTime = $('#Task_StartTime').val();
     var endTime = $('#Task_EndTime').val();
     var frequency = $('#Task_Frequency').val();
     var isEnabled = $('#Task_IsEnabled').is(':checked');
+
+    if (new Date(startTime).getHours() >= 20) {
+        showErrorAllert("Sorry, but you can't create task, which will start between 8 PM and 12 PM. It is a maintenance time");
+
+        return false;
+    }
 
     $.ajax({
         url: urlToSave,
@@ -188,11 +194,11 @@ function getTasks() {
     return global;
 }
 
-function showErrorAllert() {
+function showErrorAllert(message) {
     $('#alertArea').append("<div class='alert alert-block alert-error fade in' id='errorAlert'>" +
         "<button type='button' class='close' data-dismiss='alert'>×</button>" +
         "<h4 class='alert-heading'>You've got some errors!</h4>" +
-        "<p>Please, verify your data</p>");
+        "<p>" + message + "</p>");
 
     $('#errorAlert').bind('closed', function () {
         if ($('#alertArea').children().length == 0) {
