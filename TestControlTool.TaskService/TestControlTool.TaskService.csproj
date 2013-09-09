@@ -27,6 +27,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -76,6 +77,7 @@
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Windows.Forms" />
@@ -88,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EmailReportService.cs" />
+    <Compile Include="EmailService.cs" />
     <Compile Include="IReportService.cs" />
     <Compile Include="ITaskWCFService.cs" />
     <Compile Include="MachineConfigurationService.cs" />

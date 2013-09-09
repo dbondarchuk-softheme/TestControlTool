@@ -145,12 +145,10 @@ namespace BootstrapSupport
             return htmlHelper.DropDownListFor(expression, items);
         }
 
-        public static MvcHtmlString EnumDropDownList<TModel>(this HtmlHelper<TModel> htmlHelper, string name, Type enumType)
+        public static MvcHtmlString EnumDropDownList(this HtmlHelper htmlHelper, string name, Type enumType)
         {
             var values = Enum.GetNames(enumType);
-
-            var converter = TypeDescriptor.GetConverter(enumType);
-
+            
             var items = values.Select(value => new SelectListItem
                 {
                     Text = value,

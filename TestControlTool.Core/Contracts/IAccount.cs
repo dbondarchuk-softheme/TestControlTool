@@ -5,6 +5,27 @@ using TestControlTool.Core.Implementations;
 namespace TestControlTool.Core.Contracts
 {
     /// <summary>
+    /// Types of accounts
+    /// </summary>
+    public enum AccountType
+    {
+        /// <summary>
+        /// QA users
+        /// </summary>
+        QA = 0,
+
+        /// <summary>
+        /// Automation team
+        /// </summary>
+        Automation = 1,
+    
+        /// <summary>
+        /// Administrator
+        /// </summary>
+        Administrator = 2
+    }
+
+    /// <summary>
     /// Describes user account
     /// </summary>
     public interface IAccount
@@ -23,6 +44,11 @@ namespace TestControlTool.Core.Contracts
         /// Hash of the user's password
         /// </summary>
         string PasswordHash { get; }
+
+        /// <summary>
+        /// Account type
+        /// </summary>
+        AccountType Type { get; }
 
         /// <summary>
         /// List of users machines

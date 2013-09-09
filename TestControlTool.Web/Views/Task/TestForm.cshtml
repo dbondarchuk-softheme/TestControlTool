@@ -1,5 +1,6 @@
 ﻿@using System.Reflection
 @using BootstrapSupport
+@using TestControlTool.Web.BootstrapSupport.HtmlHelpers
 @model Type
 @{
     Layout = null;
@@ -8,11 +9,11 @@
 {
     using (Html.ControlGroupFor(property.Name))
     {
-        if (property.PropertyType == typeof(string) || property.PropertyType == typeof(int))
+@*if (property.PropertyType == typeof(string) || property.PropertyType == typeof(int))
         {
     @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name })
     <div class="controls">
-        @Html.TextBox(property.Name, "", new { @class = "input-xlarge" })
+        @Html.Editor(property, "", new { @class = "input-xlarge" })
         @Html.ValidationMessage(property.Name, null, new { @class = "help-inline" })
     </div>
         }
@@ -30,6 +31,14 @@
         @Html.CheckBox(property.Name, false, new { @class = "input-xlarge" })
         @Html.ValidationMessage(property.Name, null, new { @class = "help-inline" })
     </div>
+        }*@
+        if (property.PropertyType.IsEnum || property.PropertyType.IsPrimitive || property.PropertyType == typeof(string))
+        {
+    @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name, style = property.PropertyType == typeof(bool) ? "display: inline;" : string.Empty })
+    <div class="controls"@(Html.Raw(property.PropertyType == typeof(bool) ? "style='display: inline; margin-left: 1em;'" : string.Empty))>
+        @Html.Editor(property, "", new { @class = "input-xlarge" })
+        @Html.ValidationMessage(property.Name, null, new { @class = "help-inline" })
+    </div>
         }
         else if (property.PropertyType.Name.Contains("List"))
         {
@@ -44,34 +53,21 @@
         }
         else
         {
-    <div class="well" style="margin-left: 5px;">
-        @foreach (var childProperty in property.PropertyType.VisibleProperties(new string[0]))
-        {
-            var childPropertyName = property.Name + "_" + childProperty.Name;
-            if (childProperty.PropertyType == typeof(string) || property.PropertyType == typeof(int))
+    <div class="wellHelper">
+        <label class="control-label" style="margin-left: 5px; margin-top: 5px;" for="@(property.Name)" data-toggle="collapse" data-target="#@(property.Name)">@property.Name.ToSeparatedWords() <i class="close icon-chevron-right"></i></label>
+
+        <div class="collapse" style="margin-left: 5px;" id="@(property.Name)" @Html.Raw(EditorWithHelp.GetDisableInformation(property).Aggregate("", (s, pair) => s + pair.Key + "='" + pair.Value + "' ").Trim())>
+            @foreach (var childProperty in property.PropertyType.VisibleProperties(new string[0]))
             {
-            @Html.Label(childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label", @for = childPropertyName })
-            <div class="controls">
-                @Html.TextBox(childPropertyName, "", new { @class = "input-xlarge" })
-                @Html.ValidationMessage(childPropertyName, null, new { @class = "help-inline" })
-            </div>
+                var childPropertyName = property.Name + "_" + childProperty.Name;
+                                 
+                @Html.Label(childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label", @for = childPropertyName, style = childProperty.PropertyType == typeof(bool) ? "display: inline;" : string.Empty })
+                <div class="controls"@(Html.Raw(childProperty.PropertyType == typeof(bool) ? "style='display: inline; margin-left: 1em;'" : string.Empty))>
+                    @Html.Editor(childProperty, "", new { @class = "input-xlarge" }, childPropertyName, "#testFormDiv", property.Name)
+                    @Html.ValidationMessage(childPropertyName, null, new { @class = "help-inline" })
+                </div>
             }
-            else if (childProperty.PropertyType.IsEnum)
-            {
-            @Html.Label(childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label", @for = childPropertyName })
-            <div class="controls">
-                @Html.EnumDropDownList(childPropertyName, childProperty.PropertyType)
-            </div>
-            }
-            else if (childProperty.PropertyType == typeof(bool))
-            {
-            @Html.Label(childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label", @for = childPropertyName, @style = "display:inline;" })
-            <div class="controls" style="display: inline; margin-left: 1em;">
-                @Html.CheckBox(childPropertyName, false, new { @class = "input-xlarge" })
-                @Html.ValidationMessage(childPropertyName, null, new { @class = "help-inline" })
-            </div>
-            }
-        }
+        </div>
     </div>
         }
     }
@@ -121,9 +117,33 @@
     }
 
     $(document).ready(function () {
+        //$.support.transition = false;
+
+        //$('#testFormDiv').find('.collapse').collapse('hide');
+
         $('#testFormDiv').find('.sortable').each(function () {
             $(this).sortable();
             $(this).disableSelection();
+        });
+
+
+        $("[rel='popover']").popover();
+
+        $("[rel='popover']").on("hidden", function (e) {
+            e.stopPropagation(); //Once popover is hidden stop the event from going to parent
+        });
+
+        $("[data-disable-enabled='true']").each(function () {
+            var obj = this;
+
+            var disablingProperty = $(obj).attr('data-disabling-property');
+            var disablingValue = $(obj).attr('data-disabling-value');
+            
+            $("#" + disablingProperty).on("change", function () {
+                DisableByAttribute(obj, disablingProperty, disablingValue, true);
+            });
+            
+            DisableByAttribute(obj, disablingProperty, disablingValue, false);
         });
     });
 
@@ -133,7 +153,7 @@
 
     $(document).ready(function () {
         $('#testFormDiv').find('.collapse').each(function () {
-            var i = $(this).parent().find('a').find('i');
+            var i = $(this).parent().find('label').find('i');
 
             $(this).on('show', function () {
                 i.removeClass('icon-chevron-right', 100, function () {
@@ -147,7 +167,7 @@
                 });
             });
 
-            $(this).collapse('show');
+            //$(this).collapse('show');
         });
     });
 </script>

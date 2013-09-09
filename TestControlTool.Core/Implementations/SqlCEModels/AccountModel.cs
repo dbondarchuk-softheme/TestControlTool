@@ -25,6 +25,7 @@ namespace TestControlTool.Core.Implementations.SqlCEModels
         public string Id { get; set; }
         public string Login { get; set; }
         public string PasswordHash { get; set; }
+        public string Type { get; set; }
     
         public virtual ICollection<HyperVMachineModel> HyperVMachines { get; set; }
         public virtual ICollection<ServerModel> Servers { get; set; }

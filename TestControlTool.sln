@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestControlTool.TaskService
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestControlTool.UpdateService", "TestControlTool.UpdateService\TestControlTool.UpdateService.csproj", "{F60E3EB7-9213-4EC8-87C1-8720EA411513}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestControlTool.ProcessKiller", "TestControlTool.ProcessKiller\TestControlTool.ProcessKiller.csproj", "{9A9A69D2-FBDF-495D-BEB0-DED1EA7A317D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,16 @@ Global
 		{F60E3EB7-9213-4EC8-87C1-8720EA411513}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F60E3EB7-9213-4EC8-87C1-8720EA411513}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F60E3EB7-9213-4EC8-87C1-8720EA411513}.Release|x86.ActiveCfg = Release|Any CPU
+		{9A9A69D2-FBDF-495D-BEB0-DED1EA7A317D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A9A69D2-FBDF-495D-BEB0-DED1EA7A317D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A9A69D2-FBDF-495D-BEB0-DED1EA7A317D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9A9A69D2-FBDF-495D-BEB0-DED1EA7A317D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9A9A69D2-FBDF-495D-BEB0-DED1EA7A317D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9A9A69D2-FBDF-495D-BEB0-DED1EA7A317D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A9A69D2-FBDF-495D-BEB0-DED1EA7A317D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A9A69D2-FBDF-495D-BEB0-DED1EA7A317D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9A9A69D2-FBDF-495D-BEB0-DED1EA7A317D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9A9A69D2-FBDF-495D-BEB0-DED1EA7A317D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

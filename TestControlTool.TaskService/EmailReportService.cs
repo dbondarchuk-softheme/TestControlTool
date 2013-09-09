@@ -5,20 +5,16 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using Ionic.Zip;
-using TestControlTool.Core;
-using TestControlTool.Core.Contracts;
 
 namespace TestControlTool.TaskService
 {
     class EmailReportService : IReportService
     {
-        private readonly IAccountController _accountController = CastleResolver.Resolve<IAccountController>();
-
         public void ProcessReport(Guid taskId, string taskName, string ownerName)
         {
             var report = GetZippedReports(taskId, taskName);
 
-            SendEmail(ownerName, string.Format("TestControlTool. Report. {0}", DateTime.Now), "Look into the attachments", new[] { report });
+            SendEmail(new[] { ownerName }, string.Format("TestControlTool. Report. {0}", DateTime.Now), "Look into the attachments", new[] { report });
         }
 
         private string GetZippedReports(Guid taskId, string taskName)
@@ -30,7 +26,7 @@ namespace TestControlTool.TaskService
 
             filesToZip.AddRange(logsDirectory.GetFiles(taskId + "*"));
             directoriesToZip.AddRange(logsDirectory.GetDirectories(taskId + "*"));
-            
+
             var zipFileName = ConfigurationManager.AppSettings["LogsFolder"] + "\\" + taskName + ".zip";
 
             using (var zip = new ZipFile())
@@ -41,7 +37,7 @@ namespace TestControlTool.TaskService
                     {
                         zip.AddFile(file.FullName, "").FileName = file.Name.Replace(taskId.ToString(), taskName);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                     }
                 }
@@ -52,7 +48,7 @@ namespace TestControlTool.TaskService
                     {
                         zip.AddDirectory(directory.FullName, directory.Name.Replace(taskId.ToString(), taskName));
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                     }
                 }
@@ -85,38 +81,58 @@ namespace TestControlTool.TaskService
             return zipFileName;
         }
 
-        public void SendEmail(string to, string subject, string body, string[] attachmentsFileName)
+        public static void SendEmail(IEnumerable<string> to, string subject, string body, string[] attachmentsFileName)
         {
-            try
-            {
-                using (var mail = new MailMessage())
+            
+                try
                 {
-                    using (var smtpServer = new SmtpClient(ConfigurationManager.AppSettings["SmtpServer"]))
+                    using (var mail = new MailMessage())
                     {
-                        mail.From = new MailAddress(ConfigurationManager.AppSettings["SendFrom"]);
-                        mail.To.Add(to);
-                        mail.Subject = subject;
-                        mail.Body = body;
-
-                        foreach (var attachment in attachmentsFileName.Select(attachmentFileName => new Attachment(attachmentFileName)))
+                        using (var smtpServer = new SmtpClient(ConfigurationManager.AppSettings["SmtpServer"]))
                         {
-                            mail.Attachments.Add(attachment);
+                            mail.From = new MailAddress(ConfigurationManager.AppSettings["SendFrom"]);
+                            mail.Subject = subject;
+                            mail.Body = body;
+                            mail.IsBodyHtml = false;
+
+                            foreach (var email in to)
+                            {
+                                try
+                                {
+                                    mail.To.Add(email);
+                                }
+                                catch (Exception)
+                                {
+                                }
+                            }
+
+                            if (attachmentsFileName != null)
+                            {
+                                foreach (
+                                    var attachment in
+                                        attachmentsFileName.Select(
+                                            attachmentFileName => new Attachment(attachmentFileName)))
+                                {
+                                    mail.Attachments.Add(attachment);
+                                }
+                            }
+
+                            smtpServer.Port = int.Parse(ConfigurationManager.AppSettings["SmtpPort"]);
+                            smtpServer.Credentials =
+                                new System.Net.NetworkCredential(ConfigurationManager.AppSettings["EmailLogin"],
+                                                                 ConfigurationManager.AppSettings["EmailPassword"]);
+                            smtpServer.EnableSsl = ConfigurationManager.AppSettings["SmtpSSL"].ToLowerInvariant() ==
+                                                   "true";
+
+                            smtpServer.Send(mail);
                         }
-
-                        smtpServer.Port = int.Parse(ConfigurationManager.AppSettings["SmtpPort"]);
-                        smtpServer.Credentials =
-                            new System.Net.NetworkCredential(ConfigurationManager.AppSettings["EmailLogin"],
-                                                             ConfigurationManager.AppSettings["EmailPassword"]);
-                        smtpServer.EnableSsl = ConfigurationManager.AppSettings["SmtpSSL"].ToLowerInvariant() == "true";
-
-                        smtpServer.Send(mail);
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                File.WriteAllText(@"D:\email.txt", e.Message);
-            }
+                catch (Exception e)
+                {
+                    File.WriteAllText(@"D:\email.txt", e.Message);
+                }
+            
         }
     }
 }

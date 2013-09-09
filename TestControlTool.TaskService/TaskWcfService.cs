@@ -1,16 +1,7 @@
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Threading;
-using System.Threading.Tasks;
-using TestControlTool.Core;
-using TestControlTool.Core.Contracts;
 using TestControlTool.Core.Models;
-using TaskStatus = TestControlTool.Core.Contracts.TaskStatus;
 
 namespace TestControlTool.TaskService
 {
@@ -30,6 +21,16 @@ namespace TestControlTool.TaskService
         public bool ConfigureMachine(MachineConfigurationModel machineConfigurationModel)
         {
             return MachineConfigurationService.ConfigureMachine(machineConfigurationModel);
+        }
+
+        public void SendEmail(string user, string subject, string message)
+        {
+            EmailService.SendEmail(user, subject, message);
+        }
+
+        public void SendEmailToAll(string subject, string message)
+        {
+            EmailService.SendEmailToAll(subject, message);
         }
     }
 }

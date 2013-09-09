@@ -10,7 +10,7 @@
     </div>
     <div class="modal-body">
         <div class="control-group">
-            <label class="control-label" for="TestSuiteName" style="display: inline;">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <label class="control-label" for="TestSuiteName" style="display: inline;">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
             <div class="controls" style="display: inline;">
                 <input type="text" id="TestSuiteName" onblur="CheckTestSuiteName()" onfocus="$('#TestSuiteNameValidation').text('');" />    
                 <span class="help-inline error" id="TestSuiteNameValidation"></span>
@@ -18,7 +18,7 @@
         </div>
         <input type="hidden" id="EditTestSuiteName" />
         <div class="control-group">
-            <label class="control-label" for="TestSuiteMachine" style="display: inline;">Machine&nbsp;&nbsp;&nbsp;</label>
+            <label class="control-label" for="TestSuiteMachine" style="display: inline;">Machine for execution</label>
             <div class="controls" style="display: inline;">
                 <select id="TestSuiteMachine" onchange="CheckTestSuiteMachine()">
                           <option value="-1">Please select machine</option>
@@ -69,6 +69,7 @@
         $('#TestSuiteMachine').val('-1');
 
         $('#TestSuiteNameValidation').text('');
+        $('#TestSuiteMachineValidation').text('');
         $('#TestSuiteLabel').text('Add new Test Suite');
         $('#SaveTestSuiteButton').val('Add');
         $('#testsList').text('');

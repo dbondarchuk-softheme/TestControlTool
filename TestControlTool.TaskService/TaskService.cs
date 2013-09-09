@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TestControlTool.Core;
@@ -63,7 +60,7 @@ namespace TestControlTool.TaskService
 
                 return true;
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 AccountController.SetTaskStatus(id, TaskStatus.Failed);
                 return false;
@@ -95,7 +92,7 @@ namespace TestControlTool.TaskService
                 
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
                 lock (AccountController)

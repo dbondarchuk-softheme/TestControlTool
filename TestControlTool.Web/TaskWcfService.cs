@@ -8,184 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-/*namespace TestControlTool.Core.Models
-{
-    using System.Runtime.Serialization;
-    
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="MachineConfigurationModel", Namespace="http://schemas.datacontract.org/2004/07/TestControlTool.Core.Models")]
-    public partial class MachineConfigurationModel : object, System.Runtime.Serialization.IExtensibleDataObject
-    {
-        
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private string AutoLogonPasswordField;
-        
-        private string AutoLogonUserNameField;
-        
-        private string ComputerNameField;
-        
-        private string DefaultGatewayField;
-        
-        private string Dns1Field;
-        
-        private string Dns2Field;
-        
-        private string IPAddressField;
-        
-        private string SharedFolderPathField;
-        
-        private string SubnetMaskField;
-        
-        private string TimeZoneNameField;
-        
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
-        {
-            get
-            {
-                return this.extensionDataField;
-            }
-            set
-            {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string AutoLogonPassword
-        {
-            get
-            {
-                return this.AutoLogonPasswordField;
-            }
-            set
-            {
-                this.AutoLogonPasswordField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string AutoLogonUserName
-        {
-            get
-            {
-                return this.AutoLogonUserNameField;
-            }
-            set
-            {
-                this.AutoLogonUserNameField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ComputerName
-        {
-            get
-            {
-                return this.ComputerNameField;
-            }
-            set
-            {
-                this.ComputerNameField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DefaultGateway
-        {
-            get
-            {
-                return this.DefaultGatewayField;
-            }
-            set
-            {
-                this.DefaultGatewayField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Dns1
-        {
-            get
-            {
-                return this.Dns1Field;
-            }
-            set
-            {
-                this.Dns1Field = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Dns2
-        {
-            get
-            {
-                return this.Dns2Field;
-            }
-            set
-            {
-                this.Dns2Field = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string IPAddress
-        {
-            get
-            {
-                return this.IPAddressField;
-            }
-            set
-            {
-                this.IPAddressField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string SharedFolderPath
-        {
-            get
-            {
-                return this.SharedFolderPathField;
-            }
-            set
-            {
-                this.SharedFolderPathField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string SubnetMask
-        {
-            get
-            {
-                return this.SubnetMaskField;
-            }
-            set
-            {
-                this.SubnetMaskField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string TimeZoneName
-        {
-            get
-            {
-                return this.TimeZoneNameField;
-            }
-            set
-            {
-                this.TimeZoneNameField = value;
-            }
-        }
-    }
-}*/
-
-
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
 [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ITaskWcfService")]
 public interface ITaskWcfService
@@ -208,6 +30,18 @@ public interface ITaskWcfService
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskWcfService/ConfigureMachine", ReplyAction="http://tempuri.org/ITaskWcfService/ConfigureMachineResponse")]
     System.Threading.Tasks.Task<bool> ConfigureMachineAsync(TestControlTool.Core.Models.MachineConfigurationModel machineConfigurationModel);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskWcfService/SendEmail", ReplyAction="http://tempuri.org/ITaskWcfService/SendEmailResponse")]
+    void SendEmail(string user, string subject, string message);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskWcfService/SendEmail", ReplyAction="http://tempuri.org/ITaskWcfService/SendEmailResponse")]
+    System.Threading.Tasks.Task SendEmailAsync(string user, string subject, string message);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskWcfService/SendEmailToAll", ReplyAction="http://tempuri.org/ITaskWcfService/SendEmailToAllResponse")]
+    void SendEmailToAll(string subject, string message);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITaskWcfService/SendEmailToAll", ReplyAction="http://tempuri.org/ITaskWcfService/SendEmailToAllResponse")]
+    System.Threading.Tasks.Task SendEmailToAllAsync(string subject, string message);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -272,5 +106,25 @@ public partial class TaskWcfServiceClient : System.ServiceModel.ClientBase<ITask
     public System.Threading.Tasks.Task<bool> ConfigureMachineAsync(TestControlTool.Core.Models.MachineConfigurationModel machineConfigurationModel)
     {
         return base.Channel.ConfigureMachineAsync(machineConfigurationModel);
+    }
+    
+    public void SendEmail(string user, string subject, string message)
+    {
+        base.Channel.SendEmail(user, subject, message);
+    }
+    
+    public System.Threading.Tasks.Task SendEmailAsync(string user, string subject, string message)
+    {
+        return base.Channel.SendEmailAsync(user, subject, message);
+    }
+    
+    public void SendEmailToAll(string subject, string message)
+    {
+        base.Channel.SendEmailToAll(subject, message);
+    }
+    
+    public System.Threading.Tasks.Task SendEmailToAllAsync(string subject, string message)
+    {
+        return base.Channel.SendEmailToAllAsync(subject, message);
     }
 }

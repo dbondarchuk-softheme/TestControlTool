@@ -107,7 +107,7 @@
             <param name="query">JQuery selector string</param>
             <returns>Element tag name</returns>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.ClickElement(System.String,System.String,WebGuiAutomation.SeleniumWebElements.Elements.ButtonElement.BaseButtonStrategy)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.ClickElement(System.String,System.String,WebGuiAutomation.WebElements.ButtonElement.IBaseButtonStrategy)">
             <summary>
             Searches element by its text and clicks it
             </summary>
@@ -115,7 +115,7 @@
             <param name="name">Element name</param>
             <param name="strategy">Alternative strategy</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.ClickElementByText(System.String,System.String,WebGuiAutomation.SeleniumWebElements.Elements.ButtonElement.BaseButtonStrategy)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.ClickElementByText(System.String,System.String,WebGuiAutomation.WebElements.ButtonElement.IBaseButtonStrategy)">
             <summary>
             Searches element by its text and clicks it
             </summary>
@@ -123,7 +123,7 @@
             <param name="value">Element text</param>
             <param name="strategy">Alternative strategy</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.ClickElementByText(System.String,System.String,System.String,WebGuiAutomation.SeleniumWebElements.Elements.ButtonElement.BaseButtonStrategy)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.ClickElementByText(System.String,System.String,System.String,WebGuiAutomation.WebElements.ButtonElement.IBaseButtonStrategy)">
             <summary>
             Searches element by its text and clicks it
             </summary>
@@ -132,7 +132,7 @@
             <param name="value2">Final element text</param>
             <param name="strategy">Alternative strategy</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.SetTextBoxValue(System.String,System.String,System.String,WebGuiAutomation.SeleniumWebElements.Elements.TextBoxElement.BaseTextBoxStrategy)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.SetTextBoxValue(System.String,System.String,System.String,WebGuiAutomation.WebElements.TextBoxElement.IBaseTextBoxStrategy)">
             <summary>
             Sets the value of the textbox
             </summary>
@@ -141,7 +141,7 @@
             <param name="value">Textbox value</param>
             <param name="strategy">Strategy to be used</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.SetTextBoxValueByText(System.String,System.String,System.String,WebGuiAutomation.SeleniumWebElements.Elements.TextBoxElement.BaseTextBoxStrategy)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.SetTextBoxValueByText(System.String,System.String,System.String,WebGuiAutomation.WebElements.TextBoxElement.IBaseTextBoxStrategy)">
             <summary>
             Sets the value of the textbox
             </summary>
@@ -150,7 +150,7 @@
             <param name="value">Textbox value</param>
             <param name="strategy">Strategy to be used</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.GetTextBoxValue(System.String,System.String,WebGuiAutomation.SeleniumWebElements.Elements.TextBoxElement.BaseTextBoxStrategy)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.GetTextBoxValue(System.String,System.String,WebGuiAutomation.WebElements.TextBoxElement.IBaseTextBoxStrategy)">
             <summary>
             Gets the value of the textbox
             </summary>
@@ -158,7 +158,7 @@
             <param name="name">Textbox name</param>
             <param name="strategy">Strategy to be used</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.GetTextBoxValueByText(System.String,System.String,WebGuiAutomation.SeleniumWebElements.Elements.TextBoxElement.BaseTextBoxStrategy)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.GetTextBoxValueByText(System.String,System.String,WebGuiAutomation.WebElements.TextBoxElement.IBaseTextBoxStrategy)">
             <summary>
             Gets the value of the specified textbox
             </summary>
@@ -166,7 +166,7 @@
             <param name="text">Textbox text</param>
             <param name="strategy">Strategy to be used</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.GetTextBoxValuesList(System.String,WebGuiAutomation.SeleniumWebElements.Elements.TextBoxElement.BaseTextBoxStrategy)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.GetTextBoxValuesList(System.String,WebGuiAutomation.WebElements.TextBoxElement.IBaseTextBoxStrategy)">
             <summary>
             Gets a list of values of all textboxes found
             </summary>
@@ -174,35 +174,39 @@
             <param name="strategy">Strategy to be used</param>
             <returns>List of values of all textboxes found</returns>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.SetCheckBoxState(System.String,System.String,WebGuiAutomation.WebElements.CheckBoxElement.CheckBoxState)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.SetCheckBoxState(System.String,System.String,WebGuiAutomation.WebElements.CheckBoxElement.CheckBoxState,WebGuiAutomation.WebElements.CheckBoxElement.IBaseCheckBoxStrategy)">
             <summary>
             Checks or unchecks checkbox
             </summary>
             <param name="query">JQuery selector string</param>
             <param name="name">Checkbox text</param>
             <param name="state">'Checked' or 'Unchecked'</param>
+            <param name="strategy">Strategy to be used</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.SetCheckBoxStateByText(System.String,System.String,WebGuiAutomation.WebElements.CheckBoxElement.CheckBoxState)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.SetCheckBoxStateByText(System.String,System.String,WebGuiAutomation.WebElements.CheckBoxElement.CheckBoxState,WebGuiAutomation.WebElements.CheckBoxElement.IBaseCheckBoxStrategy)">
             <summary>
             Searches checkbox by its text and sets its state
             </summary>
             <param name="query">JQuery selector string</param>
             <param name="value">Element text, use '|' symbol to type multiple elements text, for example: "Element 1 | Element 2"</param>
             <param name="state">'Checked' or 'Unchecked'</param>
+            <param name="strategy">Strategy to be used</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.GetCheckBoxState(System.String,System.String)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.GetCheckBoxState(System.String,System.String,WebGuiAutomation.WebElements.CheckBoxElement.IBaseCheckBoxStrategy)">
             <summary>
             Gets checkbox state
             </summary>
             <param name="query">JQuery selector string</param>
             <param name="name">Checkbox name</param>
+            <param name="strategy">Strategy to be used</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.GetCheckBoxStateByText(System.String,System.String)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.GetCheckBoxStateByText(System.String,System.String,WebGuiAutomation.WebElements.CheckBoxElement.IBaseCheckBoxStrategy)">
             <summary>
             Searches checkbox by its text and sets its state
             </summary>
             <param name="query">JQuery selector string</param>
             <param name="text">Element text</param>
+            <param name="strategy">Strategy to be used</param>
         </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.ClickDropDownItem(System.String,System.String,System.String,System.String)">
             <summary>
@@ -223,6 +227,19 @@
             <param name="firstItemText">First dropdown item text</param>
             <param name="secondItemQuery">Second dropdown item query</param>
             <param name="secondItemText">Second dropdown item text</param>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.ClickDropDownItem(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Clicks dropdown item 
+            </summary>
+            <param name="dropDownQuery">Dropdown query</param>
+            <param name="dropDownName">Dropdown name</param>
+            <param name="firstItemQuery">First dropdown item query</param>
+            <param name="firstItemText">First dropdown item text</param>
+            <param name="secondItemQuery">Second dropdown item query</param>
+            <param name="secondItemText">Second dropdown item text</param>
+            <param name="thirdItemQuery">Third dropdown item query</param>
+            <param name="thirdItemText">Third dropdown item text</param>
         </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.ClickDropDownItemByText(System.String,System.String,System.String,System.String)">
             <summary>
@@ -251,11 +268,12 @@
             <param name="query">Element query</param>
             <param name="name">Element name</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.Expand(System.String,WebGuiAutomation.AppAssureTools.Elements.ExpanderElement.SeleniumExpanderStrategy)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.Expand(System.String,System.String,WebGuiAutomation.AppAssureTools.Elements.ExpanderElement.SeleniumExpanderStrategy)">
             <summary>
             Expands the expander element
             </summary>
             <param name="query">Expander's 'img' element query</param>
+            <param name="name">Expander's name</param>
             <param name="strategy">Alternative strategy</param>
         </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.GetStatus(System.String,System.String,System.String,System.String,System.String,System.String)">
@@ -305,6 +323,11 @@
             Gets Active Task dialog
             </summary>
         </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.Toast">
+            <summary>
+            Gets Toast
+            </summary>
+        </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.BaseTab.Name">
             <summary>
             Gets name for the tab that is used in logging
@@ -352,15 +375,13 @@
             Closes Help Dialog [?]
             </summary>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseDialog.ClickMainElement(System.String,System.String,System.Collections.Generic.ICollection{WebGuiAutomation.Implementation.AppAssureStructure.BaseTab},WebGuiAutomation.Implementation.AppAssureStructure.BaseTab)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.BaseDialog.ClickMainElement(System.String,System.String)">
             <summary>
             Clicks main element of the target dialog, such as 'Ok', 'Apply', 'Create' button or 'Cancel', 'Close' button etc.
             Waits until clicked element is visible or some element is invisible or some exception is thrown
             </summary>
             <param name="query">Element to click query</param>
             <param name="name">Element name</param>
-            <param name="tabsToWait">Method will wait for one of these tabs to appear</param>
-            <param name="parent">New tab's parent. Argument is related to the tabsToWait and will only be used with it</param>
         </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.BaseDialog.CloseButtonJQuery">
             <summary>
@@ -376,72 +397,6 @@
             <summary>
             Initializes a new instance of the TransferSettingsDialog class
             </summary>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetMaximumConcurrentStreamsTextBox(System.String)">
-            <summary>
-            Set 'Maximum Concurrent Streams' value
-            </summary>
-            <param name="value">New 'Maximum Concurrent Streams' value</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetMaximumConcurrentWritesTextBox(System.String)">
-            <summary>
-            Set 'Maximum Concurrent Writes' value
-            </summary>
-            <param name="value">New 'Maximum Concurrent Writes' value</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetMaximumSegmentSizeTextBox(System.String)">
-            <summary>
-            Set 'Maximum Segment Size' value
-            </summary>
-            <param name="value">New 'Maximum Segment Size' value</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetMaximumRetriesTextBox(System.String)">
-            <summary>
-            Set 'Maximum Retries' value
-            </summary>
-            <param name="value">New 'Maximum Retries' value</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetMaximumTransferQueueDepthTextBox(System.String)">
-            <summary>
-            Set 'Maximum Transfer Queue Depth' value
-            </summary>
-            <param name="value">New 'Maximum Transfer Queue Depth' value</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetTransferDataServerPortTextBox(System.String)">
-            <summary>
-            Set 'Transfer Data Server Port' value
-            </summary>
-            <param name="value">New 'Transfer Data Server Port' value</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetOutstandingReadsPerStreamTextBox(System.String)">
-            <summary>
-            Set 'Outstanding Reads Per Stream' value
-            </summary>
-            <param name="value">New 'Outstanding Reads Per Stream' value</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetTransferTimeoutTextBox(System.String)">
-            <summary>
-            Set 'Transfer Timeout' value
-            </summary>
-            <param name="value">New 'Transfer Timeout' value</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetSnapshotTimeoutTextBox(System.String)">
-            <summary>
-            Set 'Snapshot Timeout' value
-            </summary>
-            <param name="value">New 'Snapshot Timeout' value</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetNetworkReadTimeoutTextBox(System.String)">
-            <summary>
-            Set 'Network Read Timeout' value
-            </summary>
-            <param name="value">New 'Network Read Timeout' value</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetNetworkWriteTimeoutTextBox(System.String)">
-            <summary>
-            Set 'Network Write Timeout' value
-            </summary>
-            <param name="value">New 'Network Write Timeout' value</param>
         </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SetPriorityComboBox(System.String)">
             <summary>
@@ -479,6 +434,61 @@
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.EnableDiagnosticVerificationCheckBox">
             <summary>
             Gets or sets "Enable Diagnostic Verification" checkbox
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.MaximumConcurrentStreamsTextBox">
+            <summary>
+            Gets or sets 'Maximum Concurrent Streams' value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.MaximumConcurrentWritesTextBox">
+            <summary>
+            Gets or sets 'Maximum Concurrent Writes' value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.MaximumSegmentSizeTextBox">
+            <summary>
+            Gets or sets 'Maximum Segment Size' value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.MaximumRetriesTextBox">
+            <summary>
+            Gets or sets 'Maximum Retries' value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.MaximumTransferQueueDepthTextBox">
+            <summary>
+            Gets or sets 'Maximum Transfer Queue Depth' value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.TransferDataServerPortTextBox">
+            <summary>
+            Gets or sets 'Transfer Data Server Port' value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.OutstandingReadsPerStreamTextBox">
+            <summary>
+            Gets or sets 'Outstanding Reads Per Stream' value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.TransferTimeoutTextBox">
+            <summary>
+            Gets or sets 'Transfer Timeout' value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.SnapshotTimeoutTextBox">
+            <summary>
+            Gets or sets 'Snapshot Timeout' value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.NetworkReadTimeoutTextBox">
+            <summary>
+            Gets or sets 'Network Read Timeout' value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Configuration.TransferSettingsDialog.NetworkWriteTimeoutTextBox">
+            <summary>
+            Gets or sets 'Network Write Timeout' value
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.RecoveryPoints.RecoveryPointOperations.SelectExportTypeDialogs.EsxExportSelectExportTypeDialog">
@@ -531,6 +541,41 @@
             Describes controls of the Select Export Type dialog
             </summary>
         </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.EditExchangeCredentialsDialog">
+            <summary>
+            Describes controls of the Edit Exchange Credentials dialog
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.EditExchangeCredentialsDialog.#ctor">
+            <summary>
+            Initializes a new instance of the EditExchangeCredentialsDialog class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.EditExchangeCredentialsDialog.Ok">
+            <summary>
+            Clicks "Ok" button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.EditExchangeCredentialsDialog.Cancel">
+            <summary>
+            Clicks "Cancel" button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.EditExchangeCredentialsDialog.Close">
+            <summary>
+            Clicks "Close" button
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.EditExchangeCredentialsDialog.UserNameTextBox">
+            <summary>
+            Gets or sets "User Name" textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.EditExchangeCredentialsDialog.PasswordTextBox">
+            <summary>
+            Gets or sets "Password" textbox value
+            </summary>
+        </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.PauseProtectionDialog">
             <summary>
             Describes controls of the Pause Protection dialog
@@ -579,6 +624,27 @@
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.PauseProtectionDialog.MinutesTextBox">
             <summary>
             Gets or sets "Minutes" textbox value
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.VolumeSettings.SelectedVolume">
+            <summary>
+            Describes controls of the selected volume
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.VolumeSettings.SelectedVolume.#ctor">
+            <summary>
+            Initializes a new instance of the SelectedVolume class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.VolumeSettings.SelectedVolume.SelectVolume(System.String)">
+            <summary>
+            Selects certain volume
+            </summary>
+            <param name="volume">Agent's volume</param>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.VolumeSettings.SelectedVolume.EditProtectionSettingsDialog">
+            <summary>
+            Gets "Edit Protection Settings" dialog
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.BackupCoreConfigurationTab">
@@ -1918,7 +1984,7 @@
             Clicks "Use a specific amount of RAM" radio button
             </summary>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Export.HyperVExportDialog.Export">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Export.HyperVExportDialog.SaveExport">
             <summary>
             Clicks Export button
             </summary>
@@ -2021,9 +2087,9 @@
             Clicks "Use a specific amount of RAM (MB)" radio button
             </summary>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Export.VMExportDialog.Export">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Export.VMExportDialog.SaveExport">
             <summary>
-            Clicks Export button
+            Clicks SaveExport button
             </summary>
         </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Export.VMExportDialog.Close">
@@ -2131,6 +2197,11 @@
             <param name="userName">User name used for authentication</param>
             <param name="password">Password used for authentication</param>
         </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.PageRoot.ReloadStartPage">
+            <summary>
+            Goes to the start page
+            </summary>
+        </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.PageRoot.SelectAgent(System.String,System.Int32)">
             <summary>
             Opens selected agent's page
@@ -2148,6 +2219,11 @@
             Gets root of the AppAssure structure
             </summary>
         </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.PageRoot.FirstLaunchPage">
+            <summary>
+            Gets AppAssure First Launch page
+            </summary>
+        </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.PageRoot.CorePage">
             <summary>
             Gets AppAssure Core page
@@ -2163,6 +2239,36 @@
             Describes controls of the Active Task dialog
             </summary>
         </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.Toast">
+            <summary>
+            Describes controls of the pop-up
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.Toast.#ctor">
+            <summary>
+            Initializes a new instance of the Toast class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.Toast.Close">
+            <summary>
+            Closes this dialog
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.Toast.WaitForToastWithMessage(System.String)">
+            <summary>
+            Waiting for toast with specified message
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.Toast.Message">
+            <summary>
+            Gets the pop-up message text
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.Toast.CloseButtonJQuery">
+            <summary>
+            Gets dialog's "Close" button JQuery string
+            </summary>
+        </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.ActiveTask.ActiveTaskDialog.#ctor">
             <summary>
             Initializes a new instance of the ActiveTaskDialog class
@@ -2171,16 +2277,6 @@
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.ActiveTask.ActiveTaskDialog.OpenMonitorWindowClick">
             <summary>
             Clicks "Open Monitor Window" link
-            </summary>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.ActiveTask.ActiveTaskDialog.Close">
-            <summary>
-            Clicks "Close" button
-            </summary>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.ActiveTask.ActiveTaskDialog.Close2">
-            <summary>
-            Clicks "[x]" button
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Bulk.AddMachinesFromActiveDirectoryDialog">
@@ -2657,6 +2753,51 @@
             Gets Export Key dialog
             </summary>
         </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.AlertsTab">
+            <summary>
+            Describes controls of the Alerts tab
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.AlertsTab.#ctor">
+            <summary>
+            Initializes a new instance of the AlertsTab class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.AlertsTab.DismissAllButtonClick">
+            <summary>
+            Clicks on Dismiss All Button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.AlertsTab.WaitForEvent(System.String,System.String[],System.String[],System.Int32,System.Int32)">
+            <summary>
+            Waits until specific event has succeeded or failed
+            </summary>
+            <param name="jobName">Job text to search for</param>
+            <param name="succeededJobStatus">Succeeded statuses to monitor</param>
+            <param name="failedJobStatus">Failed statuses to monitor</param>
+            <param name="numberTopSearching">Number of top rows to search in</param>
+            <param name="timeout">Timeout for job`s performing</param>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.EventsListTab">
+            <summary>
+            Describes controls of the Events tab
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.EventsListTab.#ctor">
+            <summary>
+            Initializes a new instance of the EventsListTab class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.EventsListTab.WaitForEvent(System.String,System.String[],System.String[],System.Int32,System.Int32)">
+            <summary>
+            Waits until specific event has succeeded or failed
+            </summary>
+            <param name="jobName">Job text to search for</param>
+            <param name="succeededJobStatus">Succeeded statuses to monitor</param>
+            <param name="failedJobStatus">Failed statuses to monitor</param>
+            <param name="numberTopSearching">Number of top rows to search in</param>
+            <param name="timeout">Timeout for job`s performing</param>
+        </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.MonitorActiveTaskDialog">
             <summary>
             Describes controls of the 'Setup Core' dialog
@@ -2728,6 +2869,92 @@
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.SelectedJob.MonitorActiveTaskDialog">
             <summary>
             Gets "Progress" status
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab">
+            <summary>
+            Describes controls of the Tasks tab
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.#ctor">
+            <summary>
+            Initializes a new instance of the TasksTab class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.SelectJob(System.String)">
+            <summary>
+            Select Job
+            </summary>
+            <param name="jobName">Job text to search for</param>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.WaitForJobStatus(System.String,System.Int32,System.String[],System.String[],System.Int32)">
+            <summary>
+            Waits until specific job has succeeded or failed
+            </summary>
+            <param name="jobName">Job text to search for</param>
+            <param name="jobsCount">Count of jobs to handle</param>
+            <param name="succeededJobStatus">Succeeded statuses to monitor</param>
+            <param name="failedJobStatus">Failed statuses to monitor</param>
+            <param name="timeout">Timeout for job`s performing</param>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.ApplyFilterButtonClick">
+            <summary>
+            Clicks Apply Filter Button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.SetExportTypeItem(System.String)">
+            <summary>
+            Sets Export Type DropDown Item
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.ExportButtonClick">
+            <summary>
+            Clicks Export Button
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.SelectedJob">
+            <summary>
+            Gets current Job
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.FileSaveDialog">
+            <summary>
+            Gets "Save File Dialog" dialog
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.ActiveCheckBox">
+            <summary>
+            Gets or sets "Active" checkbox state
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.WaitingCheckBox">
+            <summary>
+            Gets or sets "Waiting" checkbox state
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.CompleteCheckBox">
+            <summary>
+            Gets or sets "Complete" checkbox state
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.FailedCheckBox">
+            <summary>
+            Gets or sets "Failed" checkbox state
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.FilterTextBox">
+            <summary>
+            Gets or sets "Filter" textbox
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.MinTimeStartTextBox">
+            <summary>
+            Gets or sets "MinTimeStart" textbox
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Events.TasksTab.MaxTimeStartTextBox">
+            <summary>
+            Gets or sets "MaxTimeStart" textbox
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Licensing.LicensePortalDialog">
@@ -3425,41 +3652,6 @@
             <param name="info">The object that holds the serialized object data</param>
             <param name="context">The contextual information about the source or destination</param>
         </member>
-        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.Toast">
-            <summary>
-            Describes controls of the pop-up
-            </summary>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.Toast.#ctor">
-            <summary>
-            Initializes a new instance of the Toast class
-            </summary>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.Toast.Close">
-            <summary>
-            Closes this dialog
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.Toast.Header">
-            <summary>
-            Gets the pop-up header text
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.Toast.Message">
-            <summary>
-            Gets the pop-up message text
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.Toast.Visible">
-            <summary>
-            Returns a value indicating whether this tab is visible
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.Toast.CloseButtonJQuery">
-            <summary>
-            Gets dialog's "Close" button JQuery string
-            </summary>
-        </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.WarningChildToAppear">
             <summary>
             Determines what dialog will appear
@@ -3470,7 +3662,17 @@
             Means wait for Indo Dialog
             </summary>
         </member>
+        <member name="F:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.WarningChildToAppear.WarningDialog">
+            <summary>
+            Means wait for Indo Dialog
+            </summary>
+        </member>
         <member name="F:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.WarningChildToAppear.ActiveTaskDialog">
+            <summary>
+            Means wait for Active Task Dialog
+            </summary>
+        </member>
+        <member name="F:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.WarningChildToAppear.BaseNotificationDialogs">
             <summary>
             Means wait for Active Task Dialog
             </summary>
@@ -3507,7 +3709,7 @@
         </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.WarningDialog.TabToRemove">
             <summary>
-            Gets or sets the value of the variable that determines what dialog to remove
+            Gets or sets the value of the variable that determines which dialog to remove
             </summary>
         </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.NotificationWindows.WarningDialog.ChildToAppear">
@@ -3560,47 +3762,97 @@
             Grand grand parent's Remove Yourself method will be used
             </summary>
         </member>
-        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToAgentOrClusterDialog">
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardAlreadyProtectedWarningTab">
             <summary>
-            Describes controls of the Connect to Agent dialog
+            Describes controls of the 'ProtectionWizardAlreadyProtectedWarningTab' tab
             </summary>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToAgentOrClusterDialog.#ctor">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardAlreadyProtectedWarningTab.#ctor">
             <summary>
-            Initializes a new instance of the ConnectToAgentOrClusterDialog class
+            Initializes a new instance of the ProtectionWizardAlreadyProtectedWarningTab class
             </summary>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToAgentOrClusterDialog.Close">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardAlreadyProtectedWarningTab.#ctor(System.String,System.String)">
             <summary>
-            Closes this dialog
+            Initializes a new instance of the ProtectionWizardAlreadyProtectedWarningTab class (ctor for the derived classes)
             </summary>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToAgentOrClusterDialog.Connect">
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardConnectionTab">
             <summary>
-            Clicks "Connect" button
+            Describes controls of the 'ProtectionWizardConnectionTab' tab
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToAgentOrClusterDialog.ProtectAgentDialog">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardConnectionTab.#ctor">
             <summary>
-            Gets Protect Agent dialog
+            Initializes a new instance of the ProtectionWizardConnectionTab class
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToAgentOrClusterDialog.Host">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardConnectionTab.Host">
             <summary>
             Gets or sets 'Host' value
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToAgentOrClusterDialog.Port">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardConnectionTab.Port">
             <summary>
             Gets or sets 'Port' value
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToAgentOrClusterDialog.UserName">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardConnectionTab.UserName">
             <summary>
             Gets or sets 'Username' value
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToAgentOrClusterDialog.Password">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardConnectionTab.Password">
+            <summary>
+            Gets or sets 'Password' value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardConnectionTab.DisplayName">
+            <summary>
+            Gets or sets 'DisplayName' value
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToClusterDialog">
+            <summary>
+            Describes controls of the Connect to Cluster dialog
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToClusterDialog.#ctor">
+            <summary>
+            Initializes a new instance of the ConnectToClusterDialog class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToClusterDialog.Close">
+            <summary>
+            Closes this dialog
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToClusterDialog.Connect">
+            <summary>
+            Clicks "Connect" button
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToClusterDialog.ProtectAgentDialog">
+            <summary>
+            Gets Protect Agent dialog
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToClusterDialog.Host">
+            <summary>
+            Gets or sets 'Host' value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToClusterDialog.Port">
+            <summary>
+            Gets or sets 'Port' value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToClusterDialog.UserName">
+            <summary>
+            Gets or sets 'Username' value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ConnectToClusterDialog.Password">
             <summary>
             Gets or sets 'Password' value
             </summary>
@@ -3629,7 +3881,7 @@
             <summary>
             Sets volume checkbox state
             </summary>
-            <param name="volume">Volume name</param>
+            <param name="volume">Volume name or multiple names divided by '|' symbol</param>
             <param name="state">Checkbox state</param>
         </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.EditProtectionSettingsDialog.EditVolumeProtectionScheduleLinkClick(System.String)">
@@ -3951,6 +4203,317 @@
             Gets or sets 'Apply to All Volumes' checkbox state
             </summary>
         </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardEncryptionTab">
+            <summary>
+            Describes controls of the 'ProtectionWizardEncryptionTab' tab
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardEncryptionTab.#ctor">
+            <summary>
+            Initializes a new instance of the ProtectionWizardEncryptionTab class
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardEncryptionTab.EnableEncryptionCheckBox">
+            <summary>
+            Gets or sets "Enable encryption" checkbox state
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardEncryptionTab.EncryptionName">
+            <summary>
+            Gets or sets 'Name' textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardEncryptionTab.Description">
+            <summary>
+            Gets or sets 'Description' textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardEncryptionTab.Passphrase">
+            <summary>
+            Gets or sets 'Passphrase' textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardEncryptionTab.ConfirmPassphrase">
+            <summary>
+            Gets or sets 'ConfirmPassphrase' textbox value
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardFirstCreationRepositoryTab">
+            <summary>
+            Describes controls of the 'ProtectionWizardFirstCreationRepositoryTab' tab
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardFirstCreationRepositoryTab.#ctor">
+            <summary>
+            Initializes a new instance of the ProtectionWizardFirstCreationRepositoryTab class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardFirstCreationRepositoryTab.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the ProtectionWizardFirstCreationRepositoryTab class (ctor for the derived classes)
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardFirstCreationRepositoryTab.RepositoryName">
+            <summary>
+            Gets or sets 'Name' textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardFirstCreationRepositoryTab.Location">
+            <summary>
+            Gets or sets 'Location' textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardFirstCreationRepositoryTab.UserNameUnc">
+            <summary>
+            Gets or sets 'UserNameUnc' textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardFirstCreationRepositoryTab.Password">
+            <summary>
+            Gets or sets 'Password' textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardFirstCreationRepositoryTab.MetadataPath">
+            <summary>
+            Gets or sets 'MetadataPath' textbox value
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionScheduleTab">
+            <summary>
+            Describes controls of the 'ProtectionWizardProtectionScheduleTab' tab
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionScheduleTab.#ctor">
+            <summary>
+            Initializes a new instance of the ProtectionWizardProtectionScheduleTab class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionScheduleTab.SetDayCheckBoxState(System.String,WebGuiAutomation.WebElements.CheckBoxElement.CheckBoxState)">
+            <summary>
+            Sets days checkbox state
+            </summary>
+            <param name="days">Volume name or multiple names divided by '|' symbol</param>
+            <param name="state">Checkbox state</param>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionScheduleTab.SetStartTimeTextBox(System.String,System.String)">
+            <summary>
+            Sets the StartTimeTextBox value for selected day
+            </summary>
+            <param name="day"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionScheduleTab.SetEndTimeTextBox(System.String,System.String)">
+            <summary>
+            Sets the EndTimeTextBox value for selected day
+            </summary>
+            <param name="day"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionScheduleTab.SetIntervalTextBox(System.String,System.String)">
+            <summary>
+            Sets the IntervalTextBox value for selected day
+            </summary>
+            <param name="day"></param>
+            <param name="value"></param>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionScheduleTab.AllVolumesCheckBox">
+            <summary>
+            Gets or sets "All Volumes" checkbox state
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionScheduleTab.PauseProtectionCheckBox">
+            <summary>
+            Gets or sets "Pause Protection" checkbox state
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionScheduleTab.ApplyAllDaysCheckBox">
+            <summary>
+            Gets or sets "Apply to all days" checkbox state
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionScheduleTab.SyncAllIntervalsCheckBox">
+            <summary>
+            Gets or sets "SyncAllIntervals" checkbox state
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionTab">
+            <summary>
+            Describes controls of the 'ProtectionWizardProtectionTab' tab
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionTab.#ctor">
+            <summary>
+            Initializes a new instance of the ProtectionWizardProtectionTab class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionTab.DefaultProtectionRadioButtonClick">
+            <summary>
+            Clicks 'Default protection' radio button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionTab.CustomProtectionRadioButtonClick">
+            <summary>
+            Clicks 'Custom protection' radio button
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionVolumesTab">
+            <summary>
+            Describes controls of the 'ProtectionWizardProtectionVolumesTab' tab
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionVolumesTab.#ctor">
+            <summary>
+            Initializes a new instance of the ProtectionWizardProtectionVolumesTab class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionVolumesTab.SetVolumeCheckBoxState(System.String,WebGuiAutomation.WebElements.CheckBoxElement.CheckBoxState)">
+            <summary>
+            Sets volume checkbox state
+            </summary>
+            <param name="volume">Volume name or multiple names divided by '|' symbol</param>
+            <param name="state">Checkbox state</param>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardProtectionVolumesTab.AllVolumesCheckBox">
+            <summary>
+            Gets or sets "All Volumes" checkbox state
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog">
+            <summary>
+            Describes controls of the Protect Machine Wizard dialog
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog.#ctor">
+            <summary>
+            Initializes a new instance of the ProtectMachineWizardDialog class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog.NextFinish">
+            <summary>
+            Clicks 'Next' button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog.Back">
+            <summary>
+            Clicks 'Back' button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog.Close">
+            <summary>
+            Clicks "Close" button
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog.WelcomeTab">
+            <summary>
+            Gets "WelcomeProtectWizardTab" tab
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog.ConnectionTab">
+            <summary>
+            Gets "Connection" tab
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog.ProtectionTab">
+            <summary>
+            Gets "Protection" tab
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog.ProtectionVolumesTab">
+            <summary>
+            Gets "Protection Volumes" tab
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog.ProtectionScheduleTab">
+            <summary>
+            Gets "Protection Schedule" tab
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog.ExistingRepositoryTab">
+            <summary>
+            Gets "ExistingRepository" tab
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog.FirstCreationRepositoryTab">
+            <summary>
+            Gets "FirstlyCreatedRepository" tab
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog.RepoConfigurationTab">
+            <summary>
+            Gets "RepoConfiguration" tab
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog.EncryptionTab">
+            <summary>
+            Gets "Connection" tab
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectMachineWizardDialog.WarningTab">
+            <summary>
+            Gets "Warning" tab
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardRepositoryConfigurationTab">
+            <summary>
+            Describes controls of the 'ProtectionWizardRepositoryConfigurationTab' tab
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardRepositoryConfigurationTab.#ctor">
+            <summary>
+            Initializes a new instance of the ProtectionWizardRepositoryConfigurationTab class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardRepositoryConfigurationTab.ChooseWriteCachingPolicyDropDownItem(System.String)">
+            <summary>
+            Chooses WriteCachingPolicy dropdown item
+            </summary>
+            <param name="itemName">Dropdown item name. Values: "Off","On","Sync"</param>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardRepositoryConfigurationTab.Size">
+            <summary>
+            Gets or sets 'Size' textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardRepositoryConfigurationTab.BytesPerSector">
+            <summary>
+            Gets or sets 'BytesPerSector' textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardRepositoryConfigurationTab.BytesPerRecord">
+            <summary>
+            Gets or sets 'BytesPerRecord' textbox value
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardRepositoryConfigurationTab.ShowAdvancedOptionsCheckBox">
+            <summary>
+            Gets or sets "Show advanced optionss" checkbox state
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardExistingRepositoryLocationTab">
+            <summary>
+            Describes controls of the 'ProtectionWizardExistingRepositoryLocationTab' tab
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardExistingRepositoryLocationTab.#ctor">
+            <summary>
+            Initializes a new instance of the ProtectionWizardExistingRepositoryLocationTab class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardExistingRepositoryLocationTab.ChooseRepositoryDropDownItem(System.String)">
+            <summary>
+            Chooses Repository dropdown item
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardExistingRepositoryLocationTab.CreateRepoRadioButtonClick">
+            <summary>
+            Clicks 'Create Repository' radio button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardExistingRepositoryLocationTab.UseExistingRadioButtonClick">
+            <summary>
+            Clicks 'Use Existing' radio button
+            </summary>
+        </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.RepairOrphanAgentDialog">
             <summary>
             Describes controls of the Protect Repair Orphan Agent dialog
@@ -4000,6 +4563,46 @@
             </summary>
         </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.RepairOrphanAgentDialog.AllVolumesCheckBox">
+            <summary>
+            Gets or sets "All Volumes" checkbox state
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardDeleteExistingRPsWarningTab">
+            <summary>
+            Describes controls of the 'ProtectionWizardDeleteExistingRPsWarningTab' tab
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardDeleteExistingRPsWarningTab.#ctor">
+            <summary>
+            Initializes a new instance of the ProtectionWizardDeleteExistingRPsWarningTab class
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardDeleteExistingRPsWarningTab.DeleteExistingRecoveryPointsCheckBox">
+            <summary>
+            Gets or sets "Delete Existing Recovery Points" checkbox state
+            </summary>
+        </member>
+        <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardWelcomeTab">
+            <summary>
+            Describes controls of the 'ProtectionWizardWelcomeTab' tab
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardWelcomeTab.#ctor">
+            <summary>
+            Initializes a new instance of the ProtectionWizardWelcomeTab class
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardWelcomeTab.TypicalRadioButtonClick">
+            <summary>
+            Clicks 'Typical' radio button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardWelcomeTab.AdvancedRadioButtonClick">
+            <summary>
+            Clicks 'Advanced' radio button
+            </summary>
+        </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Protect.ProtectMachineWizard.ProtectionWizardWelcomeTab.SkipWelcomeCheckBox">
             <summary>
             Gets or sets "All Volumes" checkbox state
             </summary>
@@ -5054,6 +5657,21 @@
             Initializes a new instance of the SetSqlCredentialsDialog class
             </summary>
         </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.SetSqlCredentialsDialog.DefaultRadioButtonClick">
+            <summary>
+            Clicks "Default" radio button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.SetSqlCredentialsDialog.WindowsRadioButtonClick">
+            <summary>
+            Clicks "Windows" radio button
+            </summary>
+        </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.SetSqlCredentialsDialog.SqlRadioButtonClick">
+            <summary>
+            Clicks "Sql" radio button
+            </summary>
+        </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.SetSqlCredentialsDialog.Ok">
             <summary>
             Applies changes and closes the dialog
@@ -5114,14 +5732,9 @@
             Gets or sets "Enable nightly checksum check" checkbox state
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.ExchangeServerSettingsDialog.TruncateExchangeLogsCheckBox">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.ExchangeServerSettingsDialog.EnableNightlyLogTruncationCheckBox">
             <summary>
-            Gets or sets "Automatically truncate Exchange logs after successful checksum check" checkbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.ExchangeServerSettingsDialog.TruncateLogBeforeChecksumCheckCheckBox">
-            <summary>
-            Gets or sets "Truncate log before checksum check completes" checkbox state
+            Gets or sets "Enable nightly log truncation" checkbox state
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.SqlServerSettingsDialog">
@@ -5154,9 +5767,9 @@
             Gets or sets "Enable nightly attachability check" checkbox state
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.SqlServerSettingsDialog.TruncateLogCheckBox">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.Summary.SqlServerSettingsDialog.EnableNightlyLogTruncationCheckBox">
             <summary>
-            Gets or sets "Truncate log after successful attachability check" checkbox state
+            Gets or sets "Enable nightly log truncation" checkbox state
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.ToolsTab">
@@ -5403,11 +6016,6 @@
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Home.SetupCore.DeployAgentTab.PreviousButtonClick">
             <summary>
             Clicks Previous button
-            </summary>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Home.SetupCore.DeployAgentTab.FinishButtonClick">
-            <summary>
-            Saves changes and closes the dialog
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Home.SetupCore.EmailNotificationTab">
@@ -6293,7 +6901,7 @@
             </summary>
             <param name="text">Host name</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Replication.TabRows.Outgoing.AddAgentsDialog.CheckAgents(System.String,WebGuiAutomation.WebElements.CheckBoxElement.CheckBoxState)">
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Replication.TabRows.Outgoing.AddAgentsDialog.SelectAgents(System.String,WebGuiAutomation.WebElements.CheckBoxElement.CheckBoxState)">
             <summary>
             Sets selected agents' checkbox state
             </summary>
@@ -7584,6 +8192,12 @@
             Initializes a new instance of the SummaryTab class
             </summary>
         </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.SummaryTab.SelectVolume(System.String)">
+            <summary>
+            Selects volume by its name
+            </summary>
+            <param name="volume">Volume</param>
+        </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.SummaryTab.ForceIncrementalDropDownItemClick">
             <summary>
             Clicks "Force Snapshot\Incremental" dropdown item
@@ -7636,6 +8250,12 @@
             </summary>
             <returns>Exchange server and its mailboxes information</returns>
         </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.SummaryTab.SetSqlCredentialsItemClick(System.String)">
+            <summary>
+            Gets "Set SQL Credentials" dialog
+            </summary>
+            <param name="instanceName">The name of the selected SQL Server instance</param>
+        </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.SummaryTab.PauseProtectionDialog">
             <summary>
             Gets "Pause protection" dialog
@@ -7646,7 +8266,7 @@
             Gets "Resume protection" warning dialog
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.SummaryTab.EditSqlCredentialsDialog">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.SummaryTab.SqlCredentialsDialog">
             <summary>
             Gets "Edit SQL Credentials" dialog
             </summary>
@@ -7666,6 +8286,11 @@
             Gets "Exchange Server Settings" dialog
             </summary>
         </member>
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.SummaryTab.SelectedVolume">
+            <summary>
+            Gets current Volume
+            </summary>
+        </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.EventsTab">
             <summary>
             Describes controls of the Events tab
@@ -7676,25 +8301,19 @@
             Initializes a new instance of the EventsTab class
             </summary>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.EventsTab.SelectJob(System.String)">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.EventsTab.TasksTab">
             <summary>
-            Select Job
+            Gets "Tasks" tab
             </summary>
-            <param name="jobName">Job text to search for</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.EventsTab.WaitForJobStatus(System.String,System.Int32,System.String[],System.String[],System.Int32)">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.EventsTab.AlertsTab">
             <summary>
-            Waits until specific job has succeeded or failed
+            Gets "Alerts" tab
             </summary>
-            <param name="jobName">Job text to search for</param>
-            <param name="jobsCount">Count of jobs to handle</param>
-            <param name="succeededJobStatus">Succeeded status to monitor</param>
-            <param name="failedJobStatus">Failed status to monitor</param>
-            <param name="timeout">Timeout for job`s performing</param>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.EventsTab.SelectedJob">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.EventsTab.EventsListTab">
             <summary>
-            Gets current Job
+            Gets "EventsList" tab
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.RecoveryPoints.DeleteRangeDialog">
@@ -7713,23 +8332,11 @@
             </summary>
             <param name="value">New 'Start Date' value</param>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.RecoveryPoints.DeleteRangeDialog.SetStartTime(System.String)">
-            <summary>
-            Set 'Start Time' value
-            </summary>
-            <param name="value">New 'Peak Start Time' value</param>
-        </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.RecoveryPoints.DeleteRangeDialog.SetEndDateTextBox(System.String)">
             <summary>
             Set 'End Date' value
             </summary>
             <param name="value">New 'Start Date' value</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.RecoveryPoints.DeleteRangeDialog.SetEndTime(System.String)">
-            <summary>
-            Set 'End Time' value
-            </summary>
-            <param name="value">New 'Peak Start Time' value</param>
         </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Agent.Tab.RecoveryPoints.DeleteRangeDialog.Delete">
             <summary>
@@ -7915,7 +8522,7 @@
             Gets or sets "Enter License Key" textbox value
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Licensing.ChangeLicenseKeyDialog.LicenseDialog">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Licensing.ChangeLicenseKeyDialog.LicensePortalDialog">
             <summary>
             Gets License Portal dialog
             </summary>
@@ -8135,6 +8742,13 @@
             Initializes a new instance of the NightlyJobsSettingsDialog class
             </summary>
         </member>
+        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.SetNightlyJobCheckBox(System.String,WebGuiAutomation.WebElements.CheckBoxElement.CheckBoxState)">
+            <summary>
+            Checks or unchecks selected nightly job
+            </summary>
+            <param name="nightlyJobName">Nightly Job name, can be partial</param>
+            <param name="state">Checked or Unchecked</param>
+        </member>
         <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.Ok">
             <summary>
             Applies changes and closes the dialog
@@ -8158,46 +8772,6 @@
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.AllCheckBox">
             <summary>
             Gets or sets "All" checkbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.RollupCheckBox">
-            <summary>
-            Gets or sets "Rollup" checkbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.AttachAbilityCheckJobCheckBox">
-            <summary>
-            Gets or sets "Attachability Check Job" checkbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.ChecksumCheckJobCheckBox">
-            <summary>
-            Gets or sets "Checksum Check Job" checkbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.LogTruncationJobCheckBox">
-            <summary>
-            Gets or sets "Log Truncation Job" checkbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.LogRepositorySettingsCheckBox">
-            <summary>
-            Gets or sets "Log Repository Settings" checkbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.DeletingOldEventsAndJobsCheckBox">
-            <summary>
-            Gets or sets "Deleting Old Events And Jobs" checkbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.DownloadingLogsFromProtectedMachinesCheckBox">
-            <summary>
-            Gets or sets "Downloading The Logs From The Protected Machines" checkbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.NightlyJobsSettingsDialog.CheckRecoveryPointsIntegrityCheckBox">
-            <summary>
-            Gets or sets "Check Recovery Points Integrity" checkbox state
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.Configuration.Settings.ReplayEngineConfigurationDialog">
@@ -9071,70 +9645,19 @@
             Initializes a new instance of the EventsTab class
             </summary>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.EventsTab.SelectJob(System.String)">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.EventsTab.TasksTab">
             <summary>
-            Select Job
-            </summary>
-            <param name="jobName">Job text to search for</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.EventsTab.DismissAllButtonClick">
-            <summary>
-            Clicks on Dismiss All Button
+            Gets "Tasks" tab
             </summary>
         </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.EventsTab.WaitForJobStatus(System.String,System.Int32,System.String[],System.String[],System.Int32)">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.EventsTab.AlertsTab">
             <summary>
-            Waits until specific job has succeeded or failed
-            </summary>
-            <param name="jobName">Job text to search for</param>
-            <param name="jobsCount">Count of jobs to handle</param>
-            <param name="succeededJobStatus">Succeeded statuses to monitor</param>
-            <param name="failedJobStatus">Failed statuses to monitor</param>
-            <param name="timeout">Timeout for job`s performing</param>
-        </member>
-        <member name="M:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.EventsTab.WaitForEvent(System.String,System.String[],System.String[],System.Int32,System.Int32)">
-            <summary>
-            Waits until specific event has succeeded or failed
-            </summary>
-            <param name="jobName">Job text to search for</param>
-            <param name="succeededJobStatus">Succeeded statuses to monitor</param>
-            <param name="failedJobStatus">Failed statuses to monitor</param>
-            <param name="numberTopSearching">Number of top rows to search in</param>
-            <param name="timeout">Timeout for job`s performing</param>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.EventsTab.SelectedJob">
-            <summary>
-            Gets current Job
+            Gets "Alerts" tab
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.EventsTab.ActiveCheckBox">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.EventsTab.EventsListTab">
             <summary>
-            Gets or sets "Active" checkbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.EventsTab.CompleteCheckBox">
-            <summary>
-            Gets or sets "Complete" checkbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.EventsTab.FailedCheckBox">
-            <summary>
-            Gets or sets "Failed" checkbox state
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.EventsTab.FilterTextBox">
-            <summary>
-            Gets or sets "Filter" textbox
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.EventsTab.MinTimeStartTextBox">
-            <summary>
-            Gets or sets "MinTimeStart" textbox
-            </summary>
-        </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.EventsTab.MaxTimeStartTextBox">
-            <summary>
-            Gets or sets "MaxTimeStart" textbox
+            Gets "EventsList" tab
             </summary>
         </member>
         <member name="T:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.MachinesTab">
@@ -9242,7 +9765,7 @@
             Gets Protect Machine dialog
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.MachinesTab.ConnectToAgentDialog">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.MachinesTab.ProtectMachineWizardDialog">
             <summary>
             Gets Protect Machine dialog
             </summary>
@@ -9613,9 +10136,9 @@
             Gets "Setup Core" dialog
             </summary>
         </member>
-        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.HomeTab.ConnectToAgentDialog">
+        <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.HomeTab.ProtectMachineWizardDialog">
             <summary>
-            Gets "Protect Agent" dialog
+            Gets "Protect Machine Wizard Dialog" dialog
             </summary>
         </member>
         <member name="P:WebGuiAutomation.Implementation.AppAssureStructure.Pages.Core.Tab.HomeTab.AddRepositoryDialog">

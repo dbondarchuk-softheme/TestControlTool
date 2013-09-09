@@ -158,9 +158,8 @@ namespace TestControlTool.Core.Implementations
             {
                 throw new AddExistingVMServerException(server);
             }
-            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            catch (System.Data.Entity.Validation.DbEntityValidationException)
             {
-                e.Message.ToString();
             }
 
             Refresh();
@@ -508,6 +507,7 @@ namespace TestControlTool.Core.Implementations
                     Id = account.Id.ToString(),
                     Login = account.Login,
                     PasswordHash = account.PasswordHash,
+                    Type = account.Type.ToString(),
                     VCenterMachines = account.Machines != null ? (ICollection<VCenterMachineModel>)account.Machines.Where(x => x is VCenterMachine).Select(x => ToVCenterMachineModel((VCenterMachine)x)).ToList() : new Collection<VCenterMachineModel>(),
                     HyperVMachines = account.Machines != null ? (ICollection<HyperVMachineModel>)account.Machines.Where(x => x is HyperVMachine).Select(x => ToHyperVMachineModel((HyperVMachine)x)).ToList() : new Collection<HyperVMachineModel>(),
                     Tasks = account.Tasks != null ? (ICollection<TaskModel>) account.Tasks.Select(ToTask).ToList() : new Collection<TaskModel>(),
@@ -580,6 +580,7 @@ namespace TestControlTool.Core.Implementations
                 Id = new Guid(account.Id),
                 Login = account.Login,
                 PasswordHash = account.PasswordHash,
+                Type = (AccountType)Enum.Parse(typeof(AccountType), account.Type, true),
                 Machines = account.VCenterMachines.Select(ToIMachine).Union(account.HyperVMachines.Select(ToIMachine)).ToList(),
                 Tasks = account.Tasks.Select(ToITask).ToList(),
                 VMServers = account.Servers.Select(ToVMServer).ToList()

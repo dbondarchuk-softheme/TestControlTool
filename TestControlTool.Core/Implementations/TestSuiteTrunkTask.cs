@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using TestControlTool.Core.Contracts;
+using TestControlTool.Core.Helpers;
 
 namespace TestControlTool.Core.Implementations
 {
@@ -22,6 +23,18 @@ namespace TestControlTool.Core.Implementations
                 "powershell \"" + ConfigurationManager.AppSettings["TestPerformerRunScript"] + "\" \"" + machineInfo["address"] + "\" \"" + machineInfo["username"] 
                 + "\" \"" + machineInfo["password"] + "\" \"" + machineInfo["share"] + "\" \"" + FileName 
                 + "\" \"" + ConfigurationManager.AppSettings["PsExec"] + "\" \"" + ReportFolder +"\"";
+        }
+
+        public override void Stop()
+        {
+            var machineInfo = GetMachineInfo();
+
+            var commandLine = ConfigurationManager.AppSettings["PsExec"] + " \\\\" + machineInfo["address"] + " -u " + machineInfo["username"]
+                + " -p " + machineInfo["password"] + " -c -f " + ConfigurationManager.AppSettings["ProcessKiller"] + " WebGuiAutomation.TestPerformer";
+
+            ProcessAsUser.Launch(commandLine);
+
+            base.Stop();
         }
     }
 }

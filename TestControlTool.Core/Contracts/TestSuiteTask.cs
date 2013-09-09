@@ -68,7 +68,7 @@ namespace TestControlTool.Core.Contracts
         /// <summary>
         /// Stops the child task
         /// </summary>
-        public void Stop()
+        public virtual void Stop()
         {
             try
             {

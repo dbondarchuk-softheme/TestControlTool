@@ -31,7 +31,12 @@ namespace TestControlTool.Core.Implementations
         /// Account's password
         /// </summary>
         public string PasswordHash { get; set; }
-    
+
+        /// <summary>
+        /// Account type
+        /// </summary>
+        public AccountType Type { get; set; }
+
         /// <summary>
         /// Account's machines
         /// </summary>

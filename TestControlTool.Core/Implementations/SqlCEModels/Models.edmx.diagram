@@ -16,6 +16,7 @@
         <AssociationConnector Association="SqlCEModels.VCenterMachines1" ManuallyRouted="false" />
         <AssociationConnector Association="SqlCEModels.HyperVServers" ManuallyRouted="false" />
         <AssociationConnector Association="SqlCEModels.VCenterServer" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SqlCEModels.AccountModel" Width="1.5" PointX="0.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

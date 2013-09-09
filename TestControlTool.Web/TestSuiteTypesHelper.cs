@@ -57,7 +57,7 @@ namespace TestControlTool.Web
             var referencedAssemblies = assembly.GetReferencedAssemblies().Where(x => x.FullName.StartsWith("WebGuiAutomation.TestPerformerCore")).Select(Assembly.Load);
             types.AddRange(referencedAssemblies.SelectMany(x => x.ExportedTypes));
             
-            return assembly.ExportedTypes;
+            return types;
         }
 
         private static IEnumerable<Type> GetAvailabaleTests(bool trunk)

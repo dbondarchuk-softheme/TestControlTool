@@ -89,7 +89,7 @@ function saveTasks(id, urlToSave, urlToRedirect) {
     var isEnabled = $('#Task_IsEnabled').is(':checked');
 
     if (new Date(startTime).getHours() >= 20) {
-        showErrorAllert("Sorry, but you can't create task, which will start between 8 PM and 12 PM. It is a maintenance time");
+        showErrorAllert("Sorry, but you aren\'t allowed to create task, which starts between 8 PM and 12 PM. It is a maintenance time");
 
         return false;
     }

@@ -76,14 +76,20 @@
                         <ul class="dropdown-menu">
                             <li><a data-toggle="modal" href="#DeployInstallJobModal">DeployInstall Job</a></li>
                             <li class="divider"></li>
-                            <li><a data-toggle="modal" href="#" onclick="showNewTestSuite(true); return false;">Test Suite for Trunk</a></li>
+                            @if ((int)(TestControlTool.Web.TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Type) >= 1)
+                            {
+                                <li><a data-toggle="modal" href="#" onclick="showNewTestSuite(true); return false;">Test Suite for Trunk</a></li>
+                            }
                             <li><a data-toggle="modal" href="#" onclick="showNewTestSuite(false); return false;">Test Suite for Release</a></li>
                         </ul>
                     </div>
                     <div class="btn-group">
-                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Upload exesisting xml<span class="caret"></span></a>
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Upload existing xml<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal(true); return false;">Test Suite for Trunk</a></li>
+                            @if ((int)(TestControlTool.Web.TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Type) >= 1)
+                            {
+                                <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal(true); return false;">Test Suite for Trunk</a></li>
+                            }
                             <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal(false); return false;">Test Suite for Release</a></li>
                         </ul>
                     </div>

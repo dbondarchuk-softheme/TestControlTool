@@ -88,7 +88,7 @@ namespace TestControlTool.Core.Implementations
 
             var process = Process.GetProcessById(processId);
             
-            process.WaitForExit();
+            process.WaitForExit(5*60*1000);
         }
 
         private void CopyLog()

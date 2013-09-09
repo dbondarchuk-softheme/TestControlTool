@@ -14,7 +14,8 @@ namespace BootstrapSupport
                 "~/scripts/jquery.validate.unobtrusive.js",
                 "~/Scripts/jquery.validate.unobtrusive-custom-for-bootstrap.js",
                 "~/Scripts/bootstrap-modalmanager.js",
-                "~/Scripts/bootstrap-modal.js"
+                "~/Scripts/bootstrap-modal.js",
+                "~/Scripts/Main.js"
                 ));
 
             bundles.Add(new StyleBundle("~/content/css").Include(

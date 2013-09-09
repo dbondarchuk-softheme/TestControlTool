@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SqlCEModels.Store" Alias="Self" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SqlCEModels.Store" Alias="Self" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="SqlCEModelsStoreContainer">
           <EntitySet Name="Accounts" EntityType="SqlCEModels.Store.Accounts" store:Type="Tables" />
           <EntitySet Name="HyperVMachines" EntityType="SqlCEModels.Store.HyperVMachines" store:Type="Tables" />
@@ -43,6 +43,7 @@
           <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="Login" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="PasswordHash" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Type" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="HyperVMachines">
           <Key>
@@ -187,8 +188,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SqlCEModels" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -234,6 +234,7 @@
           <NavigationProperty Name="Servers" Relationship="SqlCEModels.Servers1" FromRole="Accounts" ToRole="Servers" />
           <NavigationProperty Name="Tasks" Relationship="SqlCEModels.Tasks1" FromRole="Accounts" ToRole="Tasks" />
           <NavigationProperty Name="VCenterMachines" Relationship="SqlCEModels.VCenterMachines1" FromRole="Accounts" ToRole="VCenterMachines" />
+          <Property Type="String" Name="Type" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="HyperVMachineModel">
           <Key>
@@ -395,6 +396,7 @@
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="SqlCEModels.AccountModel">
               <MappingFragment StoreEntitySet="Accounts">
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Login" ColumnName="Login" />
                 <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />

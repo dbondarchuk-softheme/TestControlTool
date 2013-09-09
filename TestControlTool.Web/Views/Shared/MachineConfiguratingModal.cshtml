@@ -34,6 +34,7 @@
                         </ul>
                     </li>
                 </ul>
+                <p>Attention! Your machine must have already set up IP address and disabled firewall</p>
             </div>
             @Html.ValidationSummary(true)
             @foreach (var property in Model.VisibleProperties(MachineConfigurationModel.HiddenProperties))

@@ -1,5 +1,6 @@
 ﻿@using System.Reflection
 @using BootstrapSupport
+@using TestControlTool.Web.BootstrapSupport.HtmlHelpers
 @model Type
 @{
     Layout = null;
@@ -15,58 +16,39 @@
         <h3 id="ListItemsLabel">Add new @Model.Name</h3>
     </div>
     <div class="modal-body" id="itemsProperties">
-        @if (Model == typeof(string) || Model == typeof(int))
+        @if (Model.IsEnum || Model.IsPrimitive || Model == typeof(string))
         {
             <div class="control-group">
-            <label class="control-label" for="newItemEditorBox">
-                Add item&nbsp;&nbsp;&nbsp;
-                <input type="text" id="newItemEditorBox" class="input-xlarge" />
-                <span class="help-inline error" id="newItemTextBoxValidation"></span>
-            </label>
-        </div>
+                <label class="control-label" for="newItemEditorBox">
+                    Add item&nbsp;&nbsp;&nbsp;
+                    @if (Model == typeof (string) || Model == typeof (int))
+                    {
+                        <input type="text" id="newItemEditorBox" class="input-xlarge" />
+                    }
+                    else if (Model == typeof (bool))
+                    {
+                        @Html.CheckBox("newItemEditorBox")
+                    }
+                    else if (Model.IsEnum)
+                    {
+                        @Html.EnumDropDownList("newItemEditorBox", Model)
+                    }
+                    <span class="help-inline error" id="newItemTextBoxValidation"></span>
+                </label>
+            </div>
         }
-        @if (Model == typeof(bool))
+        else
         {
-            <div class="control-group">
-            <label class="control-label" for="newItemCheckBox">
-                Add item&nbsp;&nbsp;&nbsp;
-                @Html.CheckBox("newItemCheckBox")
-                <span class="help-inline error" id="newItemCheckBoxValidation"></span>
-            </label>
-        </div>
-        }
-        @if (Model.IsEnum)
-        {
-            <div class="control-group">
-            <label class="control-label" for="newItemEditorBox">
-                Add item&nbsp;&nbsp;&nbsp;
-                @Html.EnumDropDownList("newItemEditorBox", Model)
-                <span class="help-inline error" id="newItemDropDownValidation"></span>
-            </label>
-        </div>
-        }
-        @foreach (var property in Model.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead))
-        {
-            using (Html.ControlGroupFor(property.Name))
+            foreach (var property in Model.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead))
             {
-                @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label" })
-                <div class="controls">
-                    @if (property.PropertyType == typeof(string) || property.PropertyType == typeof(int))
-                    {
-                        @Html.TextBox(property.Name, "", new { @class = "input-xlarge" })
+                using (Html.ControlGroupFor(property.Name))
+                {
+                    @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.Editor(property, "", new { @class = "input-xlarge" }, null, null)
                         @Html.ValidationMessage(property.Name, null, new { @class = "help-inline error" })
-                    }
-                    else if (property.PropertyType == typeof(bool))
-                    {
-                        @Html.CheckBox(property.Name, false, new { @class = "input-xlarge" })
-                        @Html.ValidationMessage(property.Name, null, new { @class = "help-inline error" })
-                    }
-                    else if (property.PropertyType.IsEnum)
-                    {
-                        @Html.EnumDropDownList(property.Name, property.PropertyType)
-                        @Html.ValidationMessage(property.Name, null, new { @class = "help-inline error" })
-                    }
-                </div>
+                    </div>
+                }
             }
         }
     </div>
@@ -76,6 +58,15 @@
     </div>
 </div>
 <script type="text/javascript">
+
+    $(document).ready(function() {
+        $("[rel='popover']").popover();
+        
+        $("[rel=popover]").on("hidden", function (e) {
+            e.stopPropagation(); //Once popover is hidden stop the event from going to parent
+        });
+    });
+    
     function saveItem() {
         if (isEditListItem) {
             editItem();

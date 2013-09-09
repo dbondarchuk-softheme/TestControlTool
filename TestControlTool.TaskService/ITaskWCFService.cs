@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Web;
-using System.Text;
-using System.Threading.Tasks;
 using TestControlTool.Core.Models;
 
 namespace TestControlTool.TaskService
@@ -23,5 +19,13 @@ namespace TestControlTool.TaskService
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "/ConfigureMachine/", ResponseFormat = WebMessageFormat.Json)]
         bool ConfigureMachine(MachineConfigurationModel machineConfigurationModel);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "/SendEmail/?user={user}&subject={subject}&message={message}", ResponseFormat = WebMessageFormat.Json)]
+        void SendEmail(string user, string subject, string message);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "/SendEmailToAll/?subject={subject}&message={message}", ResponseFormat = WebMessageFormat.Json)]
+        void SendEmailToAll(string subject, string message);
     }
 }
