@@ -1,169 +1,225 @@
 ﻿@using System.Reflection
 @using BootstrapSupport
+@using TestControlTool.Core.Models
 @using TestControlTool.Web.BootstrapSupport.HtmlHelpers
-@model Type
+@model Pair<Type, string>
 @{
     Layout = null;
+
+    var modelName = string.IsNullOrWhiteSpace(Model.Value) ? "" : "-" + Model.Value;
+    var modalWindowId = "ListItemsModal" + modelName;
+    var itemsPropertiesId = "itemsProperties" + modelName;
+    var functionSuffix = modelName.Replace('-', '_');
 }
-@if (Model == typeof(string))
+@if (Model.Key == typeof(string))
 {
     <script src="~/Scripts/bootbox.min.js"></script>
 }
 
-<div class="modal hide fade" id="ListItemsModal" tabindex="-1" role="dialog" aria-labelledby="Edit List" aria-hidden="true">
+<div class="modal hide fade" id="@modalWindowId" tabindex="-1" role="dialog" aria-labelledby="Edit List" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="ListItemsLabel">Add new @Model.Name</h3>
+        <h3 id="ListItemsLabel@(string.IsNullOrWhiteSpace(Model.Value) ? "" : "-" + Model.Value)">Add new @Model.Key.Name</h3>
     </div>
-    <div class="modal-body" id="itemsProperties">
-        @if (Model.IsEnum || Model.IsPrimitive || Model == typeof(string))
+    <div class="modal-body" id="@itemsPropertiesId">
+        @if (EditorWithHelp.IsSupportedType(Model.Key))
         {
             <div class="control-group">
                 <label class="control-label" for="newItemEditorBox">
-                    Add item&nbsp;&nbsp;&nbsp;
-                    @if (Model == typeof (string) || Model == typeof (int))
-                    {
-                        <input type="text" id="newItemEditorBox" class="input-xlarge" />
-                    }
-                    else if (Model == typeof (bool))
-                    {
-                        @Html.CheckBox("newItemEditorBox")
-                    }
-                    else if (Model.IsEnum)
-                    {
-                        @Html.EnumDropDownList("newItemEditorBox", Model)
-                    }
+                    Add item&nbsp;&nbsp;&nbsp;</label>
+                    @Html.Editor(Model.Key, "newItemEditorBox" + modelName, null, new Dictionary<string, object>() { { "class", "input-xlarge" } })
                     <span class="help-inline error" id="newItemTextBoxValidation"></span>
-                </label>
             </div>
         }
         else
         {
-            foreach (var property in Model.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead))
+            foreach (var property in Model.Key.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead))
             {
-                using (Html.ControlGroupFor(property.Name))
+                var propertyName = Model.Value + "-" + property.Name;
+
+                if (EditorWithHelp.IsSupportedType(property.PropertyType))
                 {
-                    @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label" })
-                    <div class="controls">
-                        @Html.Editor(property, "", new { @class = "input-xlarge" }, null, null)
-                        @Html.ValidationMessage(property.Name, null, new { @class = "help-inline error" })
+                    <div class="control-group">
+                        @Html.Label(propertyName, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name, style = property.PropertyType == typeof(bool) ? "display: inline;" : string.Empty })
+                        
+                        <div class="controls"@(Html.Raw(property.PropertyType == typeof(bool) ? "style='display: inline; margin-left: 1em;'" : string.Empty))>
+                            @Html.Editor(property, "", new { @class = "input-xlarge" }, propertyName, null, Model.Value)
+                            @Html.ValidationMessage(property.Name, null, new { @class = "help-inline error" })
+                        </div>
                     </div>
+                }
+                else if (property.PropertyType.Name.Contains("List"))
+                {
+                    <div class="wellList">
+                        <button id ="AddButton-@propertyName" type="button" class="close" aria-hidden="true" onclick="loadListItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@propertyName');" title="Add new item">+</button>
+                        @Html.Label("AddButton-" + propertyName, property.Name.ToSeparatedWords(), new { @class = "control-label" })
+                        <div class="controls">
+                            <ul style="padding-left: 20%;" class="sortable" id="@propertyName" type="@property.PropertyType.GetGenericArguments()[0].FullName">
+                            </ul>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    Html.RenderPartial("NestedHelperView", new Pair<PropertyInfo, Pair<string, string>>(property, new Pair<string, string>(propertyName, modalWindowId)));
                 }
             }
         }
     </div>
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        <input type="submit" class="btn btn-primary" value="Add" id="ListItemsButton" onclick="saveItem();" />
+        <input type="submit" class="btn btn-primary" value="Add" id="ListItemsButton@(modelName)" onclick="saveItem@(functionSuffix)();" />
     </div>
 </div>
 <script type="text/javascript">
 
-    $(document).ready(function() {
-        $("[rel='popover']").popover();
+    $('#@(modalWindowId)').ready(function() {
+        $('#@(modalWindowId)').find('[rel=popover]').popover();
         
-        $("[rel=popover]").on("hidden", function (e) {
+        $('#@(modalWindowId)').find('[rel=popover]').on("hidden", function (e) {
             e.stopPropagation(); //Once popover is hidden stop the event from going to parent
         });
     });
     
-    function saveItem() {
-        if (isEditListItem) {
-            editItem();
+    function saveItem@(functionSuffix)() {
+        if (isEditListItem.last()) {
+            editItem@(functionSuffix)();
         } else {
-            addItem();
+            addItem@(functionSuffix)();
         }
     }
 
-    function editItem() {
-        if (!checkFirstField()) {
+    function editItem@(functionSuffix)() {
+        if (!checkFirstField@(functionSuffix)()) {
             return;
         }
 
-        var attributes = "";
-        var obj = $($('#itemsProperties').find('input[type!=hidden],select')[0]);
-        var name = obj.val();
+        var listItem = listItemToEdit.last();
 
-        @if (Model == typeof(string) || Model == typeof(int) || Model.IsEnum)
-        {
-            <text>
-                attributes = ' item = "' + name + '"';
-            </text> 
-        }
-        else if (Model == typeof(bool))
-        {
-            <text>
-                attributes = ' item = "' + obj.is(':checked') + '"';
-            </text> 
-        }
-        else
-        {
-            <text>
-                $('#itemsProperties').find('input[type!=hidden][type!=checkbox],select').each(function () {
-                    attributes += " " + $(this).attr('id') + "='" + $(this).val() + "'";
-                });
-
-                $('#itemsProperties').find('input[type=checkbox],select').each(function () {
-                    attributes += " " + $(this).attr('id') + "='" + $(this).is(':checked') + "'";
-                });
-            </text>
-        }
+        var newItem = generateItemObject@(functionSuffix)();
         
-        listItemToEdit.replaceWith("<li" + attributes + "><a href='#' onclick=\"editListItem('@Model.FullName', this); return false;\">" + name + "</a><button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>");
+        listItem.replaceWith(newItem);
         
-        $('#ListItemsModal').modal('hide');
+        $('#@modalWindowId').modal('hide');
     }
 
-    function addItem() {
-        if (!checkFirstField()) {
+    function addItem@(functionSuffix)() {
+        if (!checkFirstField@(functionSuffix)()) {
             return;
         }
 
-        var attributes = "";
-        var obj = $($('#itemsProperties').find('input[type!=hidden],select')[0]);
-        var name = obj.val();
+        var newItem = generateItemObject@(functionSuffix)();
+        var list = listName.last();
 
-        @if (Model == typeof(string) || Model == typeof(int) || Model.IsEnum)
-        {
-            <text>
-                attributes = ' item = "' + name + '"';
-            </text> 
-        }
-        else if (Model == typeof(bool))
-        {
-            <text>
-                attributes = ' item = "' + obj.is(':checked') + '"';
-            </text> 
-        }
-        else
-        {
-            <text>
-                $('#itemsProperties').find('input[type!=hidden][type!=checkbox],select').each(function () {
-                    attributes += " " + $(this).attr('id') + "='" + $(this).val() + "'";
-                });
+        $('#' + list).append(newItem);
+        $('#' + list).height('auto');
+        $('#' + list).collapse('show');
 
-                $('#itemsProperties').find('input[type=checkbox],select').each(function () {
-                    attributes += " " + $(this).attr('id') + "='" + $(this).is(':checked') + "'";
-                });
-            </text>
-        }
-        
-        $('#' + listName).append("<li" + attributes + "><a href='#' onclick=\"editListItem('@Model.FullName', this); return false;\">" + name + "</a><button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>");
-        $('#' + listName).height('auto');
-        $('#' + listName).collapse('show');
-
-        $('#ListItemsModal').modal('hide');
+        $('#@modalWindowId').modal('hide');
     }
     
-    function checkFirstField() {
-        var first = $('#itemsProperties').find('input,select').first();
+    function generateItemObject@(functionSuffix)() {
+        var obj = $('#@itemsPropertiesId').children('.control-group').find('input[type!=hidden][type!=checkbox],select').first();
+        var name = obj.val();
+
+        var jsonObject = "";
+
+        @if (EditorWithHelp.IsSupportedType(Model.Key) && Model.Key != typeof(bool))
+        {
+            <text>
+                jsonObject = '"' + name + '"';
+            </text> 
+        }
+        else if (Model.Key == typeof(bool))
+        {
+            <text>
+                jsonObject =  '"' +obj.is(':checked') + '"';
+            </text> 
+        }
+        else
+        {
+            <text>
+                jsonObject = getJsonForForm('@itemsPropertiesId');
+        </text>
+        }
+
+        jsonObject = jsonObject.replace("'", "&#39;");
+        
+        var newItem = $("<li json='" + jsonObject + "'><a href='#' onclick=\"editListItem(this); return false;\">" + name + "</a><button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>");
+       
+        return newItem;
+    }
+    
+    function checkFirstField@(functionSuffix)() {
+        var first = $('#@itemsPropertiesId').children('.control-group').find('input[type!=hidden][type!=checkbox],select').first();
         
         if (first.val().length == 0) {
-            first.parent().find('span').text('Please, fill the first element. It\'s need for identification of items');
+            first.parent().find('span').text('Please, fill the first element. It\'s needed for identification of items');
             return false;
         }
 
         first.parent().find('span').val('');
         return true;
     }
+    
+    $(document).ready(function () {
+        //$.support.transition = false;
+
+        //$('#testFormDiv').find('.collapse').collapse('hide');
+
+        $('#@itemsPropertiesId').find('.sortable').each(function () {
+            $(this).sortable();
+            $(this).disableSelection();
+        });
+
+
+        $("[rel='popover']").popover();
+
+        $("[rel='popover']").on("hidden", function (e) {
+            e.stopPropagation(); //Once popover is hidden stop the event from going to parent
+        });
+
+        $("[data-disable-enabled='true']").each(function () {
+            var obj = this;
+
+            var disablingProperty = $(obj).attr('data-disabling-property');
+            var disablingValue = $(obj).attr('data-disabling-value');
+
+            $("#" + disablingProperty).on("change", function () {
+                DisableByAttribute(obj, disablingProperty, disablingValue, true);
+            });
+
+            DisableByAttribute(obj, disablingProperty, disablingValue, false);
+        });
+    });
+
+    $('#@itemsPropertiesId').find('.collapse').on('hidden', function (event) {
+        event.stopPropagation();
+    });
+
+    $(document).ready(function () {
+        $('#@itemsPropertiesId').find('.collapse').each(function () {
+            var i = $(this).parent().find('label').find('i');
+
+            $(this).on('show', function () {
+                i.removeClass('icon-chevron-right', 100, function () {
+                    i.addClass('icon-chevron-down', 100);
+                });
+            });
+
+            $(this).on('hide', function () {
+                i.removeClass('icon-chevron-down', 100, function () {
+                    i.addClass('icon-chevron-right', 100);
+                });
+            });
+
+            //$(this).collapse('show');
+        });
+    });
+
+    $("#@modalWindowId").on('hidden', function() {
+        listName.pop();
+        isEditListItem.pop();
+        listItemToEdit.pop();
+    });
 </script>

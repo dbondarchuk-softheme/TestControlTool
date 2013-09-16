@@ -1,0 +1,49 @@
+﻿@using System.Reflection
+@using BootstrapSupport
+@using TestControlTool.Core.Models
+@using TestControlTool.Web.BootstrapSupport.HtmlHelpers
+@model Pair<PropertyInfo, Pair<string, string>>
+@{
+    Layout = null;
+    var propertyName = Model.Value.Key;
+    var container = Model.Value.Value;
+    var property = Model.Key;
+}
+
+<div class="wellHelper">
+    <label class="control-label" style="margin-left: 5px; margin-top: 5px;" for="@(propertyName)" data-toggle="collapse" data-target="#@(propertyName)">@property.Name.ToSeparatedWords() <i class="close icon-chevron-right"></i></label>
+
+    <div class="collapse" style="margin-left: 5px;" id="@(propertyName)" @Html.Raw(EditorWithHelp.GetDisableInformation(property).Aggregate("", (s, pair) => s + pair.Key + "='" + pair.Value + "' ").Trim())>
+        @foreach (var childProperty in property.PropertyType.VisibleProperties(new string[0]))
+        {
+            var childPropertyName = propertyName + "-" + childProperty.Name;
+
+            if (EditorWithHelp.IsSupportedType(childProperty.PropertyType))
+            {
+                <div class="control-group">
+                    @Html.Label(childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label", style = childProperty.PropertyType == typeof(bool) ? "display: inline;" : string.Empty })
+                        
+                    <div class="controls"@(Html.Raw(childProperty.PropertyType == typeof(bool) ? "style='display: inline; margin-left: 1em;'" : string.Empty))>
+                        @Html.Editor(childProperty, "", new { @class = "input-xlarge" }, childPropertyName, "#" + container, propertyName)
+                        @Html.ValidationMessage(property.Name, null, new { @class = "help-inline error" })
+                    </div>
+                </div>
+            }
+            else if (childProperty.PropertyType.Name.Contains("List"))
+            {
+                <div class="wellList">
+                    <button id="AddButton-@childPropertyName" type="button" class="close" aria-hidden="true" onclick="loadListItemsModal('@childProperty.PropertyType.GetGenericArguments()[0].FullName', '@childPropertyName');" title="Add new item">+</button>
+                    @Html.Label("AddButton-" + childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label" })
+                    <div class="controls">
+                        <ul style="padding-left: 20%;" class="sortable" id="@childPropertyName" type="@childProperty.PropertyType.GetGenericArguments()[0].FullName">
+                        </ul>
+                    </div>
+                </div>
+            }
+            else
+            {
+                Html.RenderPartial("NestedHelperView", new Pair<PropertyInfo, Pair<string, string>>(childProperty, new Pair<string, string>(childPropertyName, container)));
+            }  
+        }
+    </div>
+</div>

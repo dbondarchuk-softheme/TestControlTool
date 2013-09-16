@@ -33,3 +33,9 @@ function DisableByAttribute(obj, disablingPropertyName, disablingValue, hide) {
         }
     }
 }
+
+if (!Array.prototype.last) {
+    Array.prototype.last = function() {
+        return this[this.length - 1];
+    };
+}

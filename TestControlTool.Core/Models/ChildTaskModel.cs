@@ -42,17 +42,21 @@ namespace TestControlTool.Core.Models
         /// <summary>
         /// Test suite of WGA for trunk task 
         /// </summary>
-        TestSuiteTrunk,
-
-
+        UISuiteTrunk,
+        
         /// <summary>
         /// Test suite of WGA for release task 
         /// </summary>
-        TestSuiteRelease,
+        UISuiteRelease,
 
         /// <summary>
-        /// Suite for the backend automation
+        /// Suite for the backend automation (trunk)
         /// </summary>
-        BackendSuite
+        BackendSuiteTrunk,
+
+        /// <summary>
+        /// Suite for the backend automation (release)
+        /// </summary>
+        BackendSuiteRelease,
     }
 }

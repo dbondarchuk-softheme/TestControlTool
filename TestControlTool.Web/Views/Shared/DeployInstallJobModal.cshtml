@@ -152,9 +152,9 @@
 
         machines = machines.replace(/,$/, "");
 
-        if ($('#currentTasks').find("br").length != 0) {
-            $('#currentTasks').text('');
-        }
+        if ($('#currentTasks').find("br").each(function() {
+            $(this).remove();
+        }))
 
         $('#currentTasks').append("<li id='" + $('#DeployInstallJobName').val() + "' type='DeployInstall' deployType='" + $('#DeployInstallJobType').val() + "' version='"
             + $('#DeployInstallJobVersion').val() + "' build='" + $('#DeployInstallJobBuild').val() + "' machines='" + machines +

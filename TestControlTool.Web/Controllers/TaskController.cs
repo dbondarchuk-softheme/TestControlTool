@@ -5,6 +5,8 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization.Json;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -107,7 +109,7 @@ namespace TestControlTool.Web.Controllers
 
             return PartialView(machines);
         }
-        
+
         public ActionResult DeployInstallJobModal()
         {
             var machines = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Machines;
@@ -115,17 +117,16 @@ namespace TestControlTool.Web.Controllers
             return PartialView(machines);
         }
 
-        public ActionResult NewTestModal(bool trunk = true)
+        public ActionResult NewTestModal(TestSuiteType type = TestSuiteType.UITrunk)
         {
-            var tests = trunk ? TestControlToolApplication.TypesHelper.AvailableTrunkTests : TestControlToolApplication.TypesHelper.AvailableReleaseTests;
+            var tests = TestSuiteTypesHelper.GetAvailabaleTests(type);
 
             return PartialView(tests);
         }
 
-        public ActionResult TestForm(string testName, bool trunk = true)
+        public ActionResult TestForm(string testName, TestSuiteType type = TestSuiteType.UITrunk)
         {
-            var test = (trunk ? TestControlToolApplication.TypesHelper.AvailableTrunkTests : TestControlToolApplication.TypesHelper.AvailableReleaseTests)
-                .Single(x => x.Name == testName);
+            var test = TestSuiteTypesHelper.GetAvailabaleTests(type).Single(x => x.FullName == testName);
 
             return PartialView(test);
         }
@@ -160,8 +161,8 @@ namespace TestControlTool.Web.Controllers
             {
                 return Json("unknown\n" + e.Message, JsonRequestBehavior.AllowGet);
             }
-            
-            
+
+
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
@@ -190,7 +191,7 @@ namespace TestControlTool.Web.Controllers
             {
                 return Json("unknown", JsonRequestBehavior.AllowGet);
             }
-            
+
             return Json(false, JsonRequestBehavior.AllowGet);
         }
 
@@ -205,9 +206,9 @@ namespace TestControlTool.Web.Controllers
 
             var task = TestControlToolApplication.AccountController.CachedTasks.Single(x => x.Id == id).ToModel();
 
-            return Json(new {enabled = task.IsEnabled, nextStart = task.NextRun}, JsonRequestBehavior.AllowGet);
+            return Json(new { enabled = task.IsEnabled, nextStart = task.NextRun }, JsonRequestBehavior.AllowGet);
         }
-        
+
         public PartialViewResult GetLogs(Guid id)
         {
             var task = TestControlToolApplication.AccountController.Accounts.Single(x => x.Login == User.Identity.Name).Tasks.SingleOrDefault(x => x.Id == id);
@@ -216,7 +217,7 @@ namespace TestControlTool.Web.Controllers
             {
                 throw new NoSuchTaskException("You don't have such task");
             }
-            
+
             var logs = "Task '" + task.Name + "', Status : " + task.Status + "<hr>\n";
 
             try
@@ -224,7 +225,7 @@ namespace TestControlTool.Web.Controllers
                 using (var reader = new StreamReader(new FileStream(ConfigurationManager.AppSettings["LogsFolder"] + "\\" + id + ".log", FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
                 {
                     logs += reader.ReadToEnd();
-                    
+
                     if (task.Status == TaskStatus.Running)
                     {
                         logs += "\n<img src='" + Url.Content("~/Content/images/select2-spinner.gif") + "' />";
@@ -240,10 +241,10 @@ namespace TestControlTool.Web.Controllers
             return PartialView("GetLogs", logs);
         }
 
-       public JsonResult GetStatuses()
+        public JsonResult GetStatuses()
         {
             var userId = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Id;
-            var statuses = TestControlToolApplication.AccountController.Tasks.Where(x => x.Owner == userId).Select(x => x.ToModel()).ToDictionary(x => x.Id.ToString(), x => new {status = x.Status.ToString(), lastRun = x.LastRunExtended.ToString()});
+            var statuses = TestControlToolApplication.AccountController.Tasks.Where(x => x.Owner == userId).Select(x => x.ToModel()).ToDictionary(x => x.Id.ToString(), x => new { status = x.Status.ToString(), lastRun = x.LastRunExtended.ToString() });
 
             return Json(statuses, JsonRequestBehavior.AllowGet);
         }
@@ -273,7 +274,7 @@ namespace TestControlTool.Web.Controllers
                     .Files.Select(x => new FileInfo(ConfigurationManager.AppSettings["TasksFolder"] + "\\" + x.Value + ".new2"));
 
                 var fileName = ConfigurationManager.AppSettings["TasksFolder"] + "\\" + task.Id + "." + childTask.Name + ".zip";
-                
+
                 using (var zip = new ZipFile())
                 {
                     foreach (var file in filesToZip)
@@ -304,7 +305,7 @@ namespace TestControlTool.Web.Controllers
                     return File(fileName, "application/zip");
                 }
 
-                
+
             }
             else
             {
@@ -326,10 +327,10 @@ namespace TestControlTool.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult UploadTestSuiteXml(Guid id, Guid machine, HttpPostedFileBase file, bool trunk = true)
+        public ActionResult UploadTestSuiteXml(Guid id, Guid machine, HttpPostedFileBase file, TestSuiteType type = TestSuiteType.UITrunk)
         {
             var ownerId = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Id;
-            
+
             if (TestControlToolApplication.AccountController.CachedTasks.Any(x => x.Id == id && x.Owner != ownerId))
             {
                 return Content("error1");
@@ -346,7 +347,7 @@ namespace TestControlTool.Web.Controllers
             {
                 file.SaveAs(ConfigurationManager.AppSettings["TasksFolder"] + "\\Temp\\" + fileName);
 
-                var model = TestSuiteModel.GetFromXmlFile("Temp\\" + fileName, trunk, machine);
+                var model = TestSuiteModel.GetFromXmlFile("Temp\\" + fileName, type, machine);
 
                 if (!Regex.IsMatch(model.Name, @"^[a-zA-Z0-9_]+$"))
                 {
@@ -360,7 +361,7 @@ namespace TestControlTool.Web.Controllers
                 return Content("error3\n" + e.Message);
             }
         }
-        
+
         [HttpPost]
         public JsonResult Create(string jsonModel)
         {
@@ -374,7 +375,7 @@ namespace TestControlTool.Web.Controllers
 
             try
             {
-                SaveChildsFromJson(jsonModel);
+                SaveChildsFromJson2(jsonModel);
 
                 var task = model.ToEntitiy();
 
@@ -386,12 +387,12 @@ namespace TestControlTool.Web.Controllers
             catch (AddExistingTaskException e)
             {
                 System.IO.File.WriteAllText(@"D:\error.txt", e.Message);
-                return Json(false, JsonRequestBehavior.AllowGet);
+                return Json(e.Message, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
                 System.IO.File.WriteAllText(@"D:\error.txt", e.Message);
-                return Json(false, JsonRequestBehavior.AllowGet);
+                return Json(e.Message, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -407,24 +408,93 @@ namespace TestControlTool.Web.Controllers
 
             TestControlToolApplication.AccountController.EditTask(model.Id, model.ToEntitiy());
 
-            SaveChildsFromJson(jsonModel);
+            SaveChildsFromJson2(jsonModel);
 
             Success("Task was successfully updated!");
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ListItemModal(string typeName, bool trunk = true)
+        public ActionResult ListItemModal(string typeName, string parentProperty = "", TestSuiteType suiteType = TestSuiteType.UITrunk)
         {
             var standartType = Type.GetType(typeName);
 
-            var type = standartType ?? ((trunk ? TestControlToolApplication.TypesHelper.ScriptsTrunkTypes : TestControlToolApplication.TypesHelper.ScriptsReleaseTypes)
-                .SingleOrDefault(x => x.FullName == typeName));
+            var type = standartType ?? (TestSuiteTypesHelper.GetScriptsTypes(suiteType).SingleOrDefault(x => x.FullName == typeName));
 
-            return View("ListItemModal", type);
+            return View("ListItemModal", new Pair<Type, string>(type, parentProperty));
         }
 
-        private void SaveChildsFromJson(string jsonModel)
+        private void SaveChildsFromJson2(string jsonModel)
+        {
+            dynamic model = JObject.Parse(jsonModel);
+
+            var jsonTasks = (JArray)model.tasks;
+            var taskModel = ((JObject)model.model).Properties().ToDictionary(x => x.Name, y => y.Value.ToString());
+
+            var childs = new List<ChildTaskModel>();
+
+            foreach (var task in jsonTasks.Select(jsonTask => JObject.Parse(jsonTask.ToString()).Properties().ToDictionary(x => x.Name, y => y.Value)))
+            {
+                var file = taskModel["id"] + "." + task["id"].ToObject<string>() + ".xml";
+
+                var taskType = (TaskType)(Enum.Parse(typeof(TaskType), task["type"].ToObject<string>(), true));
+
+                if (taskType == TaskType.DeployInstall)
+                {
+                    var deployInstallTaskModel = new DeployInstallTaskModel
+                        {
+                            Machines = TestControlToolApplication.AccountController.CachedMachines.Where(
+                                    x => task["machines"].ToObject<string>().Split(',').Contains(x.Id.ToString())).Select(x => x.Id),
+                            Type = (DeployInstallType)Enum.Parse(typeof (DeployInstallType), task["deploytype"].ToObject<string>(), true),
+                            Name = task["id"].ToObject<string>(),
+                            Version = task["version"].ToObject<string>(),
+                            Build = task["build"].ToObject<string>()
+                        };
+
+                    taskType = TaskType.DeployInstall;
+
+                    deployInstallTaskModel.SaveToFile(file, User.Identity.Name);
+                }
+                else if (taskType == TaskType.UISuiteTrunk || taskType == TaskType.UISuiteRelease
+                   || taskType == TaskType.BackendSuiteTrunk || taskType == TaskType.BackendSuiteRelease)
+                {
+                    var testsList = new List<object>();
+
+                    foreach (var test in JArray.Parse(task["json"].ToString()))
+                    {
+                        var availableTypes = TestSuiteTypesHelper.GetScriptsTypes(taskType.ToSuiteType()).ToList();
+
+                        var testType = availableTypes.Single(x => x.FullName == test["type"].ToObject<string>());
+
+                        var stream = new MemoryStream(Encoding.Unicode.GetBytes(test["object"].ToString()));
+                        var serializer = new DataContractJsonSerializer(testType, availableTypes);
+
+                        testsList.Add(serializer.ReadObject(stream));
+
+                        var testSuiteModel = new TestSuiteModel
+                            {
+                                Name = task["id"].ToObject<string>(),
+                                Tests = testsList,
+                                Type = taskType.ToSuiteType(),
+                                Machine = new Guid(task["machine"].ToObject<string>())
+                            };
+
+                        testSuiteModel.SaveToFile(file);
+                    }
+                }
+
+                childs.Add(new ChildTaskModel
+                    {
+                        File = file,
+                        Name = taskModel["id"],
+                        TaskType = taskType
+                    });
+            }
+
+            childs.SaveTaskChildsToFile(new Guid(taskModel["id"]));
+        }
+
+        /*private void SaveChildsFromJson(string jsonModel)
         {
             dynamic model = JObject.Parse(jsonModel);
             var jsonTasks = (JObject)JObject.Parse(model.tasks.Value);
@@ -451,7 +521,7 @@ namespace TestControlTool.Web.Controllers
                 {
                     var deployInstallTaskModel = new DeployInstallTaskModel
                     {
-                        Machines = TestControlToolApplication.AccountController.CachedMachines.Where(x => task.Value["machines"].Split(';').Contains(x.Id.ToString())).Select(x => x.Id)/* task.Value["machines"].Split(';').Select(x => new Guid(x))*/,
+                        Machines = TestControlToolApplication.AccountController.CachedMachines.Where(x => task.Value["machines"].Split(';').Contains(x.Id.ToString())).Select(x => x.Id)/* task.Value["machines"].Split(';').Select(x => new Guid(x))#1#,
                         Type = (DeployInstallType)Enum.Parse(typeof(DeployInstallType), task.Value["deploytype"], true),
                         Name = task.Value["id"],
                         Version = task.Value["version"],
@@ -514,7 +584,7 @@ namespace TestControlTool.Web.Controllers
                             testKey.Where(x => x.Key.Contains('_')).GroupBy(x => x.Key.ToLowerInvariant().Split('_')[0])
                                 .ToDictionary(x => x.Key,
                                               x => x.Select(y => new KeyValuePair<string, string>(y.Key.ToLowerInvariant().Split('_')[1], y.Value)).ToList());
-                            
+
                         foreach (var complexPropertyPair in complexProperties)
                         {
                             var property = properties.SingleOrDefault(x => x.Name.ToLowerInvariant() == complexPropertyPair.Key);
@@ -566,7 +636,7 @@ namespace TestControlTool.Web.Controllers
 
                                 if (property == null) continue;
 
-                                if(!property.PropertyType.Name.Contains("List")) throw new ArgumentException("Wrong property type. It should be a List");
+                                if (!property.PropertyType.Name.Contains("List")) throw new ArgumentException("Wrong property type. It should be a List");
 
                                 var list = Activator.CreateInstance(property.PropertyType);
 
@@ -609,7 +679,7 @@ namespace TestControlTool.Web.Controllers
 
                                             if (argumentProperty == null) continue;
 
-                                            if (argumentProperty.PropertyType == typeof (string))
+                                            if (argumentProperty.PropertyType == typeof(string))
                                             {
                                                 argumentProperty.SetValue(argument, attribute.Value);
                                             }
@@ -634,7 +704,7 @@ namespace TestControlTool.Web.Controllers
                                         }
                                     }
 
-                                    list.GetType().GetMethod("Add").Invoke(list, new[] {argument});
+                                    list.GetType().GetMethod("Add").Invoke(list, new[] { argument });
                                 }
 
                                 property.SetValue(test, list);
@@ -647,9 +717,9 @@ namespace TestControlTool.Web.Controllers
                     var testSuiteModel = new TestSuiteModel
                         {
                             Name = task.Value["id"],
-                            Tests = testsList, 
+                            Tests = testsList,
                             IsTrunk = isTrunk,
-                            Machine =  new Guid(task.Value["machine"])
+                            Machine = new Guid(task.Value["machine"])
                         };
 
                     taskType = isTrunk ? TaskType.TestSuiteTrunk : TaskType.TestSuiteRelease;
@@ -667,6 +737,6 @@ namespace TestControlTool.Web.Controllers
             }
 
             childs.SaveTaskChildsToFile(new Guid(taskModel["id"]));
-        }
+        }*/
     }
 }

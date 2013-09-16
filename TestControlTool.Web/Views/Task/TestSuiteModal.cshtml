@@ -80,7 +80,7 @@
     });
     
     $('#TestSuiteModal').on('show', function () {
-        var url = isTrunk ? '@Url.Action("NewTestModal", "Task", new { trunk = true })' : '@Url.Action("NewTestModal", "Task", new { trunk = false })';
+        var url = '@Url.Action("NewTestModal", "Task")' + '?type=' + suiteType;
 
         $('#NewTestModalDiv').load(url);
     });
@@ -101,20 +101,15 @@
         if (!CheckTestSuiteName() || !CheckTestSuiteMachine()) {
             return false;
         }
-        var name = $('#TestSuiteName').val();
-
-        var type = isTrunk ? 'TestSuiteTrunk' : 'TestSuiteRelease';
         
-        $('#currentTasks').append("<li id='" + name + "' type='" + type + "' machine='" + $('#TestSuiteMachine').val() + "'><a onclick=\"editTestSuiteTask(this)\" href='#'>" + name + "</a>" +
-            "<button type='button' class='close' aria-hidden='true' onclick=\"removeItem(this)\">×</button></li>"
-        );
-
-        var list = $('#testsList').clone();
-
-        $('#' + name).append(list);
-        list.attr('id', '');
-        list.hide();
-
+        var name = $('#TestSuiteName').val();
+        
+        var li = "<li id='" + name + "' type='" + suiteType + "' machine='" + $('#TestSuiteMachine').val() + "' json='" + getJsonFromTests() + "'>" +
+            "<a onclick=\"editTestSuiteTask(this)\" href='#'>" + name + "</a>" +
+            "<button type='button' class='close' aria-hidden='true' onclick=\"removeItem(this)\">×</button></li>";
+        
+        $('#currentTasks').append(li);
+        
         $('#TestSuiteModal').modal('hide');
     }
     
@@ -124,19 +119,12 @@
         }
         
         var name = $('#TestSuiteName').val();
-        var oldName = $('#EditTestSuiteName').val();
-        
-        $('#' + oldName).find('a').first().text(name);
-        $('#' + oldName).attr('id', name);
-        $('#' + oldName).attr('machine', $('#TestSuiteMachine').val());
 
-        $('#' + name).find('ol').first().remove();
+        var li = "<li id='" + name + "' type='" + suiteType + "' machine='" + $('#TestSuiteMachine').val() + "' json='" + getJsonFromTests() + "'>" +
+            "<a onclick=\"editTestSuiteTask(this)\" href='#'>" + name + "</a>" +
+            "<button type='button' class='close' aria-hidden='true' onclick=\"removeItem(this)\">×</button></li>";
 
-        var list = $('#testsList').clone();
-
-        $('#' + name).append(list);
-        list.attr('id', '');
-        list.hide();
+        $(testSuiteToEdit).replaceWith(li);
 
         $('#TestSuiteModal').modal('hide');
     }
@@ -196,29 +184,22 @@
         testToEdit = $(object).parent();
 
         loadTestFormForType($(object).parent().attr('testtype'), function() {
-            $('#testFormDiv').find('input[type!=checkbox][type!=hidden],select').each(function() {
-                $(this).val($(object).parent().attr($(this).attr('id')));
-            });
-            
-            $('#testFormDiv').find('input[type=checkbox]').each(function () {
-                $(this).attr('checked', $(object).parent().attr($(this).attr('id')).toLowerCase() == 'true');
-            });
-
-            $(object).parent().find('ul').each(function() {
-                var list = $(this).clone();
-                var tosearch = list.attr('id').replace(/HiddenList$/, "");
-
-                $('#' + tosearch).find('li').each(function() {
-                    $(this).remove();
-                });
-
-                list.find('li').each(function() {
-                    $('#' + tosearch).append($(this));
-                });
-            });
+            fillFormWithObject('testFormDiv', JSON.parse($(object).parent().attr('json')));
             
             isEditTestModal = true;
             $('#NewTestModal').modal('show');
         });
+    }
+
+    function getJsonFromTests() {
+        var jsonObject = '[';
+
+        $('#testsList').children('li').each(function() {
+            jsonObject += ' { "type" : "' + $(this).attr('testtype') + '", "object" : ' +  $(this).attr('json') + ' },';
+        });
+
+        jsonObject = jsonObject.replace(/,$/, "") + ' ]';
+
+        return jsonObject;
     }
 </script>

@@ -53,7 +53,7 @@ namespace TestControlTool.Core.Implementations
 
                         break;
 
-                    case TaskType.TestSuiteTrunk:
+                    case TaskType.UISuiteTrunk:
                         ParseTestPerformerFiles(newFile);
 
                         task = new TestSuiteTrunkTask(newFile + ".new", id + "." + childTask.Name)
@@ -62,7 +62,7 @@ namespace TestControlTool.Core.Implementations
                             };
                         break;
 
-                    case TaskType.TestSuiteRelease:
+                    case TaskType.UISuiteRelease:
                         ParseTestPerformerFiles(newFile);
 
                         task = new TestSuiteReleaseTask(newFile + ".new", id + "." + childTask.Name)

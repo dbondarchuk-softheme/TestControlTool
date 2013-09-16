@@ -1,7 +1,9 @@
-﻿@model IEnumerable<Type>
+﻿@using TestControlTool.Core
+@model IEnumerable<Type>
 
 @{
     Layout = null;
+    var groupedTypes = Model.GroupBy(x => x.Namespace.Substring(x.Namespace.SpecificIndexOf('.', 2) + 1));
 }
 <script src="~/Scripts/select2.js"></script>
 <link href="~/Content/select2.css" rel="stylesheet" />
@@ -17,9 +19,17 @@
                 Type&nbsp;&nbsp;&nbsp;
                 <select id="NewTestType" class="input-xlarge" onchange="loadTestForm();">
                     <option value="-1">Please, select test type</option>
-                    @foreach (var type in Model.OrderBy(x => x.Name))
+
+                    @foreach(var category in groupedTypes)
                     {
-                        <option value="@type.Name">@type.Name</option>
+                        <optgroup label="@category.Key">
+                        
+                            @foreach (var type in category)
+                            {
+                                <option value="@type.FullName">@type.Name</option>
+                            }
+
+                        </optgroup>
                     }
                 </select>
             </label>
@@ -66,7 +76,7 @@
         if ($('#NewTestType').val() != '-1') {
             $('#testFormDiv').fadeOut('slow', function () {
                 $('#spinner').show();
-                $('#testFormDiv').load("@Url.Action("TestForm", "Task")", { testName: type, Trunk: isTrunk  }, function () {
+                $('#testFormDiv').load("@Url.Action("TestForm", "Task")", { testName: type, type: suiteType  }, function () {
                     $('#spinner').hide();
                     $('#testFormDiv').fadeIn('slow');
                     callback();
@@ -92,60 +102,31 @@
     }
 
     function addNewTest() {
-        var attributes = "";
+        var item = generateItemObject();
 
-        $('#testFormDiv').find('input[type!=checkbox][type!=hidden], select').each(function () {
-            attributes += " " + $(this).attr('id') + "='" + $(this).val() + "'";
-        });
-        
-        $('#testFormDiv').find('input[type=checkbox]').each(function () {
-            attributes += " " + $(this).attr('id') + "='" + $(this).is(':checked') + "'";
-        });
-        
-        var li = "<li testType='" + $('#NewTestType').val() + "'" + attributes + "><a href='#' onclick='editTestModal(this)'>" +
-            $('#NewTestType').val() + "</a>";
-        
-        $('#testFormDiv').find('ul').each(function () {
-            var list = $(this).clone();
-            list.hide();
-            list.attr('id', list.attr('id') + 'HiddenList');
-
-            li += list.wrap('<p>').parent().html();;
-        });
-
-        li += "<button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>";
-
-        $('#testsList').append(li);
+        $('#testsList').append(item);
 
         $('#NewTestModal').modal('hide');
     }
 
     function editTest() {
-        var attributes = "";
+        var item = generateItemObject();
 
-        $('#testFormDiv').find('input[type!=checkbox][type!=hidden], select').each(function () {
-            attributes += " " + $(this).attr('id') + "='" + $(this).val() + "'";
-        });
-
-        $('#testFormDiv').find('input[type=checkbox]').each(function () {
-            attributes += " " + $(this).attr('id') + "='" + $(this).is(':checked') + "'";
-        });
-
-        var li = "<li testType='" + $('#NewTestType').val() + "'" + attributes + "><a href='#' onclick='editTestModal(this)'>" +
-            $('#NewTestType').val() + "</a>";
-
-        $('#testFormDiv').find('ul').each(function () {
-            var list = $(this).clone();
-            list.hide();
-            list.attr('id', list.attr('id') + 'HiddenList');
-
-            li += list.wrap('<p>').parent().html();;
-        });
-
-        li += "<button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>";
-
-        testToEdit.replaceWith(li);
+        testToEdit.replaceWith(item);
 
         $('#NewTestModal').modal('hide');
+    }
+    
+    function generateItemObject() {
+        var type = $('#NewTestType').val();
+        var name = type.split('.').last();
+
+        var jsonObject = getJsonForForm('testFormDiv');
+
+        jsonObject = jsonObject.replace("'", "&#39;");
+
+        var newItem = $("<li testtype='" + type + "' json='" + jsonObject + "'><a href='#' onclick=\"editTestModal(this); return false;\">" + name + "</a><button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>");
+
+        return newItem;
     }
 </script>

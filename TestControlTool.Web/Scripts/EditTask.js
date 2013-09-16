@@ -1,6 +1,7 @@
 ﻿var isEditDeployInstallModal = false;
 var isEditTestSuiteModal = false;
-var isTrunk = true;
+var suiteType = "UITrunk";
+var testSuiteToEdit;
 
 function editDeployTask(name) {
     isEditDeployInstallModal = true;
@@ -23,40 +24,58 @@ function editDeployTask(name) {
 }
 
 function editTestSuiteTask(obj) {
-    isEditTestSuiteModal = true;
-    
     var parent = $(obj).parent();
     
-    var name = parent.attr('id');
-    isTrunk = parent.attr('type') == 'TestSuiteTrunk';
+    isEditTestSuiteModal = true;
+    testSuiteToEdit = parent;
     
-    $('#TestSuiteLabel').text('Edit Test Suite ' + (isTrunk ? 'Trunk' : 'Release'));
-    $('#TestSuiteName').val(name);
-    $('#EditTestSuiteName').val(name);
+    var id = parent.attr('id');
+    suiteType = parent.attr('type');
+    
+    $('#TestSuiteLabel').text('Edit ' + GetNameFromSuiteType(suiteType));
+    $('#TestSuiteName').val(id);
+    $('#EditTestSuiteName').val(id);
     $('#TestSuiteMachine').val(parent.attr('machine'));
     $('#SaveTestSuiteButton').val('Apply');
 
-    $('#' + name).find('ol').first().children('li').each(function (index) {
-        $('#testsList').append($(this).clone());
-    });
+    $('#testsList').empty();
+
+    var jsonObject = JSON.parse(parent.attr('json'));
+
+    for (var i in jsonObject) {
+        var arrayItem = jsonObject[i];
+        
+        if (arrayItem instanceof Function) {
+            continue;
+        }
+        
+        var object = arrayItem.object;
+        var type = arrayItem.type;
+        
+        var name = type.split('.').last();
+
+        var li = "<li testtype='" + type + "' json='" + JSON.stringify(object) + "'><a href='#' onclick=\"editTestModal(this); return false;\">" + name + "</a><button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>";
+        
+        $('#testsList').append(li);
+    }
 
     $('#TestSuiteModal').modal('show');
 }
 
-function showNewTestSuite(trunk) {
-    isTrunk = trunk;
+function showNewTestSuite(type) {
+    suiteType = type;
 
-    $('#TestSuiteLabel').text('Add new Test Suite ' + (trunk ? 'Trunk' : 'Release'));
+    $('#TestSuiteLabel').text('Add new ' + GetNameFromSuiteType(type));
 
     $('#TestSuiteModal').modal('show');
 }
 
 var alreadyChildren = new Array();
 
-function showUploadTestSuiteModal(trunk) {
+function showUploadTestSuiteModal(type) {
     alreadyChildren = new Array();
 
-    isTrunk = trunk;
+    suiteType = type;
 
     $('#currentTasks').children('li').each(function () {
         alreadyChildren.push($(this).attr('id'));
@@ -80,31 +99,35 @@ function saveTasks(id, urlToSave, urlToRedirect) {
         
         return false;
     }
-    
-    var tasks = getTasks();
+
     var taskName = $('#Task_Name').val();
     var startTime = $('#Task_StartTime').val();
     var endTime = $('#Task_EndTime').val();
     var frequency = $('#Task_Frequency').val();
     var isEnabled = $('#Task_IsEnabled').is(':checked');
-
+    
     if (new Date(startTime).getHours() >= 20) {
         showErrorAllert("Sorry, but you aren\'t allowed to create task, which starts between 8 PM and 12 PM. It is a maintenance time");
 
         return false;
     }
+    
+    var model = { id: id, name: taskName, startTime: startTime, endTime: endTime, frequency: frequency, isEnabled: isEnabled };
+    var tasks = getTasks();
+
+    var data = { model: model, tasks: tasks };
 
     $.ajax({
         url: urlToSave,
-        data: { jsonModel: JSON.stringify({ tasks: JSON.stringify(tasks["tasks"]), tests: JSON.stringify(tasks["tests"]), parameters: JSON.stringify(tasks["parameters"]), model: JSON.stringify({ id: id, name: taskName, startTime: startTime, endTime: endTime, frequency: frequency, isEnabled : isEnabled }) }) },
+        data: { jsonModel: JSON.stringify(data) },
         //traditional: true,
         type: "POST",
         dataType: "json",
         success: function (data, textStatus) {
-            if (JSON.parse(data) == true) {
+            if (data.toString().toLowerCase() == 'true') {
                 window.location.href = urlToRedirect;
             } else {
-                showErrorAllert();
+                showErrorAllert(data);
             }
         }
     });
@@ -113,8 +136,7 @@ function saveTasks(id, urlToSave, urlToRedirect) {
 }
 
 function getTasks() {
-    var global = {};
-    var tasks = {};
+    var tasks = [];
 
     $('#currentTasks').children('li').each(function () {
         if ($(this).is(":visible")) {
@@ -124,74 +146,21 @@ function getTasks() {
 
             for (var i = 0; i < listAttributes.length; i++) {
                 var n = listAttributes[i];
-                var a = $(this).attr(n).replace(',', ';');
+
+                var a = $(this).attr(n);
+                
+                if (n == "type") {
+                    a = convertToTaskType(a);
+                }
 
                 attributes[n] = a;
             }
 
-            tasks[$(this).attr('id')] = attributes;
+            tasks.push(attributes);
         }
     });
 
-    var listTests = {};
-    var listComplexParameters = { };
-
-    $('#currentTasks').find('[type^=TestSuite]').each(function () {
-        var tests = $(this).find('ol').first();
-        
-        var listOl = new Array();
-
-        tests.children('li').each(function () {
-            var listLi = {};
-
-            var id = s4();
-            
-            var listAttributes = $(this).listAttributes();
-
-            for (var i = 0; i < listAttributes.length; i++) {
-                var n = listAttributes[i];
-                var a = $(this).attr(n).toString().replace(',', ';');
-
-                listLi[n] = a;
-            }
-
-            listLi["id"] = id;
-
-            var childListComplexParameters = { };
-
-            $(this).find('ul').each(function () {
-                var childListOl = new Array();
-                $(this).find('li').each(function () {
-                    var childListLi = {};
-
-                    var childListAttributes = $(this).listAttributes();
-
-                    for (var i = 0; i < childListAttributes.length; i++) {
-                        var n = childListAttributes[i];
-                        var a = $(this).attr(n).toString().replace(',', ';');
-
-                        childListLi[n] = a;
-                    }
-                    
-                    childListOl.push(childListLi);
-                });
-
-                childListComplexParameters[$(this).attr('id').replace(/HiddenList$/, "")] = childListOl;
-            });
-
-            listComplexParameters[id] = childListComplexParameters;
-
-            listOl.push(listLi);
-        });
-
-        listTests[$(this).attr('id')] = listOl;
-    });
-
-    global["tasks"] = tasks;
-    global["tests"] = listTests;
-    global["parameters"] = listComplexParameters;
-
-    return global;
+    return tasks;
 }
 
 function showErrorAllert(message) {
@@ -273,4 +242,151 @@ function s4() {
 function guid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
            s4() + '-' + s4() + s4() + s4();
+}
+
+function isString(o) {
+    return typeof o == "string" || (typeof o == "object" && o.constructor === String);
+}
+
+function GetNameFromSuiteType(suiteType) {
+    if (suiteType == "BackendTrunk") {
+        return "Backend Test Suite for Trunk";
+    }
+    
+    if (suiteType == "BackendRelease") {
+        return "Backend Test Suite for Release";
+    }
+    
+    if (suiteType == "UITrunk") {
+        return "UI Test Suite for Trunk";
+    }
+    
+    if (suiteType == "UIRelease") {
+        return "UI Test Suite for Trunk";
+    }
+
+    return "";
+}
+
+function convertToTaskType(suiteType) {
+    if (suiteType == "BackendTrunk") {
+        return "BackendSuiteTrunk";
+    }
+
+    if (suiteType == "BackendRelease") {
+        return "BackendSuiteRelease";
+    }
+
+    if (suiteType == "UITrunk") {
+        return "UISuiteTrunk";
+    }
+
+    if (suiteType == "UIRelease") {
+        return "UISuiteRelease";
+    }
+
+    return suiteType;
+}
+
+function getJsonForForm(formId) {
+    var jsonObject = '{';
+    
+    $('#' + formId).children('div').not('.wellHelper').find('input[type!=hidden][type!=checkbox],select').each(function () {
+        jsonObject += ' "' + trimId($(this).attr('id')) + '" : "' + encodeValue($(this).val()) + '",';
+    });
+
+    $('#' + formId).children('div').not('.wellHelper').find('input[type=checkbox]').each(function () {
+        jsonObject += ' "' + trimId($(this).attr('id')) + '" : "' + $(this).is(':checked') + '",';
+    });
+
+    $('#' + formId).children('.wellHelper').children('.collapse').each(function () {
+        jsonObject += ' "' + trimId($(this).attr('id')) + '" : ' + getJsonForForm($(this).attr('id')) + ',';
+    });
+    
+    $('#' + formId).children('.wellList').find('ul').each(function () {
+        jsonObject += ' "' + trimId($(this).attr('id')) + '" : [ ';
+
+        $(this).children('li').each(function() {
+            jsonObject += $(this).attr('json') + ',';
+        });
+
+        jsonObject = jsonObject.replace(/,$/, "") + ' ],';
+    });
+
+    jsonObject = jsonObject.replace(/,$/, "") + '}';
+
+    return jsonObject;
+}
+
+function fillFormWithObject(formId, object) {
+    for (var id in object) {
+        var item = findChildElement(formId, id);
+        var param = object[id];
+        
+        if (isString(param)) {
+            if (item.is(':checkbox')) {
+                item.attr('checked', param.toLowerCase() == 'true');
+            } else {
+                item.val(decodeValue(param));
+            }
+
+            item.trigger("change");
+        }
+        else if (param instanceof Array) {
+            for (var arrayId in param) {
+                var liItem = param[arrayId];
+                
+                if (!(liItem instanceof Function)) {
+                    item.append("<li json='" + JSON.stringify(liItem) + "'><a href='#' onclick='editListItem(this); return false;'>" + findFirstNonObjectParam(liItem) + "</a><button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>");
+                }
+            }
+        }
+        else {
+            fillFormWithObject(item.attr('id'), param);
+        }
+    }
+}
+
+function findFirstNonObjectParam(object) {
+    if (isString(object)) {
+        return object;
+    } else {
+        for (var param in object) {
+            if (isString(object[param])) {
+                return object[param];
+            }
+        }
+    }
+
+    return undefined;
+}
+
+function trimId(id) {
+    return id.split('-').last();
+}
+
+function findChildElement(formId, elementId) {
+    var result = undefined;
+    
+    result = $('#' + formId).find(':not("button")[id$="' + elementId + '"]').each(function () {
+        var end = $(this).attr('id').split('-').last();
+        
+        if (end == elementId) return $(this);
+    });
+
+    return result;
+}
+
+function encodeValue(value) {
+    return value.replace("'", "&apos;").replace('"', '&quot;');
+}
+
+function decodeValue(value) {
+    return value.replace("&apos;", "'").replace('&quot;', '"');
+}
+
+function deniedStarts(start) {
+    if (start == 'itemsProperties' || start == 'ListItemsModal' || start == 'AddButton') return true;
+
+    return false;
 }

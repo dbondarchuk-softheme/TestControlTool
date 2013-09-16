@@ -4,12 +4,35 @@ using System.Linq;
 using System.Web.Mvc;
 using TestControlTool.Core.Contracts;
 using TestControlTool.Core.Implementations;
+using TestControlTool.Core.Models;
 using TestControlTool.Web.Models;
 
 namespace TestControlTool.Web
 {
     public static class Extensions
     {
+        public static  TestSuiteType ToSuiteType(this TaskType type)
+        {
+            switch (type)
+            {
+                case TaskType.UISuiteTrunk:
+                    return TestSuiteType.UITrunk;
+
+                case TaskType.UISuiteRelease:
+                    return TestSuiteType.UIRelease;
+
+                case TaskType.BackendSuiteTrunk:
+                    return TestSuiteType.BackendTrunk;
+
+                case TaskType.BackendSuiteRelease:
+                    return TestSuiteType.BackendRelease;
+
+                default:
+
+                    throw new InvalidOperationException("Wrong type!");
+            }
+        }
+
         public static MachineModel ToModel(this IMachine machine)
         {
             if (machine is VCenterMachine)

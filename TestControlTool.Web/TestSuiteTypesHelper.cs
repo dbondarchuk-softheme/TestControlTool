@@ -7,44 +7,22 @@ using System.Reflection;
 
 namespace TestControlTool.Web
 {
+    public enum TestSuiteType
+    {
+        BackendTrunk,
+        BackendRelease,
+        UITrunk,
+        UIRelease
+    }
+
     /// <summary>
     /// Getting available tests for the trunk and release WGA test suites
     /// </summary>
-    public class TestSuiteTypesHelper
+    public static class TestSuiteTypesHelper
     {
-        /// <summary>
-        /// Available WGA trunk tests
-        /// </summary>
-        public readonly IEnumerable<Type> AvailableTrunkTests = GetAvailabaleTests(true);
-
-        /// <summary>
-        /// Available WGA release tests
-        /// </summary>
-        public readonly IEnumerable<Type> AvailableReleaseTests = GetAvailabaleTests(false);
-
-        /// <summary>
-        /// All TestPerformer trunk types
-        /// </summary>
-        public readonly IEnumerable<Type> TestPerformerTrunkTypes = GetTestPerformerTypes(true);
-
-        /// <summary>
-        /// All TestPerformer release types
-        /// </summary>
-        public readonly IEnumerable<Type> TestPerformerReleaseTypes = GetTestPerformerTypes(false);
-
-        /// <summary>
-        /// All Scripts trunk types
-        /// </summary>
-        public readonly IEnumerable<Type> ScriptsTrunkTypes = GetScriptsTypes(true);
-
-        /// <summary>
-        /// All Scripts release types
-        /// </summary>
-        public readonly IEnumerable<Type> ScriptsReleaseTypes = GetScriptsTypes(false);
-
-        private static IEnumerable<Type> GetScriptsTypes(bool trunk)
+        public static IEnumerable<Type> GetScriptsTypes(TestSuiteType type)
         {
-            var assemblyPath = GetScriptsAssemblyPath(trunk);
+            var assemblyPath = GetScriptsAssemblyPath(type);
 
             Directory.SetCurrentDirectory(Path.GetDirectoryName(assemblyPath));
 
@@ -54,20 +32,35 @@ namespace TestControlTool.Web
 
             types.AddRange(assembly.ExportedTypes);
 
-            var referencedAssemblies = assembly.GetReferencedAssemblies().Where(x => x.FullName.StartsWith("WebGuiAutomation.TestPerformerCore")).Select(Assembly.Load);
+            var referencedAssemblies = assembly.GetReferencedAssemblies().Where(x => x.FullName.Contains("TestPerformerCore") || x.FullName.Contains("Implementation")).Select(Assembly.Load);
             types.AddRange(referencedAssemblies.SelectMany(x => x.ExportedTypes));
             
             return types;
         }
 
-        private static IEnumerable<Type> GetAvailabaleTests(bool trunk)
+        public static IEnumerable<Type> GetOnlyScriptsTypes(TestSuiteType type)
         {
-            return GetScriptsTypes(trunk).Where(x => x.BaseType != null && x.BaseType.Name == "AppAssureTest");
+            var assemblyPath = GetScriptsAssemblyPath(type);
+
+            Directory.SetCurrentDirectory(Path.GetDirectoryName(assemblyPath));
+
+            var types = new List<Type>();
+
+            var assembly = Assembly.LoadFile(assemblyPath);
+
+            types.AddRange(assembly.ExportedTypes);
+            
+            return types;
         }
 
-        private static IEnumerable<Type> GetTestPerformerTypes(bool trunk)
+        public static IEnumerable<Type> GetAvailabaleTests(TestSuiteType type)
         {
-            var assemblyPath = GetTestPerformerAssemblyPath(trunk);
+            return GetScriptsTypes(type).Where(x => x.BaseType != null && x.BaseType.Name == "AppAssureTest");
+        }
+
+        public static IEnumerable<Type> GetTestPerformerTypes(TestSuiteType type)
+        {
+            var assemblyPath = GetTestPerformerAssemblyPath(type);
 
             var types = new List<Type>();
 
@@ -81,10 +74,29 @@ namespace TestControlTool.Web
             return types;
         }
 
-        private static string GetScriptsAssemblyPath(bool trunk)
+        private static string GetScriptsAssemblyPath(TestSuiteType type)
         {
-            var assembly = trunk ? ConfigurationManager.AppSettings["TestPerformerScripts"] : ConfigurationManager.AppSettings["TestPerformerReleaseScripts"];
+            var assembly = "";
 
+            switch (type)
+            {
+                case TestSuiteType.UITrunk:
+                    assembly = ConfigurationManager.AppSettings["TestPerformerScripts"];
+                    break;
+
+                case TestSuiteType.UIRelease:
+                    assembly = ConfigurationManager.AppSettings["TestPerformerReleaseScripts"];
+                    break;
+
+                case TestSuiteType.BackendTrunk:
+                    assembly = ConfigurationManager.AppSettings["TestPerformerScripts"];
+                    break;
+
+                case TestSuiteType.BackendRelease:
+                    assembly = ConfigurationManager.AppSettings["TestPerformerReleaseScripts"];
+                    break;
+            }
+            
             var serverAssemblyFile = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath.Replace('/', '\\'));
 
             if (assembly.StartsWith(@"..\"))
@@ -101,9 +113,28 @@ namespace TestControlTool.Web
             return assembly;
         }
 
-        private static string GetTestPerformerAssemblyPath(bool trunk)
+        private static string GetTestPerformerAssemblyPath(TestSuiteType type)
         {
-            var assembly = trunk ? ConfigurationManager.AppSettings["TestPerformer"] : ConfigurationManager.AppSettings["TestPerformerRelease"];
+            var assembly = "";
+
+            switch (type)
+            {
+                case TestSuiteType.UITrunk:
+                    assembly = ConfigurationManager.AppSettings["TestPerformer"];
+                    break;
+
+                case TestSuiteType.UIRelease:
+                    assembly = ConfigurationManager.AppSettings["TestPerformerRelease"];
+                    break;
+
+                case TestSuiteType.BackendTrunk:
+                    assembly = ConfigurationManager.AppSettings["TestPerformer"];
+                    break;
+
+                case TestSuiteType.BackendRelease:
+                    assembly = ConfigurationManager.AppSettings["TestPerformerRelease"];
+                    break;
+            }
 
             var serverAssemblyFile = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath.Replace('/', '\\'));
 
