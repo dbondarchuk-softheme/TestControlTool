@@ -79,9 +79,9 @@
                             <li class="divider"></li>
                             @if ((int)(TestControlTool.Web.TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Type) >= 1)
                             {
-                                <li><a data-toggle="modal" href="#" onclick="showNewTestSuite('@TestSuiteType.UITrunk.ToString()'); return false;">Test Suite for Trunk</a></li>
+                                <li><a data-toggle="modal" href="#" onclick="showNewTestSuite('@TaskType.UISuiteTrunk.ToString()'); return false;">Test Suite for Trunk</a></li>
                             }
-                            <li><a data-toggle="modal" href="#" onclick="showNewTestSuite('@TestSuiteType.UIRelease.ToString()'); return false;">Test Suite for Release</a></li>
+                            <li><a data-toggle="modal" href="#" onclick="showNewTestSuite('@TaskType.UISuiteRelease.ToString()'); return false;">Test Suite for Release</a></li>
                         </ul>
                     </div>
                     <div class="btn-group">
@@ -89,9 +89,9 @@
                         <ul class="dropdown-menu">
                             @if ((int)(TestControlTool.Web.TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Type) >= 1)
                             {
-                                <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal('@TestSuiteType.UITrunk.ToString()'); return false;">Test Suite for Trunk</a></li>
+                                <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal('@TaskType.UISuiteTrunk.ToString()'); return false;">Test Suite for Trunk</a></li>
                             }
-                            <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal('@TestSuiteType.UIRelease.ToString()'); return false;">Test Suite for Release</a></li>
+                            <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal('@TaskType.UISuiteRelease.ToString()'); return false;">Test Suite for Release</a></li>
                         </ul>
                     </div>
                 </fieldset>

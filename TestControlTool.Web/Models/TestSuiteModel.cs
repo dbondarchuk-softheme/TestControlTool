@@ -8,6 +8,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
 using TestControlTool.Core;
+using TestControlTool.Core.Models;
 
 namespace TestControlTool.Web.Models
 {
@@ -17,7 +18,7 @@ namespace TestControlTool.Web.Models
 
         public IEnumerable<object> Tests { get; set; }
 
-        public TestSuiteType Type { get; set; }
+        public TaskType Type { get; set; }
 
         public Guid Machine { get; set; }
 
@@ -25,11 +26,11 @@ namespace TestControlTool.Web.Models
         {
             Name = string.Empty;
             Tests = new List<object>();
-            Type = TestSuiteType.UITrunk;
+            Type = TaskType.UISuiteTrunk;
             Machine = Guid.Empty;
         }
 
-        public static TestSuiteModel GetFromXmlFile(string file, TestSuiteType type = TestSuiteType.UITrunk, Guid? machineId = null)
+        public static TestSuiteModel GetFromXmlFile(string file, TaskType type = TaskType.UISuiteTrunk, Guid? machineId = null)
         {
             file = ConfigurationManager.AppSettings["TasksFolder"] + "\\" + file;
 
@@ -114,7 +115,7 @@ namespace TestControlTool.Web.Models
             return json;
         }
 
-        private static Type GetTestPerformerType(string type, TestSuiteType suiteType)
+        private static Type GetTestPerformerType(string type, TaskType suiteType)
         {
             var types = TestSuiteTypesHelper.GetTestPerformerTypes(suiteType);
 

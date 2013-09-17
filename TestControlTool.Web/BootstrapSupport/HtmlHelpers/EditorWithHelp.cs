@@ -141,16 +141,34 @@ namespace TestControlTool.Web.BootstrapSupport.HtmlHelpers
 
             dynamic disableAttributes = property.GetCustomAttributes().Where(x => x.GetType().Name == "DisableAttribute");
 
-            foreach (var disableAttribute in disableAttributes)
+            if (disableAttributes.Any())
             {
-                var disablingValue = disableAttribute.Value;
-                IEnumerable<string> disablingProperties = ((string)disableAttribute.Properties).Split(',');
-
-                var parentPropertyPrefix = string.IsNullOrWhiteSpace(parentProperty) ? "" : parentProperty + "-";
-
-                dictionary.Add("data-disabling-value", disablingValue.ToString());
-                dictionary.Add("data-disabling-property", disablingProperties.Aggregate("", (s, s1) => s + parentPropertyPrefix + s1 + ",").TrimEnd(','));
                 dictionary.Add("data-disable-enabled", "true");
+
+                var values = "";
+                var properties = "";
+
+                foreach (var disableAttribute in disableAttributes)
+                {
+                    object[] disablingValues = disableAttribute.Values;
+                    string[] disablingProperties = disableAttribute.Properties;
+
+                    var parentPropertyPrefix = string.IsNullOrWhiteSpace(parentProperty) ? "" : parentProperty + "-";
+
+                    if (values.Length != properties.Length)
+                    {
+                        return new Dictionary<string, object>();
+                    }
+
+                    for (var i = 0; i < disablingProperties.Length; i++)
+                    {
+                    }
+
+
+                    dictionary.Add("data-disabling-value", disablingValue.ToString());
+                    dictionary.Add("data-disabling-property", disablingProperties.Aggregate("", (s, s1) => s + parentPropertyPrefix + s1 + ",").TrimEnd(','));
+
+                }
             }
 
             return dictionary;

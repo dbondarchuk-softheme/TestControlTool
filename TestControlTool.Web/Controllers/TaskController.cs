@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -12,7 +11,6 @@ using System.Web;
 using System.Web.Mvc;
 using BootstrapMvcSample.Controllers;
 using Ionic.Zip;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TestControlTool.Core;
 using TestControlTool.Core.Contracts;
@@ -117,14 +115,14 @@ namespace TestControlTool.Web.Controllers
             return PartialView(machines);
         }
 
-        public ActionResult NewTestModal(TestSuiteType type = TestSuiteType.UITrunk)
+        public ActionResult NewTestModal(TaskType type = TaskType.UISuiteTrunk)
         {
             var tests = TestSuiteTypesHelper.GetAvailabaleTests(type);
 
             return PartialView(tests);
         }
 
-        public ActionResult TestForm(string testName, TestSuiteType type = TestSuiteType.UITrunk)
+        public ActionResult TestForm(string testName, TaskType type = TaskType.UISuiteTrunk)
         {
             var test = TestSuiteTypesHelper.GetAvailabaleTests(type).Single(x => x.FullName == testName);
 
@@ -327,7 +325,7 @@ namespace TestControlTool.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult UploadTestSuiteXml(Guid id, Guid machine, HttpPostedFileBase file, TestSuiteType type = TestSuiteType.UITrunk)
+        public ActionResult UploadTestSuiteXml(Guid id, Guid machine, HttpPostedFileBase file, TaskType type = TaskType.UISuiteTrunk)
         {
             var ownerId = TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Id;
 
@@ -375,7 +373,7 @@ namespace TestControlTool.Web.Controllers
 
             try
             {
-                SaveChildsFromJson2(jsonModel);
+                SaveChildsFromJson(jsonModel);
 
                 var task = model.ToEntitiy();
 
@@ -408,14 +406,14 @@ namespace TestControlTool.Web.Controllers
 
             TestControlToolApplication.AccountController.EditTask(model.Id, model.ToEntitiy());
 
-            SaveChildsFromJson2(jsonModel);
+            SaveChildsFromJson(jsonModel);
 
             Success("Task was successfully updated!");
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ListItemModal(string typeName, string parentProperty = "", TestSuiteType suiteType = TestSuiteType.UITrunk)
+        public ActionResult ListItemModal(string typeName, string parentProperty = "", TaskType suiteType = TaskType.UISuiteTrunk)
         {
             var standartType = Type.GetType(typeName);
 
@@ -424,7 +422,7 @@ namespace TestControlTool.Web.Controllers
             return View("ListItemModal", new Pair<Type, string>(type, parentProperty));
         }
 
-        private void SaveChildsFromJson2(string jsonModel)
+        private void SaveChildsFromJson(string jsonModel)
         {
             dynamic model = JObject.Parse(jsonModel);
 
@@ -462,7 +460,7 @@ namespace TestControlTool.Web.Controllers
 
                     foreach (var test in JArray.Parse(task["json"].ToString()))
                     {
-                        var availableTypes = TestSuiteTypesHelper.GetScriptsTypes(taskType.ToSuiteType()).ToList();
+                        var availableTypes = TestSuiteTypesHelper.GetScriptsTypes(taskType).ToList();
 
                         var testType = availableTypes.Single(x => x.FullName == test["type"].ToObject<string>());
 
@@ -475,7 +473,7 @@ namespace TestControlTool.Web.Controllers
                             {
                                 Name = task["id"].ToObject<string>(),
                                 Tests = testsList,
-                                Type = taskType.ToSuiteType(),
+                                Type = taskType,
                                 Machine = new Guid(task["machine"].ToObject<string>())
                             };
 
@@ -493,250 +491,5 @@ namespace TestControlTool.Web.Controllers
 
             childs.SaveTaskChildsToFile(new Guid(taskModel["id"]));
         }
-
-        /*private void SaveChildsFromJson(string jsonModel)
-        {
-            dynamic model = JObject.Parse(jsonModel);
-            var jsonTasks = (JObject)JObject.Parse(model.tasks.Value);
-            var jsonTests = (JObject)JObject.Parse(model.tests.Value);
-            var jsonParameters = (JObject)JObject.Parse(model.parameters.Value);
-            var taskModel = ((JObject)JObject.Parse(model.model.Value)).Properties().ToDictionary(x => x.Name, y => y.Value.ToString());
-
-            var tasks = jsonTasks.Properties().ToDictionary(x => x.Name, y => JObject.Parse(y.Value.ToString()).Properties().ToDictionary(k => k.Name, v => v.Value.ToString()));
-
-            var tests = jsonTests.Properties().ToDictionary(x => x.Name, y => ((JArray)JsonConvert.DeserializeObject(y.Value.ToString())).
-                    Select(x => JObject.Parse(x.ToString()).Properties().ToDictionary(key => key.Name, value => value.Value.ToString())));
-
-            var allParameters = jsonParameters.Properties().ToDictionary(x => x.Name, y => JObject.Parse(y.Value.ToString()).Properties().ToDictionary(k => k.Name,
-                v => ((JArray)JsonConvert.DeserializeObject(v.Value.ToString())).Select(x => JObject.Parse(x.ToString()).Properties().ToDictionary(key => key.Name, value => value.Value.ToString()))));
-
-            var childs = new List<ChildTaskModel>();
-
-            foreach (var task in tasks)
-            {
-                var file = taskModel["id"] + "." + task.Value["id"] + ".xml";
-                var taskType = TaskType.DeployInstall;
-
-                if (task.Value["type"].ToUpperInvariant() == TaskType.DeployInstall.ToString().ToUpperInvariant())
-                {
-                    var deployInstallTaskModel = new DeployInstallTaskModel
-                    {
-                        Machines = TestControlToolApplication.AccountController.CachedMachines.Where(x => task.Value["machines"].Split(';').Contains(x.Id.ToString())).Select(x => x.Id)/* task.Value["machines"].Split(';').Select(x => new Guid(x))#1#,
-                        Type = (DeployInstallType)Enum.Parse(typeof(DeployInstallType), task.Value["deploytype"], true),
-                        Name = task.Value["id"],
-                        Version = task.Value["version"],
-                        Build = task.Value["build"]
-                    };
-
-                    taskType = TaskType.DeployInstall;
-
-                    deployInstallTaskModel.SaveToFile(file, User.Identity.Name);
-                }
-                else if (task.Value["type"].ToUpperInvariant() == TaskType.TestSuiteTrunk.ToString().ToUpperInvariant()
-                    || task.Value["type"].ToUpperInvariant() == TaskType.TestSuiteRelease.ToString().ToUpperInvariant())
-                {
-                    var testsList = new List<object>();
-
-                    var isTrunk = task.Value["type"].ToUpperInvariant() == TaskType.TestSuiteTrunk.ToString().ToUpperInvariant();
-
-                    foreach (var testKey in tests.Single(x => x.Key == task.Value["id"]).Value)
-                    {
-                        var testType = (isTrunk ? TestControlToolApplication.TypesHelper.AvailableTrunkTests : TestControlToolApplication.TypesHelper.AvailableReleaseTests)
-                            .Single(x => x.Name == testKey["testtype"]);
-
-                        var properties = testType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead).ToList();
-
-                        var test = Activator.CreateInstance(testType);
-
-                        var attributesToIgnore = new[] { "testtype", "style", "class", "id" };
-
-                        foreach (var attribute in testKey.Where(x => !attributesToIgnore.Contains(x.Key.ToLowerInvariant()) && !x.Key.Contains('.')))
-                        {
-                            var property = properties.SingleOrDefault(x => x.Name.ToLowerInvariant() == attribute.Key.ToLowerInvariant());
-
-                            if (property == null) continue;
-
-                            if (property.PropertyType == typeof(string))
-                            {
-                                property.SetValue(test, attribute.Value);
-                            }
-                            else if (property.PropertyType.IsEnum)
-                            {
-                                property.SetValue(test, attribute.Value.ConvertToEnum(property.PropertyType));
-                            }
-                            else if (property.PropertyType == typeof(int))
-                            {
-                                int value;
-                                int.TryParse(attribute.Value, out value);
-
-                                property.SetValue(test, value);
-                            }
-                            else if (property.PropertyType == typeof(bool))
-                            {
-                                bool value;
-                                bool.TryParse(attribute.Value, out value);
-
-                                property.SetValue(test, value);
-                            }
-                        }
-
-                        var complexProperties =
-                            testKey.Where(x => x.Key.Contains('_')).GroupBy(x => x.Key.ToLowerInvariant().Split('_')[0])
-                                .ToDictionary(x => x.Key,
-                                              x => x.Select(y => new KeyValuePair<string, string>(y.Key.ToLowerInvariant().Split('_')[1], y.Value)).ToList());
-
-                        foreach (var complexPropertyPair in complexProperties)
-                        {
-                            var property = properties.SingleOrDefault(x => x.Name.ToLowerInvariant() == complexPropertyPair.Key);
-
-                            if (property == null) continue;
-
-                            var instance = Activator.CreateInstance(property.PropertyType);
-                            var childProperties = property.PropertyType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead);
-
-                            foreach (var complexProperty in complexPropertyPair.Value)
-                            {
-                                var childProperty = childProperties
-                                    .SingleOrDefault(x => x.Name.ToLowerInvariant() == complexProperty.Key);
-
-                                if (childProperty == null) continue;
-
-                                if (childProperty.PropertyType == typeof(string))
-                                {
-                                    childProperty.SetValue(instance, complexProperty.Value);
-                                }
-                                else if (childProperty.PropertyType.IsEnum)
-                                {
-                                    childProperty.SetValue(instance, complexProperty.Value.ConvertToEnum(childProperty.PropertyType));
-                                }
-                                else if (childProperty.PropertyType == typeof(int))
-                                {
-                                    int value;
-                                    int.TryParse(complexProperty.Value, out value);
-
-                                    childProperty.SetValue(instance, value);
-                                }
-                                else if (childProperty.PropertyType == typeof(bool))
-                                {
-                                    bool value;
-                                    bool.TryParse(complexProperty.Value, out value);
-
-                                    childProperty.SetValue(instance, value);
-                                }
-                            }
-
-                            property.SetValue(test, instance);
-                        }
-
-                        foreach (var parameters in allParameters.Where(x => x.Key.ToUpperInvariant() == testKey["id"].ToUpperInvariant()).Select(x => x.Value))
-                        {
-                            foreach (var parameter in parameters)
-                            {
-                                var property = properties.SingleOrDefault(x => x.Name.ToLowerInvariant() == parameter.Key.ToLowerInvariant());
-
-                                if (property == null) continue;
-
-                                if (!property.PropertyType.Name.Contains("List")) throw new ArgumentException("Wrong property type. It should be a List");
-
-                                var list = Activator.CreateInstance(property.PropertyType);
-
-                                var genericArgumentType = property.PropertyType.GetGenericArguments()[0];
-                                var argumentProperties = genericArgumentType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead).ToList();
-
-                                foreach (var item in parameter.Value)
-                                {
-                                    object argument;
-
-                                    if (genericArgumentType == typeof(string))
-                                    {
-                                        argument = item["item"];
-                                    }
-                                    else if (genericArgumentType.IsEnum)
-                                    {
-                                        argument = item["item"].ConvertToEnum(genericArgumentType);
-                                    }
-                                    else if (genericArgumentType == typeof(int))
-                                    {
-                                        int value;
-                                        int.TryParse(item["item"], out value);
-
-                                        argument = value;
-                                    }
-                                    else if (genericArgumentType == typeof(bool))
-                                    {
-                                        bool value;
-                                        bool.TryParse(item["item"], out value);
-
-                                        argument = value;
-                                    }
-                                    else
-                                    {
-                                        argument = Activator.CreateInstance(genericArgumentType);
-
-                                        foreach (var attribute in item)
-                                        {
-                                            var argumentProperty = argumentProperties.SingleOrDefault(x => x.Name.ToLowerInvariant() == attribute.Key.ToLowerInvariant());
-
-                                            if (argumentProperty == null) continue;
-
-                                            if (argumentProperty.PropertyType == typeof(string))
-                                            {
-                                                argumentProperty.SetValue(argument, attribute.Value);
-                                            }
-                                            else if (argumentProperty.PropertyType.IsEnum)
-                                            {
-                                                argumentProperty.SetValue(argument, attribute.Value.ConvertToEnum(argumentProperty.PropertyType));
-                                            }
-                                            else if (argumentProperty.PropertyType == typeof(int))
-                                            {
-                                                int value;
-                                                int.TryParse(attribute.Value, out value);
-
-                                                argumentProperty.SetValue(argument, value);
-                                            }
-                                            else if (argumentProperty.PropertyType == typeof(bool))
-                                            {
-                                                bool value;
-                                                bool.TryParse(attribute.Value, out value);
-
-                                                argumentProperty.SetValue(argument, value);
-                                            }
-                                        }
-                                    }
-
-                                    list.GetType().GetMethod("Add").Invoke(list, new[] { argument });
-                                }
-
-                                property.SetValue(test, list);
-                            }
-                        }
-
-                        testsList.Add(test);
-                    }
-
-                    var testSuiteModel = new TestSuiteModel
-                        {
-                            Name = task.Value["id"],
-                            Tests = testsList,
-                            IsTrunk = isTrunk,
-                            Machine = new Guid(task.Value["machine"])
-                        };
-
-                    taskType = isTrunk ? TaskType.TestSuiteTrunk : TaskType.TestSuiteRelease;
-
-                    testSuiteModel.SaveToFile(file);
-                }
-
-                childs.Add(new ChildTaskModel
-                    {
-                        File = file,
-                        Name = task.Value["id"],
-                        TaskType = taskType
-                    });
-
-            }
-
-            childs.SaveTaskChildsToFile(new Guid(taskModel["id"]));
-        }*/
     }
 }

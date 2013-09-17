@@ -4,6 +4,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using TestControlTool.Core.Models;
 
 namespace TestControlTool.Web
 {
@@ -20,7 +21,7 @@ namespace TestControlTool.Web
     /// </summary>
     public static class TestSuiteTypesHelper
     {
-        public static IEnumerable<Type> GetScriptsTypes(TestSuiteType type)
+        public static IEnumerable<Type> GetScriptsTypes(TaskType type)
         {
             var assemblyPath = GetScriptsAssemblyPath(type);
 
@@ -30,15 +31,16 @@ namespace TestControlTool.Web
 
             var assembly = Assembly.LoadFile(assemblyPath);
 
+            var referencedAssemblies = assembly.GetReferencedAssemblies().Where(x => x.FullName.Contains("TestPerformerCore") || x.FullName.Contains("Implementation")).Select(Assembly.Load);
+
             types.AddRange(assembly.ExportedTypes);
 
-            var referencedAssemblies = assembly.GetReferencedAssemblies().Where(x => x.FullName.Contains("TestPerformerCore") || x.FullName.Contains("Implementation")).Select(Assembly.Load);
             types.AddRange(referencedAssemblies.SelectMany(x => x.ExportedTypes));
             
             return types;
         }
 
-        public static IEnumerable<Type> GetOnlyScriptsTypes(TestSuiteType type)
+        public static IEnumerable<Type> GetOnlyScriptsTypes(TaskType type)
         {
             var assemblyPath = GetScriptsAssemblyPath(type);
 
@@ -53,12 +55,12 @@ namespace TestControlTool.Web
             return types;
         }
 
-        public static IEnumerable<Type> GetAvailabaleTests(TestSuiteType type)
+        public static IEnumerable<Type> GetAvailabaleTests(TaskType type)
         {
             return GetScriptsTypes(type).Where(x => x.BaseType != null && x.BaseType.Name == "AppAssureTest");
         }
 
-        public static IEnumerable<Type> GetTestPerformerTypes(TestSuiteType type)
+        public static IEnumerable<Type> GetTestPerformerTypes(TaskType type)
         {
             var assemblyPath = GetTestPerformerAssemblyPath(type);
 
@@ -74,25 +76,25 @@ namespace TestControlTool.Web
             return types;
         }
 
-        private static string GetScriptsAssemblyPath(TestSuiteType type)
+        private static string GetScriptsAssemblyPath(TaskType type)
         {
             var assembly = "";
 
             switch (type)
             {
-                case TestSuiteType.UITrunk:
+                case TaskType.UISuiteTrunk:
                     assembly = ConfigurationManager.AppSettings["TestPerformerScripts"];
                     break;
 
-                case TestSuiteType.UIRelease:
+                case TaskType.UISuiteRelease:
                     assembly = ConfigurationManager.AppSettings["TestPerformerReleaseScripts"];
                     break;
 
-                case TestSuiteType.BackendTrunk:
+                case TaskType.BackendSuiteTrunk:
                     assembly = ConfigurationManager.AppSettings["TestPerformerScripts"];
                     break;
 
-                case TestSuiteType.BackendRelease:
+                case TaskType.BackendSuiteRelease:
                     assembly = ConfigurationManager.AppSettings["TestPerformerReleaseScripts"];
                     break;
             }
@@ -113,25 +115,25 @@ namespace TestControlTool.Web
             return assembly;
         }
 
-        private static string GetTestPerformerAssemblyPath(TestSuiteType type)
+        private static string GetTestPerformerAssemblyPath(TaskType type)
         {
             var assembly = "";
 
             switch (type)
             {
-                case TestSuiteType.UITrunk:
+                case TaskType.UISuiteTrunk:
                     assembly = ConfigurationManager.AppSettings["TestPerformer"];
                     break;
 
-                case TestSuiteType.UIRelease:
+                case TaskType.UISuiteRelease:
                     assembly = ConfigurationManager.AppSettings["TestPerformerRelease"];
                     break;
 
-                case TestSuiteType.BackendTrunk:
+                case TaskType.BackendSuiteTrunk:
                     assembly = ConfigurationManager.AppSettings["TestPerformer"];
                     break;
 
-                case TestSuiteType.BackendRelease:
+                case TaskType.BackendSuiteRelease:
                     assembly = ConfigurationManager.AppSettings["TestPerformerRelease"];
                     break;
             }

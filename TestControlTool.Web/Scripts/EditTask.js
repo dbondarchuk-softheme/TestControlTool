@@ -1,6 +1,6 @@
 ﻿var isEditDeployInstallModal = false;
 var isEditTestSuiteModal = false;
-var suiteType = "UITrunk";
+var suiteType = "UISuiteTrunk";
 var testSuiteToEdit;
 
 function editDeployTask(name) {
@@ -149,10 +149,6 @@ function getTasks() {
 
                 var a = $(this).attr(n);
                 
-                if (n == "type") {
-                    a = convertToTaskType(a);
-                }
-
                 attributes[n] = a;
             }
 
@@ -249,43 +245,23 @@ function isString(o) {
 }
 
 function GetNameFromSuiteType(suiteType) {
-    if (suiteType == "BackendTrunk") {
+    if (suiteType == "BackendSuiteTrunk") {
         return "Backend Test Suite for Trunk";
     }
     
-    if (suiteType == "BackendRelease") {
+    if (suiteType == "BackendSuiteRelease") {
         return "Backend Test Suite for Release";
     }
     
-    if (suiteType == "UITrunk") {
+    if (suiteType == "UISuiteTrunk") {
         return "UI Test Suite for Trunk";
     }
     
-    if (suiteType == "UIRelease") {
-        return "UI Test Suite for Trunk";
+    if (suiteType == "UISuiteRelease") {
+        return "UI Test Suite for Release";
     }
 
     return "";
-}
-
-function convertToTaskType(suiteType) {
-    if (suiteType == "BackendTrunk") {
-        return "BackendSuiteTrunk";
-    }
-
-    if (suiteType == "BackendRelease") {
-        return "BackendSuiteRelease";
-    }
-
-    if (suiteType == "UITrunk") {
-        return "UISuiteTrunk";
-    }
-
-    if (suiteType == "UIRelease") {
-        return "UISuiteRelease";
-    }
-
-    return suiteType;
 }
 
 function getJsonForForm(formId) {

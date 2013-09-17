@@ -85,8 +85,6 @@
     });
     
     function showRequest(formData, jqForm, options) {
-        $('#UploadTestSuiteXmlValidation').html('<img src="@Url.Content("~/Content/images/select2-spinner.gif")"/>');
-
         if ($('#fileName').text().length == 0) {
             $('#UploadTestSuiteXmlValidation').text('Please select the xml file');
             return false;
@@ -106,6 +104,8 @@
                 return false;
             }
         }
+        
+        $('#UploadTestSuiteXmlValidation').html('<img src="@Url.Content("~/Content/images/select2-spinner.gif")"/>');
     }
 
     function showResponse(responseText, statusText, xhr, $form) {
