@@ -119,12 +119,12 @@ namespace TestControlTool.Web.BootstrapSupport.HtmlHelpers
                 additionalInfo.Add(info.Key, info.Value);
             }
 
-            var displayAttribute = property.GetCustomAttribute<DisplayAttribute>();
+            /*var displayAttribute = property.GetCustomAttribute<DisplayAttribute>();
 
             if (desireName == null && displayAttribute != null && !string.IsNullOrWhiteSpace(displayAttribute.Name))
             {
                 desireName = displayAttribute.Name;
-            }
+            }*/
 
             var name = desireName ?? property.Name;
 
@@ -139,7 +139,7 @@ namespace TestControlTool.Web.BootstrapSupport.HtmlHelpers
         {
             var dictionary = new Dictionary<string, object>();
 
-            dynamic disableAttributes = property.GetCustomAttributes().Where(x => x.GetType().Name == "DisableAttribute");
+            IEnumerable<dynamic> disableAttributes = property.GetCustomAttributes().Where(x => x.GetType().Name == "DisableAttribute").ToList();
 
             if (disableAttributes.Any())
             {
@@ -155,20 +155,26 @@ namespace TestControlTool.Web.BootstrapSupport.HtmlHelpers
 
                     var parentPropertyPrefix = string.IsNullOrWhiteSpace(parentProperty) ? "" : parentProperty + "-";
 
-                    if (values.Length != properties.Length)
+                    if (disablingValues.Length != disablingProperties.Length)
                     {
                         return new Dictionary<string, object>();
                     }
 
                     for (var i = 0; i < disablingProperties.Length; i++)
                     {
+                        properties += parentPropertyPrefix + disablingProperties[i] + ',';
+                        values += disablingValues[i].ToString() + ',';
                     }
 
-
-                    dictionary.Add("data-disabling-value", disablingValue.ToString());
-                    dictionary.Add("data-disabling-property", disablingProperties.Aggregate("", (s, s1) => s + parentPropertyPrefix + s1 + ",").TrimEnd(','));
-
+                    properties = properties.TrimEnd(',') + ';';
+                    values = values.TrimEnd(',') + ';';
                 }
+
+                properties = properties.TrimEnd(';');
+                values = values.TrimEnd(';');
+                
+                dictionary.Add("data-disabling-values", values);
+                dictionary.Add("data-disabling-properties", properties);
             }
 
             return dictionary;

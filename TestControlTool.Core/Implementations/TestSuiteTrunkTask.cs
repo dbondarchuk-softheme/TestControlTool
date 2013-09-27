@@ -30,7 +30,7 @@ namespace TestControlTool.Core.Implementations
             var machineInfo = GetMachineInfo();
 
             var commandLine = ConfigurationManager.AppSettings["PsExec"] + " \\\\" + machineInfo["address"] + " -u " + machineInfo["username"]
-                + " -p " + machineInfo["password"] + " -c -f " + ConfigurationManager.AppSettings["ProcessKiller"] + " WebGuiAutomation.TestPerformer";
+                + " -p " + machineInfo["password"] + " -c -f " + ConfigurationManager.AppSettings["ProcessKiller"] + " TestPerformer";
 
             ProcessAsUser.Launch(commandLine);
 

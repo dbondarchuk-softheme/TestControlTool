@@ -117,6 +117,8 @@ function saveTasks(id, urlToSave, urlToRedirect) {
 
     var data = { model: model, tasks: tasks };
 
+    $('#SaveButton').html('Save <img src="/Content/images/select2-spinner.gif"/>');
+
     $.ajax({
         url: urlToSave,
         data: { jsonModel: JSON.stringify(data) },
@@ -129,6 +131,9 @@ function saveTasks(id, urlToSave, urlToRedirect) {
             } else {
                 showErrorAllert(data);
             }
+        },
+        complete: function (jqXhr, textStatus) {
+            $('#SaveButton').html('Save');
         }
     });
 
@@ -354,11 +359,11 @@ function findChildElement(formId, elementId) {
 }
 
 function encodeValue(value) {
-    return value.replace("'", "&apos;").replace('"', '&quot;');
+    return value.replace("'", "&apos;").replace('"', '&quot;').replace('\\', '\\\\');
 }
 
 function decodeValue(value) {
-    return value.replace("&apos;", "'").replace('&quot;', '"');
+    return value.replace("&apos;", "'").replace('&quot;', '"').replace('\\\\', '\\');
 }
 
 function deniedStarts(start) {

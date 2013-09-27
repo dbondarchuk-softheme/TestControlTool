@@ -47,11 +47,14 @@ namespace TestControlTool.UpdateService
 
             var firstAssembly = Assembly.LoadFrom(FirstAssembly);
             var secondAssembly = Assembly.LoadFile(SecondAssembly);
-            
-            var firstTypes = firstAssembly.ExportedTypes.Where(x => !string.IsNullOrEmpty(BaseType) && x.BaseType != null && x.BaseType.Name == BaseType).Select(x => x.FullName).ToList();
-            var secondTypes = secondAssembly.ExportedTypes.Where(x => !string.IsNullOrEmpty(BaseType) && x.BaseType != null && x.BaseType.Name == BaseType).Select(x => x.FullName).ToList();
-            
-            if (firstTypes.SequenceEqual(secondTypes))
+
+            var firstTypes = firstAssembly.ExportedTypes.Where(x => !string.IsNullOrEmpty(BaseType) && x.BaseType != null && x.BaseType.Name == BaseType).ToList();
+            var secondTypes = secondAssembly.ExportedTypes.Where(x => !string.IsNullOrEmpty(BaseType) && x.BaseType != null && x.BaseType.Name == BaseType).ToList();
+
+            var classesDifference = CheckClassesDifference(firstTypes, secondTypes);
+            var propertiesDifference = CheckPropertiesDifference(firstTypes, secondTypes, classesDifference);
+
+            if (classesDifference == null && propertiesDifference == null)
             {
                 Logger.Info("Two assemblies are equal");
 
@@ -67,16 +70,74 @@ namespace TestControlTool.UpdateService
                 if (OnDifference != null)
                 {
                     var difference = new AssembliesDifference
-                    {
-                        FirstAssembly = firstAssembly,
-                        SecondAssembly = secondAssembly,
-                        AddedClasses = secondTypes.Except(firstTypes),
-                        RemovedClasses = firstTypes.Except(secondTypes)
-                    };
+                        {
+                            FirstAssembly = firstAssembly,
+                            SecondAssembly = secondAssembly,
+                            ClassesDifference = classesDifference,
+                            PropertiesDifference = propertiesDifference
+                        };
 
                     OnDifference(difference);
                 }
             }
+        }
+
+        private ClassesDifference CheckClassesDifference(IEnumerable<Type> firstTypes, IEnumerable<Type> secondTypes)
+        {
+            var firstNames = firstTypes.Select(x => x.FullName).ToList();
+            var secondNames = secondTypes.Select(x => x.FullName).ToList();
+
+            if (firstNames.SequenceEqual(secondNames))
+            {
+                Logger.Info("Two assemblies don't have difference between classes existence");
+
+                return null;
+            }
+
+            Logger.Info("Two assemblies have difference between classes existence");
+
+            return new ClassesDifference
+                {
+                    AddedClasses = secondNames.Except(firstNames),
+                    RemovedClasses = firstNames.Except(secondNames)
+                };
+        }
+
+        private PropertiesDifference CheckPropertiesDifference(IEnumerable<Type> firstTypes, IEnumerable<Type> secondTypes, ClassesDifference classesDifference = null)
+        {
+            var leftTypes = firstTypes.Where(x => classesDifference == null || (!classesDifference.RemovedClasses.Contains(x.FullName))).ToDictionary(x => x.FullName, x => x);
+            var rightTypes = secondTypes.Where(x => classesDifference == null || (!classesDifference.AddedClasses.Contains(x.FullName))).ToDictionary(x => x.FullName, x => x);
+
+            var types = leftTypes.Join(rightTypes, pair => pair.Key, pair => pair.Key,
+                                       (leftPair, rightPair) => new KeyValuePair<Type, Type>(leftPair.Value, rightPair.Value));
+
+            var addedProperties = new List<KeyValuePair<string, string>>();
+            var removedProperties = new List<KeyValuePair<string, string>>();
+
+            foreach (var pair in types)
+            {
+                var leftProperties = pair.Key.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead).ToList();
+                var rightProperties = pair.Value.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead).ToList();
+
+                removedProperties.AddRange(leftProperties.Where(property => !rightProperties.Any(x => x.Name == property.Name)).Select(property => new KeyValuePair<string, string>(pair.Key.FullName, property.Name)));
+
+                addedProperties.AddRange(rightProperties.Where(property => !leftProperties.Any(x => x.Name == property.Name)).Select(property => new KeyValuePair<string, string>(pair.Value.FullName, property.Name)));
+            }
+
+            if (!addedProperties.Any() && !removedProperties.Any())
+            {
+                Logger.Info("Two assemblies don't have difference between properties existence");
+
+                return null;
+            }
+
+            Logger.Info("Two assemblies have difference between properties existence");
+
+            return new PropertiesDifference
+                {
+                    AddedProperties = addedProperties,
+                    RemovedProperties = removedProperties
+                };
         }
     }
 
@@ -100,6 +161,19 @@ namespace TestControlTool.UpdateService
         public Assembly SecondAssembly { get; set; }
 
         /// <summary>
+        /// Difference between existing of classes in two assemblies
+        /// </summary>
+        public ClassesDifference ClassesDifference { get; set; }
+
+        /// <summary>
+        /// Difference between existing of classes' properties in two assemblies
+        /// </summary>
+        public PropertiesDifference PropertiesDifference { get; set; }
+    }
+
+    public class ClassesDifference
+    {
+        /// <summary>
         /// Added classes in the second assemblies (Full Names)
         /// </summary>
         public IEnumerable<string> AddedClasses { get; set; }
@@ -108,5 +182,18 @@ namespace TestControlTool.UpdateService
         /// Removed classes in the second assemblies (Full Names)
         /// </summary>
         public IEnumerable<string> RemovedClasses { get; set; }
+    }
+
+    public class PropertiesDifference
+    {
+        /// <summary>
+        /// Added properties from classes in the second classes. Pair = Class (Full Name) - Property Name
+        /// </summary>
+        public IEnumerable<KeyValuePair<string, string>> AddedProperties { get; set; }
+
+        /// <summary>
+        /// Removed properties from classes in the second classes. Pair = Class (Full Name) - Property Name
+        /// </summary>
+        public IEnumerable<KeyValuePair<string, string>> RemovedProperties { get; set; } 
     }
 }

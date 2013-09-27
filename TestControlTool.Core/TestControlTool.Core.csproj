@@ -241,45 +241,33 @@
     <None Include="TestPerformerRelease\WebGuiAutomation.TestPerformer.vshost.exe.manifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="TestPerformer\Castle.Windsor.BrowserControl.config">
+    <Content Include="TestPerformer\Castle.Windsor.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestPerformer\Castle.Windsor.config">
+    </Content>
+    <Content Include="TestPerformer\Castle.Windsor.TestPeformer.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestPerformer\Castle.Windsor.Logging.config">
+    </Content>
+    <Content Include="TestPerformer\Castle.Windsor.TestPeformer.Core.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestPerformer\Castle.Windsor.TestPeformer.config">
+    </Content>
+    <Content Include="TestPerformer\Castle.Windsor.TestPerformer.Logging.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestPerformer\Castle.Windsor.TestPeformerCore.config">
+    </Content>
+    <Content Include="TestPerformer\Functions.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestPerformer\Functions.ps1">
+    </Content>
+    <Content Include="TestPerformer\Logging.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestPerformer\Logging.ps1">
+    </Content>
+    <Content Include="TestPerformer\RunTests.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestPerformer\NLog.config">
+    </Content>
+    <Content Include="TestPerformer\NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestPerformer\RunTests.ps1">
+    </Content>
+    <Content Include="TestPerformer\TestPerformer.vshost.exe.manifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestPerformer\WebGuiAutomation.TestPerformer.exe.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestPerformer\WebGuiAutomation.TestPerformer.exe.lastcodeanalysissucceeded">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestPerformer\WebGuiAutomation.TestPerformer.vshost.exe.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestPerformer\WebGuiAutomation.TestPerformer.vshost.exe.manifest">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -479,79 +467,46 @@
     <Content Include="TestPerformer\NLog.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestPerformer\TestPerformer.Core.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\TestPerformer.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\TestPerformer.IoC.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\TestPerformer.Logging.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPerformer\TestPerformer.vshost.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestPerformer\WebDriver.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestPerformer\WebDriver.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.AppAssureTools.dll">
+    <Content Include="TestPerformer\WebGuiAutomationTrunk.AppAssureTools.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.AppAssureTools.pdb">
+    <Content Include="TestPerformer\WebGuiAutomationTrunk.Implementation.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.Implementation.dll">
+    <Content Include="TestPerformer\WebGuiAutomationTrunk.Pages.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.Implementation.pdb">
+    <Content Include="TestPerformer\WebGuiAutomationTrunk.Scripts.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.Implementation.xml">
+    <Content Include="TestPerformer\WebGuiAutomationTrunk.SeleniumWebElements.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.IoC.dll">
+    <Content Include="TestPerformer\WebGuiAutomationTrunk.Tools.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.IoC.pdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.Logging.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.Logging.pdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.Scripts.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.Scripts.pdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.SeleniumWebElements.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.SeleniumWebElements.pdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.TestPerformer.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.TestPerformer.exe.CodeAnalysisLog.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.TestPerformer.pdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.TestPerformer.vshost.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.TestPerformerCore.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.TestPerformerCore.pdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.Tools.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.Tools.pdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.WebElements.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestPerformer\WebGuiAutomation.WebElements.pdb">
+    <Content Include="TestPerformer\WebGuiAutomationTrunk.WebElements.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -356,7 +356,7 @@ namespace TestControlTool.Web.Controllers
             }
             catch (Exception e)
             {
-                return Content("error3\n" + e.Message);
+                return Content("error3\n" + e.Message + (e.InnerException != null ? "." + e.InnerException.Message : ""));
             }
         }
 
@@ -368,7 +368,7 @@ namespace TestControlTool.Web.Controllers
 
             if (!(TryValidateModel(model) && ValidationController.ValidateTaskModel(model, User.Identity.Name)))
             {
-                return Json(false, JsonRequestBehavior.AllowGet);
+                return Json("Please, correct your data", JsonRequestBehavior.AllowGet);
             }
 
             try
@@ -379,17 +379,15 @@ namespace TestControlTool.Web.Controllers
 
                 TestControlToolApplication.AccountController.AddTask(task);
 
-                Success("Task was succesfully created!");
+                Success("Task was successfully created!");
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
             catch (AddExistingTaskException e)
             {
-                System.IO.File.WriteAllText(@"D:\error.txt", e.Message);
                 return Json(e.Message, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
-                System.IO.File.WriteAllText(@"D:\error.txt", e.Message);
                 return Json(e.Message, JsonRequestBehavior.AllowGet);
             }
         }
@@ -404,10 +402,17 @@ namespace TestControlTool.Web.Controllers
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
 
-            TestControlToolApplication.AccountController.EditTask(model.Id, model.ToEntitiy());
+            try
+            {
+                SaveChildsFromJson(jsonModel);
 
-            SaveChildsFromJson(jsonModel);
-
+                TestControlToolApplication.AccountController.EditTask(model.Id, model.ToEntitiy());
+            }
+            catch (Exception e)
+            {
+                return Json(e.Message, JsonRequestBehavior.AllowGet);
+            }
+            
             Success("Task was successfully updated!");
 
             return Json(true, JsonRequestBehavior.AllowGet);
@@ -468,17 +473,17 @@ namespace TestControlTool.Web.Controllers
                         var serializer = new DataContractJsonSerializer(testType, availableTypes);
 
                         testsList.Add(serializer.ReadObject(stream));
-
-                        var testSuiteModel = new TestSuiteModel
-                            {
-                                Name = task["id"].ToObject<string>(),
-                                Tests = testsList,
-                                Type = taskType,
-                                Machine = new Guid(task["machine"].ToObject<string>())
-                            };
-
-                        testSuiteModel.SaveToFile(file);
                     }
+                    
+                    var testSuiteModel = new TestSuiteModel
+                        {
+                            Name = task["id"].ToObject<string>(),
+                            Tests = testsList,
+                            Type = taskType,
+                            Machine = new Guid(task["machine"].ToObject<string>())
+                        };
+
+                    testSuiteModel.SaveToFile(file);
                 }
 
                 childs.Add(new ChildTaskModel

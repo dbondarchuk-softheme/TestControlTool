@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>D:\Debug,D:\ProjectsGit\Trunk\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\bin\Debug WebGuiAutomation.Scripts.dll AppAssureTest "Some changes in WebGuiAutomation for trunk tests" "After last update, some small changes have been take place. We changed some tests in our UI testing. Please, take a look and check your own smokes:\n\nAdded classes:\n\n{0}\n-------\n\nRemoved classes:\n\n{1}"</StartArguments>
+    <StartArguments>D:\TrunkScripts,D:\Debug\Debug "WebGuiAutomation.Scripts.dll" AppAssureTest "Some changes in WebGuiAutomation for trunk tests" "After last update, some small changes have been take place. We changed some tests in our UI testing. Please, take a look and check your own smokes:\n\nAdded classes:\n\n{0}\n-------\n\nRemoved classes:\n\n{1}\n----------\n\nAdded properties:\n\n{2}\n---------\n\nRemoved properties:\n\n {3}\n---------"</StartArguments>
   </PropertyGroup>
 </Project>

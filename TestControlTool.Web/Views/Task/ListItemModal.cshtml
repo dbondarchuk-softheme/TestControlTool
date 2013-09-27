@@ -162,7 +162,7 @@
         return true;
     }
     
-    $(document).ready(function () {
+    $('#@(modalWindowId)').ready(function () {
         //$.support.transition = false;
 
         //$('#testFormDiv').find('.collapse').collapse('hide');
@@ -173,23 +173,14 @@
         });
 
 
-        $("[rel='popover']").popover();
+        $('#@(modalWindowId)').find("[rel='popover']").popover();
 
-        $("[rel='popover']").on("hidden", function (e) {
+        $('#@(modalWindowId)').find("[rel='popover']").on("hidden", function (e) {
             e.stopPropagation(); //Once popover is hidden stop the event from going to parent
         });
 
-        $("[data-disable-enabled='true']").each(function () {
-            var obj = this;
-
-            var disablingProperty = $(obj).attr('data-disabling-property');
-            var disablingValue = $(obj).attr('data-disabling-value');
-
-            $("#" + disablingProperty).on("change", function () {
-                DisableByAttribute(obj, disablingProperty, disablingValue, true);
-            });
-
-            DisableByAttribute(obj, disablingProperty, disablingValue, false);
+        $('#@(modalWindowId)').find("[data-disable-enabled='true']").each(function () {
+            Disable(this);
         });
     });
 

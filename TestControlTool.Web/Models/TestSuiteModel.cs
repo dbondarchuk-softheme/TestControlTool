@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
 using TestControlTool.Core;
 using TestControlTool.Core.Models;
 
@@ -40,7 +41,7 @@ namespace TestControlTool.Web.Models
             var suiteType = GetTestPerformerType("Suite", type);
             var testType = GetTestPerformerType("test", type);
 
-            var suite = suiteType.DeserializeFromFile(file, TestSuiteTypesHelper.GetOnlyScriptsTypes(type).Union(new[] { suiteType, testType }).Where(x => !(x.IsAbstract && x.IsSealed) && !x.IsInterface));
+            var suite = suiteType.DeserializeFromFile(file, TestSuiteTypesHelper.GetOnlyScriptsTypes(type).Where(x => !(x.IsAbstract && x.IsSealed) && !x.IsInterface));
 
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(file);
@@ -82,7 +83,7 @@ namespace TestControlTool.Web.Models
 
             suite.GetType().GetProperty("Tests").SetValue(suite, collection);
 
-            suite.SerializeToFile(file, TestSuiteTypesHelper.GetOnlyScriptsTypes(Type).Union(new[] {suiteType, testType}).Where(x => !(x.IsAbstract && x.IsSealed) && !x.IsInterface));
+            suite.SerializeToFile(file, new[] {suiteType, testType}.Union(TestSuiteTypesHelper.GetOnlyScriptsTypes(Type)).Where(x => !(x.IsAbstract && x.IsSealed) && !x.IsInterface).ToList());
 
             var content = File.ReadAllText(file, new UnicodeEncoding());
 

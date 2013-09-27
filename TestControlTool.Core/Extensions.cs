@@ -92,7 +92,7 @@ namespace TestControlTool.Core
         /// <summary>
         /// Serialize object to xml file
         /// </summary>
-        /// <param name="obj">Object to seriailize</param>
+        /// <param name="obj">Object to serialize</param>
         /// <param name="file">File name</param>
         /// <param name="extraTypes">Extra types to serialize</param>
         public static void SerializeToFile(this object obj, string file, IEnumerable<Type> extraTypes)

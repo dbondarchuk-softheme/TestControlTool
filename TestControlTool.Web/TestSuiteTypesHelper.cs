@@ -25,7 +25,9 @@ namespace TestControlTool.Web
         {
             var assemblyPath = GetScriptsAssemblyPath(type);
 
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(assemblyPath));
+            var directoryName = Path.GetDirectoryName(assemblyPath);
+
+            Directory.SetCurrentDirectory(directoryName);
 
             var types = new List<Type>();
 
@@ -66,14 +68,14 @@ namespace TestControlTool.Web
 
             var types = new List<Type>();
 
-            var assembly = Assembly.LoadFile(assemblyPath);
+             var assembly = Assembly.LoadFile(assemblyPath);
 
-            types.AddRange(assembly.ExportedTypes);
+             types.AddRange(assembly.ExportedTypes);
 
-            var referencedAssemblies = assembly.GetReferencedAssemblies().Where(x => x.FullName.StartsWith("WebGuiAutomation")).Select(Assembly.Load);
-            types.AddRange(referencedAssemblies.SelectMany(x => x.ExportedTypes));
+             var referencedAssemblies = assembly.GetReferencedAssemblies().Select(Assembly.Load);
+             types.AddRange(referencedAssemblies.SelectMany(x => x.ExportedTypes));
 
-            return types;
+             return types;
         }
 
         private static string GetScriptsAssemblyPath(TaskType type)
@@ -98,12 +100,12 @@ namespace TestControlTool.Web
                     assembly = ConfigurationManager.AppSettings["TestPerformerReleaseScripts"];
                     break;
             }
-            
+
             var serverAssemblyFile = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath.Replace('/', '\\'));
 
             if (assembly.StartsWith(@"..\"))
             {
-                var executionPath = Directory.GetDirectoryRoot(serverAssemblyFile);
+                var executionPath = Directory.GetParent(serverAssemblyFile).FullName;
 
                 assembly = executionPath + "\\" + assembly.Remove(0, 2);
             }
@@ -138,7 +140,8 @@ namespace TestControlTool.Web
                     break;
             }
 
-            var serverAssemblyFile = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath.Replace('/', '\\'));
+            var serverAssemblyFile =
+                Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath.Replace('/', '\\'));
 
             if (assembly.StartsWith(@"..\"))
             {
