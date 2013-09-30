@@ -59,6 +59,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebGuiAutomation.Implementation">
+      <HintPath>..\..\..\..\..\..\WebGuiAutomation.Implementation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdditionalTests.cs" />

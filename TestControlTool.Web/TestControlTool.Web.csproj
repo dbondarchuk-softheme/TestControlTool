@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AppDomainToolkit">
+      <HintPath>..\packages\AppDomainToolkit.1.0.4.1\lib\net\AppDomainToolkit.dll</HintPath>
+    </Reference>
     <Reference Include="AutodeploymentConsole">
       <HintPath>..\TestControlTool.Core\AutoDeploy\AutodeploymentConsole.exe</HintPath>
     </Reference>
@@ -243,6 +246,7 @@
     <Content Include="Content\images\select2.png" />
     <Content Include="Content\images\select2x2.png" />
     <Content Include="Content\select2.css" />
+    <Content Include="Content\images\Suite.PNG" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -308,6 +312,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\images\AddVMServer.PNG" />
+    <Content Include="Content\images\DeployInstall.PNG" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-fileupload.min.js" />
@@ -322,6 +327,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="output.config" />
+    <Content Include="App_Data\ConfigureChallengerVM.zip" />
+    <Content Include="App_Data\ConfigureVCenterMachine.zip" />
     <None Include="Properties\PublishProfiles\New.pubxml" />
     <None Include="Properties\PublishProfiles\new2.pubxml" />
     <None Include="Properties\PublishProfiles\new3.pubxml" />
@@ -435,10 +442,9 @@
     <Content Include="Views\Server\Edit.cshtml" />
     <Content Include="Views\Server\Details.cshtml" />
     <Content Include="Views\Shared\MachineConfiguratingModal.cshtml" />
+    <Content Include="Views\Task\NestedHelperView.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
@@ -466,7 +472,7 @@
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>18721</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:18721/</IISUrl>
+          <IISUrl>http://localhost:18723/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

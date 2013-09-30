@@ -1,5 +1,6 @@
 ﻿@using System.Reflection
 @using BootstrapSupport
+@using TestControlTool.Core.Models
 @using TestControlTool.Web.BootstrapSupport.HtmlHelpers
 @model Type
 @{
@@ -7,116 +8,78 @@
 }
 @foreach (var property in Model.VisibleProperties(new string[0]))
 {
-    using (Html.ControlGroupFor(property.Name))
+    if (EditorWithHelp.IsSupportedType(property.PropertyType))
     {
-@*if (property.PropertyType == typeof(string) || property.PropertyType == typeof(int))
+        using (Html.ControlGroupFor(property.Name))
         {
-    @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name })
-    <div class="controls">
-        @Html.Editor(property, "", new { @class = "input-xlarge" })
-        @Html.ValidationMessage(property.Name, null, new { @class = "help-inline" })
-    </div>
-        }
-        else if (property.PropertyType.IsEnum)
-        {
-    @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name })
-    <div class="controls">
-        @Html.EnumDropDownList(property.Name, property.PropertyType)
-    </div>
-        }
-        else if (property.PropertyType == typeof(bool))
-        {
-    @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name, @style = "display:inline;" })
-    <div class="controls" style="display: inline; margin-left: 1em;">
-        @Html.CheckBox(property.Name, false, new { @class = "input-xlarge" })
-        @Html.ValidationMessage(property.Name, null, new { @class = "help-inline" })
-    </div>
-        }*@
-        if (property.PropertyType.IsEnum || property.PropertyType.IsPrimitive || property.PropertyType == typeof(string))
-        {
-    @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name, style = property.PropertyType == typeof(bool) ? "display: inline;" : string.Empty })
-    <div class="controls"@(Html.Raw(property.PropertyType == typeof(bool) ? "style='display: inline; margin-left: 1em;'" : string.Empty))>
-        @Html.Editor(property, "", new { @class = "input-xlarge" })
-        @Html.ValidationMessage(property.Name, null, new { @class = "help-inline" })
-    </div>
-        }
-        else if (property.PropertyType.Name.Contains("List"))
-        {
-    <div class="well">
-        <button type="button" class="close" aria-hidden="true" onclick="loadListItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@property.Name');" title="Add new item">+</button>
-        @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name })
-        <div class="controls">
-            <ul style="padding-left: 20%;" class="sortable" id="@property.Name">
-            </ul>
-        </div>
-    </div>
-        }
-        else
-        {
-    <div class="wellHelper">
-        <label class="control-label" style="margin-left: 5px; margin-top: 5px;" for="@(property.Name)" data-toggle="collapse" data-target="#@(property.Name)">@property.Name.ToSeparatedWords() <i class="close icon-chevron-right"></i></label>
+            @Html.Label(property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name, style = property.PropertyType == typeof(bool) ? "display: inline;" : string.Empty })
 
-        <div class="collapse" style="margin-left: 5px;" id="@(property.Name)" @Html.Raw(EditorWithHelp.GetDisableInformation(property).Aggregate("", (s, pair) => s + pair.Key + "='" + pair.Value + "' ").Trim())>
-            @foreach (var childProperty in property.PropertyType.VisibleProperties(new string[0]))
-            {
-                var childPropertyName = property.Name + "_" + childProperty.Name;
-                                 
-                @Html.Label(childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label", @for = childPropertyName, style = childProperty.PropertyType == typeof(bool) ? "display: inline;" : string.Empty })
-                <div class="controls"@(Html.Raw(childProperty.PropertyType == typeof(bool) ? "style='display: inline; margin-left: 1em;'" : string.Empty))>
-                    @Html.Editor(childProperty, "", new { @class = "input-xlarge" }, childPropertyName, "#testFormDiv", property.Name)
-                    @Html.ValidationMessage(childPropertyName, null, new { @class = "help-inline" })
-                </div>
-            }
-        </div>
-    </div>
+            <div class="controls"@(Html.Raw(property.PropertyType == typeof(bool) ? "style='display: inline; margin-left: 1em;'" : string.Empty))>
+                @Html.Editor(property, "", new { @class = "input-xlarge" })
+                @Html.ValidationMessage(property.Name, null, new { @class = "help-inline" })
+            </div>
         }
+    }
+    else if (property.PropertyType.Name.Contains("List"))
+    {
+        <div class="wellList">
+            <button type="button" id ="AddButton-@property.Name" class="close" aria-hidden="true" onclick="loadListItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@property.Name');" title="Add new item">+</button>
+            @Html.Label("AddButton-" + property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label" })
+            <div class="controls">
+                <ul style="padding-left: 20%;" class="sortable" id="@property.Name" type="@property.PropertyType.GetGenericArguments()[0].FullName">
+                </ul>
+            </div>
+        </div>
+    }
+    else
+    {
+        Html.RenderPartial("NestedHelperView", new Pair<PropertyInfo, Pair<string, string>>(property, new Pair<string, string>(property.Name, "NewTestModal")));
     }
 }
 
+
 <script type="text/javascript">
-    var listName = "";
-    var isEditListItem = false;
-    var listItemToEdit;
+    var listName = [];
+    var isEditListItem = [];
+    var listItemToEdit = [];
 
-    function editListItem(type, obj) {
-        $('#ListItemsModalDiv').load('@Url.Action("ListItemModal", "Task")', { typeName: type, trunk: isTrunk }, function () {
-            $('#ListItemsLabel').text($('#ListItemsLabel').text().replace('Add new', 'Edit'));
-            $('#ListItemsButton').val('Apply');
+    function editListItem(obj) {
+        var ul = $(obj).parent().parent();
+        var parentId = ul.attr('id');
+        var type = ul.attr('type');
 
-            var attributes = $(obj).parent().listAttributes();
+        $('#ListItemsModalDiv').load('@Url.Action("ListItemModal", "Task")', { typeName: type, suiteType: suiteType, parentProperty: parentId }, function () {
+            $('#ListItemsLabel-' + parentId).text($('#ListItemsLabel-' + parentId).text().replace('Add new', 'Edit'));
+            $('#ListItemsButton-' + parentId).val('Apply');
 
-            if (attributes.length == 1 && attributes[0] == 'item') {
-                $('#itemsProperties').find('input[type!=hidden],select').first().val($(obj).parent().attr('item'));
+            var jsonObject = JSON.parse($(obj).parent().attr('json'));
+            
+            var singleItem = $("#itemsProperties-" + parentId).find('#newItemEditorBox-' + parentId)[0];
+            
+            if (singleItem != undefined) {
+                $(singleItem).val(jsonObject);
             } else {
-                for (var i = 0; i < attributes.length; i++) {
-                    $('#itemsProperties').find('input[type!=hidden][type!=checkbox],select').each(function () {
-                        if ($(this).attr('id').toLowerCase() == attributes[i].toLowerCase()) {
-                            $(this).val($(obj).parent().attr(attributes[i]));
-                        }
-                    });
-                    $('#itemsProperties').find('input[type=checkbox]').each(function () {
-                        if ($(this).attr('id').toLowerCase() == attributes[i].toLowerCase()) {
-                            $(this).attr('checked', $(obj).parent().attr(attributes[i]).toLowerCase() == 'true');
-                        }
-                    });
-                }
+                fillFormWithObject("itemsProperties-" + parentId, jsonObject);
             }
+            
+            listItemToEdit.push($(obj).parent());
+            isEditListItem.push(true);
+            listName.push(null);
 
-            listItemToEdit = $(obj).parent();
-            isEditListItem = true;
-
-            $('#ListItemsModal').modal('show');
+            $('#ListItemsModal-' + parentId).modal('show');
         });
     }
 
     function loadListItemsModal(type, list) {
-        $('#ListItemsModalDiv').load('@Url.Action("ListItemModal", "Task")', { typeName: type, trunk: isTrunk }, function () {
-            listName = list;
-            $('#ListItemsModal').modal('show');
+        $('#ListItemsModalDiv').load('@Url.Action("ListItemModal", "Task")', { typeName: type, suiteType: suiteType, parentProperty: list }, function () {
+            listName.push(list);
+            listItemToEdit.push(null);
+            isEditListItem.push(false);
+            $('#ListItemsModal-' + list).modal('show');
         });
     }
 
-    $(document).ready(function () {
+    $('#testFormDiv').ready(function () {
         //$.support.transition = false;
 
         //$('#testFormDiv').find('.collapse').collapse('hide');
@@ -127,23 +90,14 @@
         });
 
 
-        $("[rel='popover']").popover();
+        $('#testFormDiv').find('[rel=popover]').popover();
 
-        $("[rel='popover']").on("hidden", function (e) {
+        $('#testFormDiv').find('[rel=popover]').on("hidden", function (e) {
             e.stopPropagation(); //Once popover is hidden stop the event from going to parent
         });
 
-        $("[data-disable-enabled='true']").each(function () {
-            var obj = this;
-
-            var disablingProperty = $(obj).attr('data-disabling-property');
-            var disablingValue = $(obj).attr('data-disabling-value');
-            
-            $("#" + disablingProperty).on("change", function () {
-                DisableByAttribute(obj, disablingProperty, disablingValue, true);
-            });
-            
-            DisableByAttribute(obj, disablingProperty, disablingValue, false);
+        $('#testFormDiv').find("[data-disable-enabled='true']").each(function () {
+            Disable(this);
         });
     });
 

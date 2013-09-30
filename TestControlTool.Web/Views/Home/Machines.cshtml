@@ -51,14 +51,12 @@
 </table>
 <p>
     <div class="btn-group">
-        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Create new<span class="caret"></span></a>
+        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Register Machine<span class="caret"></span></a>
         <ul class="dropdown-menu">
-            <li><a href="@Url.Action("Create", "Machine", new { destinationType = VMServerType.VCenter })">VCenter Machine</a></li>
-            <li><a href="@Url.Action("Create", "Machine", new { destinationType = VMServerType.HyperV })">HyperV Machine</a></li>
+            <li><a href="@Url.Action("Create", "Machine", new { destinationType = VMServerType.HyperV })">Hyper-V</a></li>
+            <li><a href="@Url.Action("Create", "Machine", new { destinationType = VMServerType.VCenter })">vCenter</a></li>
         </ul>
     </div>
-    
-    <a class="btn" href="#" onclick="showMachineConfiguratingModal(); return false;">Configure Machine</a>
 </p>
 <script type="text/javascript">
     function removeMachine(id) {

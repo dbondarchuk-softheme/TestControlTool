@@ -30,12 +30,7 @@ namespace TestControlTool.Web
         /// Gets hash from the password
         /// </summary>
         public static readonly IPasswordHash PasswordHash = CastleResolver.Resolve<IPasswordHash>();
-
-        /// <summary>
-        /// Getting available tests for the trunk and release WGA test suites
-        /// </summary>
-        public static readonly TestSuiteTypesHelper TypesHelper = new TestSuiteTypesHelper();
-
+        
         protected void Application_Start()
         {
             ViewEngines.Engines.Add(new RazorViewEngine());

@@ -1,0 +1,434 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="c:\program files (x86)\microsoft visual studio 11.0\team tools\static analysis tools\fxcop\Xml\CodeAnalysisReport.xsl"?>
+<FxCopReport Version="11.0">
+ <Namespaces>
+  <Namespace Name="WebGuiAutomation.Scripts">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Archive">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Archive' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.BootCD">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.BootCD' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Bulk">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Bulk' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Bulk.Protect">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Bulk.Protect' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Configuration.Backup">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Configuration.Backup' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Deploy">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Deploy' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Diagnostics">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Diagnostics' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Events.Handling">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Events.Handling' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Exchange">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Exchange' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Exchange.ExchangeMetadata">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Exchange.ExchangeMetadata' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Export">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Export' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Licensing">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Licensing' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Protect.ProtectionSchedule">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Protect.ProtectionSchedule' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.RecoveryPoints">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.RecoveryPoints' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Replication">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Replication' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Reports">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Reports' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Repositories.Create">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Repositories.Create' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Rollback">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Rollback' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Rollup">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Rollup' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Snapshots">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Snapshots' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Sql">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Sql' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+  <Namespace Name="WebGuiAutomation.Scripts.Sql.SqlMetadata">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'WebGuiAutomation.Scripts.Sql.SqlMetadata' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+ </Namespaces>
+ <Targets>
+  <Target Name="D:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\bin\Release\WebGuiAutomation.Scripts.dll">
+   <Modules>
+    <Module Name="webguiautomation.scripts.dll">
+     <Messages>
+      <Message TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="NonBreaking">
+       <Issue Name="NoStrongName" Certainty="95" Level="CriticalError">Sign 'WebGuiAutomation.Scripts.dll' with a strong name key.</Issue>
+      </Message>
+      <Message TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="NonBreaking">
+       <Issue Certainty="95" Level="Error">Mark 'WebGuiAutomation.Scripts.dll' with CLSCompliant(true) because it exposes externally visible types.</Issue>
+      </Message>
+     </Messages>
+     <Namespaces>
+      <Namespace Name="WebGuiAutomation.Scripts">
+       <Types>
+        <Type Name="AppAssureTest" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Execute(WebGuiAutomation.TestPerformerCore.Reporting.ITestReporter)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="CriticalError" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts" File="AppAssureTest.cs" Line="42">Modify 'AppAssureTest.Execute(ITestReporter)' to catch a more specific exception than 'Exception' or rethrow the exception.</Issue>
+            </Message>
+            <Message Id="0" TypeName="Validate arguments of public methods" Category="Microsoft.Design" CheckId="CA1062" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts" File="AppAssureTest.cs" Line="44">In externally visible method 'AppAssureTest.Execute(ITestReporter)', validate parameter 'reporter' before using it.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="WebGuiAutomation.Scripts.Bulk.Deploy">
+       <Types>
+        <Type Name="DeployMachines" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Run()" Kind="Method" Static="False" Accessibility="Family" ExternallyVisible="True">
+           <Messages>
+            <Message Id="WebGuiAutomation.TestPerformerCore.Reporting.ITestReporter.AddMessage(System.String)" TypeName="Do not pass literals as localized parameters" Category="Microsoft.Globalization" CheckId="CA1303" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="DependsOnFix">
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Bulk\Deploy" File="DeployMachines.cs" Line="117">Method 'DeployMachines.Run()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "All status balls are Green, One or more status balls are Red".</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="WebGuiAutomation.Scripts.Bulk.Protect">
+       <Types>
+        <Type Name="ProtectMachines" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Run()" Kind="Method" Static="False" Accessibility="Family" ExternallyVisible="True">
+           <Messages>
+            <Message Id="WebGuiAutomation.TestPerformerCore.Reporting.ITestReporter.AddMessage(System.String)" TypeName="Do not pass literals as localized parameters" Category="Microsoft.Globalization" CheckId="CA1303" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="DependsOnFix">
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Bulk\Protect" File="ProtectMachines.cs" Line="115">Method 'ProtectMachines.Run()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "All status balls are Green, One or more status balls are Red".</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="WebGuiAutomation.Scripts.Exchange">
+       <Types>
+        <Type Name="ExchangeMetadataCheck" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#AgentSummary()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message Id="WebGuiAutomation.TestPerformerCore.Reporting.ITestReporter.AddMessage(System.String)" TypeName="Do not pass literals as localized parameters" Category="Microsoft.Globalization" CheckId="CA1303" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="DependsOnFix">
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Exchange" File="ExchangeMetadataCheck.cs" Line="185">Method 'ExchangeMetadataCheck.AgentSummary()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "All mailboxes have prescribed values.\n".</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#RecoveryPoint()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message Id="WebGuiAutomation.TestPerformerCore.Reporting.ITestReporter.AddMessage(System.String)" TypeName="Do not pass literals as localized parameters" Category="Microsoft.Globalization" CheckId="CA1303" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="DependsOnFix">
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Exchange" File="ExchangeMetadataCheck.cs" Line="250">Method 'ExchangeMetadataCheck.RecoveryPoint()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "All mailboxes have prescribed values.".</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="WebGuiAutomation.Scripts.General">
+       <Types>
+        <Type Name="CloseBrowser" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Run()" Kind="Method" Static="False" Accessibility="Family" ExternallyVisible="True">
+           <Messages>
+            <Message Id="WebGuiAutomation.TestPerformerCore.Reporting.ITestReporter.AddMessage(System.String)" TypeName="Do not pass literals as localized parameters" Category="Microsoft.Globalization" CheckId="CA1303" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="DependsOnFix">
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\General" File="CloseBrowser.cs" Line="33">Method 'CloseBrowser.Run()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "Browser closed".</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="WebGuiAutomation.Scripts.Licensing">
+       <Types>
+        <Type Name="ChangeLicenseKey" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Run()" Kind="Method" Static="False" Accessibility="Family" ExternallyVisible="True">
+           <Messages>
+            <Message Id="WebGuiAutomation.TestPerformerCore.Reporting.ITestReporter.AddMessage(System.String)" TypeName="Do not pass literals as localized parameters" Category="Microsoft.Globalization" CheckId="CA1303" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="DependsOnFix">
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Licensing" File="ChangeLicenseKey.cs" Line="125">Method 'ChangeLicenseKey.Run()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "Some fields have unexpected values: \n".</Issue>
+            </Message>
+            <Message Id="WebGuiAutomation.TestPerformerCore.Reporting.ITestReporter.Failed(System.String)" TypeName="Do not pass literals as localized parameters" Category="Microsoft.Globalization" CheckId="CA1303" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="DependsOnFix">
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Licensing" File="ChangeLicenseKey.cs" Line="91">Method 'ChangeLicenseKey.Run()' passes a literal string as parameter 'message' of a call to 'ITestReporter.Failed(string)'. Retrieve the following string(s) from a resource table instead: "Waiting for licensing status has timed out".</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="WebGuiAutomation.Scripts.RecoveryPoints">
+       <Types>
+        <Type Name="DeleteRecoveryPoints" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Run()" Kind="Method" Static="False" Accessibility="Family" ExternallyVisible="True">
+           <Messages>
+            <Message Id="WebGuiAutomation.TestPerformerCore.Reporting.ITestReporter.Failed(System.String)" TypeName="Do not pass literals as localized parameters" Category="Microsoft.Globalization" CheckId="CA1303" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="DependsOnFix">
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\RecoveryPoints" File="DeleteRecoveryPoints.cs" Line="74">Method 'DeleteRecoveryPoints.Run()' passes a literal string as parameter 'message' of a call to 'ITestReporter.Failed(string)'. Retrieve the following string(s) from a resource table instead: "Deleting type contains invalid data: ".</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="WebGuiAutomation.Scripts.Repositories">
+       <Types>
+        <Type Name="CreateRepository" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#EditFileSpecs(WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Repositories.RepoTab.AddRepositoryDialog)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message Id="WebGuiAutomation.Implementation.AppAssureStructure.Pages.Templates.Repositories.RepoTab.AddRepositoryDialog.SelectFileSpec(System.String)" TypeName="Do not pass literals as localized parameters" Category="Microsoft.Globalization" CheckId="CA1303" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="DependsOnFix">
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Repositories" File="CreateRepository.cs" Line="189">Method 'CreateRepository.EditFileSpecs(AddRepositoryDialog)' passes a literal string as parameter 'text' of a call to 'AddRepositoryDialog.SelectFileSpec(string)'. Retrieve the following string(s) from a resource table instead: "////".</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="WebGuiAutomation.Scripts.Sql">
+       <Types>
+        <Type Name="SqlMetadataCheck" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#AgentSummary()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message Id="WebGuiAutomation.TestPerformerCore.Reporting.ITestReporter.AddMessage(System.String)" TypeName="Do not pass literals as localized parameters" Category="Microsoft.Globalization" CheckId="CA1303" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="DependsOnFix">
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Sql" File="SqlMetadataCheck.cs" Line="144">Method 'SqlMetadataCheck.AgentSummary()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "No \', \' server was found".</Issue>
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Sql" File="SqlMetadataCheck.cs" Line="138">Method 'SqlMetadataCheck.AgentSummary()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "There are no required SQL databases present in \', \' server\'s list of database...".</Issue>
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Sql" File="SqlMetadataCheck.cs" Line="131">Method 'SqlMetadataCheck.AgentSummary()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "\', \' database has \'Is Online\' field value \', \' but not expected \'".</Issue>
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Sql" File="SqlMetadataCheck.cs" Line="127">Method 'SqlMetadataCheck.AgentSummary()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "\', \' database has expected \'Is Online\' field value \'".</Issue>
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Sql" File="SqlMetadataCheck.cs" Line="122">Method 'SqlMetadataCheck.AgentSummary()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "\', \' database is present in \', \' server\'s list of databases".</Issue>
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Sql" File="SqlMetadataCheck.cs" Line="114">Method 'SqlMetadataCheck.AgentSummary()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "\', \' server was found".</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#RecoveryPoint()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message Id="WebGuiAutomation.TestPerformerCore.Reporting.ITestReporter.AddMessage(System.String)" TypeName="Do not pass literals as localized parameters" Category="Microsoft.Globalization" CheckId="CA1303" Status="Active" Created="2013-08-01 13:05:09Z" FixCategory="DependsOnFix">
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Sql" File="SqlMetadataCheck.cs" Line="174">Method 'SqlMetadataCheck.RecoveryPoint()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "Database \', \' has status \', \' but not expected \', \'\n".</Issue>
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Sql" File="SqlMetadataCheck.cs" Line="191">Method 'SqlMetadataCheck.RecoveryPoint()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "Database \', \' is not present in\', \' server\'s list of databases/\n".</Issue>
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Sql" File="SqlMetadataCheck.cs" Line="183">Method 'SqlMetadataCheck.RecoveryPoint()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "No \', \' server was found on all volumes!\n".</Issue>
+             <Issue Name="KnownValue" Certainty="75" Level="Warning" Path="d:\Projects\Replay\replay\testing\WebGuiAutomation\WebGuiAutomation.Scripts\Sql" File="SqlMetadataCheck.cs" Line="163">Method 'SqlMetadataCheck.RecoveryPoint()' passes a literal string as parameter 'message' of a call to 'ITestReporter.AddMessage(string)'. Retrieve the following string(s) from a resource table instead: "\', \' server was found on unexpected volume \', \'. Expected Volume Name is \',...".</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+ </Targets>
+ <Rules>
+  <Rule TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210">
+   <Name>Assemblies should have valid strong names</Name>
+   <Description>Either the assembly has no strong name, an invalid one, or the strong name is valid only because of the computer configuration. The assembly should not be deployed in this state. The most common causes of this are: 1) The assembly's contents were modified after it was signed. 2) The signing process failed. 3) The assembly was delay-signed. 4) A registry key existed that allowed the check to pass (where it would not have otherwise).</Description>
+   <Resolution Name="NoStrongName">Sign {0} with a strong name key.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182127(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">CriticalError</MessageLevel>
+   <File Name="designrules.dll" Version="11.0.0.0" />
+  </Rule>
+  <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
+   <Name>Avoid namespaces with few types</Name>
+   <Description>A namespace should generally have more than five types.</Description>
+   <Resolution Name="Default">Consider merging the types defined in '{0}' with another namespace.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182130(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="50">Warning</MessageLevel>
+   <File Name="designrules.dll" Version="11.0.0.0" />
+  </Rule>
+  <Rule TypeName="Do not pass literals as localized parameters" Category="Microsoft.Globalization" CheckId="CA1303">
+   <Name>Do not pass literals as localized parameters</Name>
+   <Description>Literal strings that are embedded in source code are difficult to localize. Avoid passing literal strings as arguments in circumstances where a localized string is generally expected.</Description>
+   <Resolution Name="KnownValue">Method {0} passes a literal string as parameter '{1}' of a call to {2}. Retrieve the following string(s) from a resource table instead: {3}.</Resolution>
+   <Owner>RuleOwner</Owner>
+   <Url>http://msdn.microsoft.com/library/ms182187(VS.100).aspx</Url>
+   <Email />
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="dataflowrules.dll" Version="11.0.0.0" />
+  </Rule>
+  <Rule TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031">
+   <Name>Do not catch general exception types</Name>
+   <Description>You should not catch Exception or SystemException. Catching generic exception types can hide run-time problems from the library user, and can complicate debugging. You should catch only those exceptions that you can handle gracefully.</Description>
+   <Resolution Name="Default">Modify {0} to catch a more specific exception than {1} or rethrow the exception.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182137(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">CriticalError</MessageLevel>
+   <File Name="designrules.dll" Version="11.0.0.0" />
+  </Rule>
+  <Rule TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014">
+   <Name>Mark assemblies with CLSCompliantAttribute</Name>
+   <Description>Assemblies should explicitly state their CLS compliance using the CLSCompliant attribute. An assembly without this attribute is not CLS-compliant. Assemblies, modules, and types can be CLS-compliant even if some parts of the assembly, module, or type are not CLS-compliant. The following rules apply: 1) If the element is marked CLSCompliant, any noncompliant members must have the CLSCompliant attribute present with its argument set to false. 2) A comparable CLS-compliant alternative member must be supplied for each member that is not CLS-compliant.</Description>
+   <Resolution Name="Default">Mark {0} with CLSCompliant(true) because it exposes externally visible types.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182156(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="designrules.dll" Version="11.0.0.0" />
+  </Rule>
+  <Rule TypeName="Validate arguments of public methods" Category="Microsoft.Design" CheckId="CA1062">
+   <Name>Validate arguments of public methods</Name>
+   <Description>All reference arguments passed to externally visible methods should be checked against null (Nothing in VB). If appropriate, throw a System.ArgumentNullException when the argument is null.</Description>
+   <Resolution Name="Default">In externally visible method {0}, validate parameter '{1}' before using it.</Resolution>
+   <Owner>RuleOwner</Owner>
+   <Url>http://msdn.microsoft.com/library/ms182182(VS.100).aspx</Url>
+   <Email />
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="dataflowrules.dll" Version="11.0.0.0" />
+  </Rule>
+ </Rules>
+ <Localized>
+  <String Key="Category">Category</String>
+  <String Key="Certainty">Certainty</String>
+  <String Key="CollapseAll">Collapse All</String>
+  <String Key="CheckId">Check Id</String>
+  <String Key="Error">Error</String>
+  <String Key="Errors">error(s)</String>
+  <String Key="ExpandAll">Expand All</String>
+  <String Key="Help">Help</String>
+  <String Key="Line">Line</String>
+  <String Key="Messages">message(s)</String>
+  <String Key="LocationNotStoredInPdb">[Location not stored in Pdb]</String>
+  <String Key="Project">Project</String>
+  <String Key="Resolution">Resolution</String>
+  <String Key="Rule">Rule</String>
+  <String Key="RuleFile">Rule File</String>
+  <String Key="RuleDescription">Rule Description</String>
+  <String Key="Source">Source</String>
+  <String Key="Status">Status</String>
+  <String Key="Target">Target</String>
+  <String Key="Warning">Warning</String>
+  <String Key="Warnings">warning(s)</String>
+  <String Key="ReportTitle">Code Analysis Report</String>
+ </Localized>
+</FxCopReport>

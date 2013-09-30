@@ -53,8 +53,7 @@ namespace TestControlTool.UpdateService
                                     var client = new TaskWcfServiceClient();
                                     client.Open();
 
-                                    var body = string.Format(CultureInfo.InvariantCulture, emailBody, difference.AddedClasses.Aggregate("", (s, s1) => s + s1 + ", ").Trim(),
-                                        difference.RemovedClasses.Aggregate("", (s, s1) => s + s1 + ", ").Trim()).Replace(@"\n", Environment.NewLine);
+                                    var body = GenerateMessageBody(emailBody, difference);
                                     
                                     client.SendEmailToAll(emailSubject, body);
 
@@ -100,6 +99,17 @@ namespace TestControlTool.UpdateService
 
                 throw;
             }
+        }
+
+        private static string GenerateMessageBody(string emailBody, AssembliesDifference difference)
+        {
+            var addedClasses = difference.ClassesDifference != null ? difference.ClassesDifference.AddedClasses.Aggregate("", (s, s1) => s + s1 + "\n").Trim() : "--None--";
+            var removedClasses = difference.ClassesDifference != null ? difference.ClassesDifference.RemovedClasses.Aggregate("", (s, s1) => s + s1 + "\n").Trim() : "--None--";
+
+            var addedProperties = difference.PropertiesDifference != null ? difference.PropertiesDifference.AddedProperties.Aggregate("", (s, pair) => s + pair.Key + " - " + pair.Value + "\n").Trim() : "--None--";
+            var removedProperties = difference.PropertiesDifference != null ? difference.PropertiesDifference.RemovedProperties.Aggregate("", (s, pair) => s + pair.Key + " - " + pair.Value + "\n").Trim() : "--None--";
+
+            return string.Format(CultureInfo.InvariantCulture, emailBody, addedClasses, removedClasses, addedProperties, removedProperties).Replace(@"\n", Environment.NewLine);
         }
     }
 }

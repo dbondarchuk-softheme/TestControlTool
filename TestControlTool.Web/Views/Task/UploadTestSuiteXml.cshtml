@@ -59,7 +59,7 @@
     });
     
     $('#UploadTestSuiteXmlModal').on('show', function () {
-        $('#UploadTestSuiteLabel').text(isTrunk ? 'Upload Trunk Test Suite Xml' : 'Upload Release Test Suite Xml');
+        $('#UploadTestSuiteLabel').text('Upload ' + GetNameFromSuiteType(suiteType) + ' Xml');
     });
 
     $('#UploadTestSuiteXmlButton').on('click', function () {
@@ -69,7 +69,7 @@
             success: showResponse,  // post-submit callback 
  
             // other available options: 
-            url: "@Url.Action("UploadTestSuiteXml", "Task")" + "/" + taskId + "?trunk=" + isTrunk + "&machine=" + $('#UploadTestSuiteMachine').val(),         // override for form's 'action' attribute 
+            url: "@Url.Action("UploadTestSuiteXml", "Task")" + "/" + taskId + "?type=" + suiteType + "&machine=" + $('#UploadTestSuiteMachine').val(),         // override for form's 'action' attribute 
             //type:      type        // 'get' or 'post', override for form's 'method' attribute 
             //dataType:  'text',        // 'xml', 'script', or 'json' (expected server response type) 
             clearForm: true,        // clear all form fields after successful submit 
@@ -85,8 +85,6 @@
     });
     
     function showRequest(formData, jqForm, options) {
-        $('#UploadTestSuiteXmlValidation').html('<img src="@Url.Content("~/Content/images/select2-spinner.gif")"/>');
-
         if ($('#fileName').text().length == 0) {
             $('#UploadTestSuiteXmlValidation').text('Please select the xml file');
             return false;
@@ -106,6 +104,8 @@
                 return false;
             }
         }
+        
+        $('#UploadTestSuiteXmlValidation').html('<img src="@Url.Content("~/Content/images/select2-spinner.gif")"/>');
     }
 
     function showResponse(responseText, statusText, xhr, $form) {

@@ -1,5 +1,6 @@
 ﻿@using BootstrapSupport
 @using TestControlTool.Core.Models
+@using TestControlTool.Web
 @using TestControlTool.Web.Models
 @model TaskChildsModel
 @{
@@ -57,7 +58,7 @@
                     
                     <div class="control-group">
                         <label class="control-label">
-                            <button class="btn-primary btn-large" onclick="saveTasks('@Model.Task.Id', '@Url.Action("Create", "Task")', '@Url.Action("Index", "Task")'); return false;" style="margin-left: auto;">Save</button>
+                            <button id="SaveButton" class="btn-primary btn-large" onclick="saveTasks('@Model.Task.Id', '@Url.Action("Create", "Task")', '@Url.Action("Index", "Task")'); return false;" style="margin-left: auto;">Save</button>
                         </label>
                         <div class="controls"></div>
                     </div>
@@ -72,25 +73,25 @@
                         <br />
                     </ul>
                     <div class="btn-group">
-                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Add new<span class="caret"></span></a>
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Add<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a data-toggle="modal" href="#DeployInstallJobModal">DeployInstall Job</a></li>
+                            <li><a data-toggle="modal" href="#DeployInstallJobModal">Deploy / Install Job</a></li>
                             <li class="divider"></li>
                             @if ((int)(TestControlTool.Web.TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Type) >= 1)
                             {
-                                <li><a data-toggle="modal" href="#" onclick="showNewTestSuite(true); return false;">Test Suite for Trunk</a></li>
+                                <li><a data-toggle="modal" href="#" onclick="showNewTestSuite('@TaskType.UISuiteTrunk.ToString()'); return false;">UI Test Suite for Trunk</a></li>
                             }
-                            <li><a data-toggle="modal" href="#" onclick="showNewTestSuite(false); return false;">Test Suite for Release</a></li>
+                            <li><a data-toggle="modal" href="#" onclick="showNewTestSuite('@TaskType.UISuiteRelease.ToString()'); return false;">UI Test Suite for 5.3.*</a></li>
                         </ul>
                     </div>
                     <div class="btn-group">
-                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Upload existing xml<span class="caret"></span></a>
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Upload Existing XML<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             @if ((int)(TestControlTool.Web.TestControlToolApplication.AccountController.CachedAccounts.Single(x => x.Login == User.Identity.Name).Type) >= 1)
                             {
-                                <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal(true); return false;">Test Suite for Trunk</a></li>
+                                <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal('@TaskType.UISuiteTrunk.ToString()'); return false;">UI Test Suite for Trunk</a></li>
                             }
-                            <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal(false); return false;">Test Suite for Release</a></li>
+                            <li><a data-toggle="modal" href="#" onclick="showUploadTestSuiteModal('@TaskType.UISuiteRelease.ToString()'); return false;">UI Test Suite for 5.3.*</a></li>
                         </ul>
                     </div>
                 </fieldset>

@@ -16,6 +16,80 @@ namespace TestControlTool.Web.BootstrapSupport.HtmlHelpers
 {
     public static class EditorWithHelp
     {
+        public static MvcHtmlString Editor(this HtmlHelper helper, Type type, string name, object value = null, IDictionary<string, object> htmlAttributes = null, bool isPassword = false)
+        {
+            var additionalInfo = new RouteValueDictionary(htmlAttributes ?? new Dictionary<string, object>());
+            
+            if (type == typeof(string))
+            {
+                return EditorForString(helper, name, isPassword, value, additionalInfo);
+            }
+
+            if (type.IsEnum)
+            {
+                return helper.EnumDropDownList(name, type);
+            }
+
+            if (type == typeof(bool))
+            {
+                bool isChecked;
+
+                bool.TryParse((value ?? string.Empty).ToString(), out isChecked);
+
+                additionalInfo["data-trigger"] = "hover";
+
+                return helper.CheckBox(name, isChecked, additionalInfo);
+            }
+
+            #region Numbers
+
+            if (type == typeof(int))
+            {
+                return EditorForNumber(name, int.MinValue.ToString(), int.MaxValue.ToString(), value, additionalInfo);
+            }
+
+            if (type == typeof(uint))
+            {
+                return EditorForNumber(name, uint.MinValue.ToString(), uint.MaxValue.ToString(), value, additionalInfo);
+            }
+
+            if (type == typeof(short))
+            {
+                return EditorForNumber(name, short.MinValue.ToString(), short.MaxValue.ToString(), value, additionalInfo);
+            }
+
+            if (type == typeof(ushort))
+            {
+                return EditorForNumber(name, ushort.MinValue.ToString(), ushort.MaxValue.ToString(), value,
+                                       additionalInfo);
+            }
+
+            if (type == typeof(byte))
+            {
+                return EditorForNumber(name, byte.MinValue.ToString(), byte.MaxValue.ToString(), value, additionalInfo);
+            }
+
+            if (type == typeof(sbyte))
+            {
+                return EditorForNumber(name, sbyte.MinValue.ToString(), sbyte.MaxValue.ToString(), value, additionalInfo);
+            }
+
+            if (type == typeof(long))
+            {
+                return EditorForNumber(name, long.MinValue.ToString(), long.MaxValue.ToString(), value, additionalInfo);
+            }
+
+            if (type == typeof(ulong))
+            {
+                return EditorForNumber(name, ulong.MinValue.ToString(), ulong.MaxValue.ToString(), value, additionalInfo);
+            }
+
+            #endregion
+
+
+            return helper.Editor(name);
+        }
+
         public static MvcHtmlString Editor(this HtmlHelper helper, PropertyInfo property, object value = null, object htmlAttributes = null, string desireName = null, string container = null, string parentProperty = null)
         {
             var additionalInfo = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes) ?? new RouteValueDictionary();
@@ -45,117 +119,75 @@ namespace TestControlTool.Web.BootstrapSupport.HtmlHelpers
                 additionalInfo.Add(info.Key, info.Value);
             }
 
-            var displayAttribute = property.GetCustomAttribute<DisplayAttribute>();
+            /*var displayAttribute = property.GetCustomAttribute<DisplayAttribute>();
 
             if (desireName == null && displayAttribute != null && !string.IsNullOrWhiteSpace(displayAttribute.Name))
             {
                 desireName = displayAttribute.Name;
-            }
+            }*/
 
             var name = desireName ?? property.Name;
 
+            var dataTypeAttribute = property.GetCustomAttribute<DataTypeAttribute>();
 
-            if (property.PropertyType == typeof(string))
-            {
-                return EditorForString(helper, property, name, value, additionalInfo);
-            }
+            var isPassword = dataTypeAttribute != null && dataTypeAttribute.DataType == DataType.Password;
 
-            if (property.PropertyType.IsEnum)
-            {
-                return helper.EnumDropDownList(name, property.PropertyType);
-            }
-
-            if (property.PropertyType == typeof(bool))
-            {
-                bool isChecked;
-
-                bool.TryParse((value ?? string.Empty).ToString(), out isChecked);
-
-                additionalInfo["data-trigger"] = "hover";
-
-                return helper.CheckBox(name, isChecked, additionalInfo);
-            }
-
-            #region Numbers
-
-            if (property.PropertyType == typeof (int))
-            {
-                return EditorForNumber(name, int.MinValue.ToString(), int.MaxValue.ToString(), value, additionalInfo);
-            }
-
-            if (property.PropertyType == typeof (uint))
-            {
-                return EditorForNumber(name, uint.MinValue.ToString(), uint.MaxValue.ToString(), value, additionalInfo);
-            }
-
-            if (property.PropertyType == typeof (short))
-            {
-                return EditorForNumber(name, short.MinValue.ToString(), short.MaxValue.ToString(), value, additionalInfo);
-            }
-
-            if (property.PropertyType == typeof (ushort))
-            {
-                return EditorForNumber(name, ushort.MinValue.ToString(), ushort.MaxValue.ToString(), value,
-                                       additionalInfo);
-            }
-
-            if (property.PropertyType == typeof (byte))
-            {
-                return EditorForNumber(name, byte.MinValue.ToString(), byte.MaxValue.ToString(), value, additionalInfo);
-            }
-
-            if (property.PropertyType == typeof (sbyte))
-            {
-                return EditorForNumber(name, sbyte.MinValue.ToString(), sbyte.MaxValue.ToString(), value, additionalInfo);
-            }
-
-            if (property.PropertyType == typeof (long))
-            {
-                return EditorForNumber(name, long.MinValue.ToString(), long.MaxValue.ToString(), value, additionalInfo);
-            }
-
-            if (property.PropertyType == typeof (ulong))
-            {
-                return EditorForNumber(name, ulong.MinValue.ToString(), ulong.MaxValue.ToString(), value, additionalInfo);
-            }
-
-            #endregion
-
-
-            return helper.Editor(property.Name);
+            return Editor(helper, property.PropertyType, name, value, additionalInfo, isPassword);
         }
 
         public static IDictionary<string, object> GetDisableInformation(PropertyInfo property, string parentProperty = null)
         {
             var dictionary = new Dictionary<string, object>();
 
-            dynamic disableAttributes = property.GetCustomAttributes().Where(x => x.GetType().Name == "DisableAttribute");
+            IEnumerable<dynamic> disableAttributes = property.GetCustomAttributes().Where(x => x.GetType().Name == "DisableAttribute").ToList();
 
-            foreach (var disableAttribute in disableAttributes)
+            if (disableAttributes.Any())
             {
-                var disablingValue = disableAttribute.Value;
-                IEnumerable<string> disablingProperties = ((string)disableAttribute.Properties).Split(',');
-
-                var parentPropertyPrefix = string.IsNullOrWhiteSpace(parentProperty) ? "" : parentProperty + "_";
-
-                dictionary.Add("data-disabling-value", disablingValue.ToString());
-                dictionary.Add("data-disabling-property", disablingProperties.Aggregate("", (s, s1) => s + parentPropertyPrefix + s1 + ",").TrimEnd(','));
                 dictionary.Add("data-disable-enabled", "true");
+
+                var values = "";
+                var properties = "";
+
+                foreach (var disableAttribute in disableAttributes)
+                {
+                    object[] disablingValues = disableAttribute.Values;
+                    string[] disablingProperties = disableAttribute.Properties;
+
+                    var parentPropertyPrefix = string.IsNullOrWhiteSpace(parentProperty) ? "" : parentProperty + "-";
+
+                    if (disablingValues.Length != disablingProperties.Length)
+                    {
+                        return new Dictionary<string, object>();
+                    }
+
+                    for (var i = 0; i < disablingProperties.Length; i++)
+                    {
+                        properties += parentPropertyPrefix + disablingProperties[i] + ',';
+                        values += disablingValues[i].ToString() + ',';
+                    }
+
+                    properties = properties.TrimEnd(',') + ';';
+                    values = values.TrimEnd(',') + ';';
+                }
+
+                properties = properties.TrimEnd(';');
+                values = values.TrimEnd(';');
+                
+                dictionary.Add("data-disabling-values", values);
+                dictionary.Add("data-disabling-properties", properties);
             }
 
             return dictionary;
         }
 
-        private static MvcHtmlString EditorForString(HtmlHelper helper, PropertyInfo property, string desireName, object value = null, RouteValueDictionary additionalInfo = null)
+        public static bool IsSupportedType(Type type)
         {
-            var dataTypeAttribute = property.GetCustomAttribute<DataTypeAttribute>();
+            return type.IsEnum || type.IsPrimitive || type == typeof (string);
+        }
 
-            if (dataTypeAttribute != null && dataTypeAttribute.DataType == DataType.Password)
-            {
-                return helper.Password(desireName ?? property.Name, value, additionalInfo);
-            }
-
-            return helper.TextBox(desireName ?? property.Name, value, additionalInfo);
+        private static MvcHtmlString EditorForString(HtmlHelper helper, string desireName, bool isPassword = true, object value = null, RouteValueDictionary additionalInfo = null)
+        {
+            return isPassword ? helper.Password(desireName, value, additionalInfo) : helper.TextBox(desireName, value, additionalInfo);
         }
 
         private static MvcHtmlString EditorForNumber(string desireName, string minValue, string maxValue, object value = null, RouteValueDictionary additionalInfo = null)

@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Text;
 using System.Web.Mvc;
 using BootstrapMvcSample.Controllers;
+using TestControlTool.Core.Implementations;
 using TestControlTool.Web.Models;
 
 namespace TestControlTool.Web.Controllers
@@ -51,6 +54,27 @@ namespace TestControlTool.Web.Controllers
         public ActionResult Help()
         {
             return View();
+        }
+
+        public FileResult ScriptsDownload(VMServerType type = VMServerType.VCenter)
+        {
+            var fileName = "";
+
+            switch (type)
+            {
+                case VMServerType.VCenter:
+                    fileName = "ConfigureVCenterMachine.zip";
+                    break;
+                   
+                case VMServerType.HyperV:
+                    fileName = "ConfigureChallengerVM.zip";
+                    break;
+
+                default:
+                    throw new ArgumentException("Wrong type");
+            }
+
+            return File(Server.MapPath("~/App_Data/" + fileName), "application/zip", fileName);
         }
     }
 }

@@ -45,7 +45,7 @@ rv credentials
 $localPath = Invoke-Command -Session $session -ScriptBlock {Invoke-Expression -Command "(Get-WmiObject Win32_Share -filter `"Name = '$args'`").path"} -ArgumentList $ShareFolder
 
 Write-Log "Stopping processes (if any) that could block tests execution"
-StopRemoteProcesses $($Machine) $($UserName) $($Password) "IEDriverServer.exe", "chromedriver.exe", "WebGuiAutomation.TestPerformer.exe" 30
+StopRemoteProcesses $($Machine) $($UserName) $($Password) "IEDriverServer.exe", "chromedriver.exe", "TestPerformer.exe" 30
 
 Write-Log "Remove old files"
 Invoke-Command -Session $session -ScriptBlock { Remove-Item "$($args)\*" -recurse -force } -ArgumentList $localPath
@@ -62,7 +62,7 @@ CopyFiles $($FileName) $($SourceFolder) $null $null $("\\" + $Machine + "\" + $S
 Start-Sleep -s 60
 		
 Write-Log "Executing tests on $Machine"
-$arguments = """Name"" ""$localPath\Reports"" ""//"" ""Load"" ""$localPath\WebGuiAutomation.Scripts.dll"" ""//"" ""Run"" ""$localPath\$FileName"" ""quiet"""
+$arguments = """Name"" ""$localPath\Reports"" ""//"" ""Load"" ""$localPath\WebGuiAutomationTrunk.Scripts.dll"" ""//"" ""Run"" ""$localPath\$FileName"" ""quiet"""
 RemoteExecute $($Machine) $($UserName) $($Password) "WebGuiAutomation.TestPerformer.exe" $arguments "$localPath" $PsExec 1
 		
 Write-Log "Getting reports and logs"

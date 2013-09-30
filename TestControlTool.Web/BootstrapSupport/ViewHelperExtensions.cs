@@ -130,31 +130,51 @@ namespace BootstrapSupport
         public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression)
         {
             var metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
-            var values = Enum.GetValues(typeof(TEnum)).Cast<TEnum>();
 
-            var converter = TypeDescriptor.GetConverter(typeof(TEnum));
+            var names = Enum.GetNames(typeof(TEnum));
+            var values = Enum.GetValues(typeof(TEnum));
+            var underlyingType = Enum.GetUnderlyingType(typeof(TEnum));
 
-            var items = from value in values
-                        select new SelectListItem
-                            {
-                                Text = converter.ConvertToString(value),
-                                Value = value.ToString(),
-                                Selected = value.Equals(metadata.Model)
-                            };
+            var items = new List<SelectListItem>();
 
+            var i = 0;
+
+            foreach (var value in values)
+            {
+                items.Add(new SelectListItem
+                {
+                    Text = names[i],
+                    Value = Convert.ChangeType(value, underlyingType).ToString(),
+                    Selected = value.Equals(metadata.Model)
+                });
+
+                i++;
+            }
+            
             return htmlHelper.DropDownListFor(expression, items);
         }
 
         public static MvcHtmlString EnumDropDownList(this HtmlHelper htmlHelper, string name, Type enumType)
         {
-            var values = Enum.GetNames(enumType);
-            
-            var items = values.Select(value => new SelectListItem
-                {
-                    Text = value,
-                    Value = value
-                });
+            var names = Enum.GetNames(enumType);
+            var values = Enum.GetValues(enumType);
+            var underlyingType = Enum.GetUnderlyingType(enumType);
 
+            var items = new List<SelectListItem>();
+
+            var i = 0;
+
+            foreach (var value in values)
+            {
+                items.Add(new SelectListItem
+                    {
+                        Text = names[i],
+                        Value = Convert.ChangeType(value, underlyingType).ToString()
+                    });
+
+                i++;
+            }
+            
             return htmlHelper.DropDownList(name, items);
         }
     }

@@ -41,6 +41,34 @@ namespace TestControlTool.Core
         }
 
         /// <summary>
+        /// Returns <see cref="occurrence"/>'s index of the char in the string
+        /// </summary>
+        /// <param name="str">String to look up</param>
+        /// <param name="charToSearch">Char to search</param>
+        /// <param name="occurrence">Number of char occurrence</param>
+        /// <returns>Index of the char <see cref="occurrence"/>. If wasn't founded = -1</returns>
+        public static int SpecificIndexOf(this string str, char charToSearch, int occurrence)
+        {
+            var count = 0;
+
+            for (var i = 0; i < str.Length; i++)
+            {
+                if (str[i] == charToSearch)
+                {
+                    count++;
+
+                    if (count == occurrence)
+                    {
+                        return i;
+                    }
+                }
+                
+            }
+
+            return -1;
+        }
+
+        /// <summary>
         /// Serialize object to xml file
         /// </summary>
         /// <typeparam name="T">Type of the object</typeparam>
@@ -64,7 +92,7 @@ namespace TestControlTool.Core
         /// <summary>
         /// Serialize object to xml file
         /// </summary>
-        /// <param name="obj">Object to seriailize</param>
+        /// <param name="obj">Object to serialize</param>
         /// <param name="file">File name</param>
         /// <param name="extraTypes">Extra types to serialize</param>
         public static void SerializeToFile(this object obj, string file, IEnumerable<Type> extraTypes)
@@ -74,9 +102,9 @@ namespace TestControlTool.Core
                 var serializer = new XmlSerializer(obj.GetType(), extraTypes.ToArray());
 
                 var xmlTextWriter = new XmlTextWriter(fileStream, Encoding.Unicode)
-                {
-                    Formatting = Formatting.Indented
-                };
+                    {
+                        Formatting = Formatting.Indented
+                    };
 
                 serializer.Serialize(xmlTextWriter, obj);
             }

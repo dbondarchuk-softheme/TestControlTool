@@ -1,113 +1,198 @@
-﻿@{
+﻿@using TestControlTool.Core.Implementations
+@{
     ViewBag.Title = "Help";
 }
 <style>
-    .padding
+    .paddingText
     {
         padding-left: 1%;
         text-indent: 20px;
     }
+
+    .paddingList
+    {
+        padding-left: 4%;
+    }
 </style>
 <div class="span6">
-    <h2>Help</h2>
-    <div>
+    <h2>TestControlTool Help</h2>
+    <p>
         <ol style="list-style-type: upper-roman">
             <li>
-                <h3 id="BasicSteps">Basic steps to start</h3>
-                <ol>
-                    <li>
-                        <h4 id="AddingVMServer">Adding VM server</h4>
-                        <p class="padding">
-                            What is VM server? It can be a VCenter (i.e. 10.35.20.20 - our Applab) or HyperV (Challenger or Columbia).
-                        </p>
-                        <p class="padding">
-                            Select type of the server and specify its IP address and your own credentials to connect. 
-                        </p>
-                        <p class="padding">
-                            <img src="@Url.Content("~/Content/images/AddVMServer.PNG")" alt="Adding VM Server"/>
-                        </p>
-                    </li>
-                    <li>
-                        <h4 id="AddingMachine">Adding virtual machines</h4>
-                        <p class="padding">
-                            After successfull creation of the VM Server, you can add your virtual machines on this server (HyperV or VCenter). This machines will be used for the autodeployment tasks.
-                        </p>
-                        <p class="padding">
-                            Specify all needed parameters for the machine, following the instructions
-                        </p>
-                        <p class="padding">
-                            Also, we recomend add some virtual machine, called VM manager. Read it in the <a href="#AddingTestSuite">Adding Test Suite</a> section                        
-                        </p>
-                        <p class="padding">
-                            <img src="@Url.Content("~/Content/images/AddMachine.PNG")" alt="Adding virtual machines"/>
-                        </p>
-                    </li>
-                    <li>
-                        <h4 id="AddingTask">Adding Tasks</h4>
-                        <p class="padding">
-                            Now, we are at the most interesting point - Tasks. What is the Task?
-                        </p>
-                        <blockquote class="padding">
-                            Task - is powerfull instrument, which allows users to deploy their virtual machines and run different test suits by schedule or manually
-                        </blockquote>
-                        <p class="padding">
-                            To create Task you should provide its name, schedule and add some child jobs. 
-                            Schedule allows you run your tasks at the matched time and days of week between Start Day and End Day. 
-                            So, after End Day, Task will be automatically disabled.
-                        </p>
-                        <p class="padding">
-                            <img src="@Url.Content("~/Content/images/Schedule.PNG")" alt="Schedule"/>
-                        </p>
-                        <p class="padding">
-                            This Schedule means, that Task runs on Saturday, Sunday and Monday at 04:34 PM every week, starting from 07/02/2013 to 07/02/2014  
-                        </p>
-                        <p class="padding">
-                            Task can be disabled with unchecking special checkbox or at the main Task View, by pressing <i class="icon-off"></i> button. 
-                            But this doesn't mean, that you can't run it manually by pressing <i class="icon-play"></i> button
-                        </p>
-                    </li>
-                </ol>
+                <h3>Configure virtual machines</h3>
+                <p class="paddingText">
+                    TestControlTool allows you to run tests on your existing virtual machines (VMs) but first you have to configure them properly. TestControlTool supports VMs located on a Hyper-V or vCenter server.
+                </p>
+                <p class="paddingText">
+                    To configure a VM you should do the following:
+                    <ul class="paddingList">
+                        <li>
+                            <h4>Hyper-V</h4>
+                            <ul style="list-style-type: square" class="paddingList">
+                                <li>Revert your VM to a desired snapshot</li>
+                                <li>Turn it on and wait for the OS to boot</li>
+                                <li>Open the PowerShell console as the administrator</li>
+                                <li>Execute this statement in it: <code>Set-ExecutionPolicy remotesigned -Force</code></li>
+                                <li>Copy <a href="@Url.Action("ScriptsDownload", "Home", new {type = VMServerType.HyperV})">this PowerShell script</a> to the VM</li>
+                                <li>Execute it as the administrator, answer its questions and wait for it to close</li>
+                                <li>Shut down the VM and create a snapshot of its current state</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="paddingList">
+                        <li>
+                            <h4>vCenter</h4>
+                            <ul style="list-style-type: square" class="paddingList">
+                                <li>Convert the desired template to a VM</li>
+                                <li>Turn it on and wait for the OS to boot</li>
+                                <li>Open the PowerShell console as the administrator</li>
+                                <li>Execute this statement in it: <code>Set-ExecutionPolicy remotesigned -Force</code></li>
+                                <li>Copy <a href="@Url.Action("ScriptsDownload", "Home", new {type = VMServerType.VCenter})">this PowerShell script</a> to the VM</li>
+                                <li>Execute it as the administrator, answer its questions and wait for it to close</li>
+                                <li>Shut down the VM and convert it back to a template</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </p>
+                <p class="paddingText">These operations have to be performed on every virtual machine you want to be controlled by the TestControlTool.</p>
+                <div class="alert">
+                    <strong>Important note!</strong>
+                    It's advisable to have a dedicated VM, that has a minimal resources consumption (1 CPU core, 2GB RAM, 30-40GB storage), as a tests executor.
+                </div>
+                <div class="alert alert-danger">
+                    <strong>Attention!</strong>
+                    If machine is attached to some domain, firewall on the domain controller should be disabled.
+                </div>
             </li>
             <li>
-                <h3 id="AddingChildJobs">Adding child jobs</h3>
-                <ol>
-                    <li>
-                        <h4 id="AddingDeployInstallJob">Adding DeployInstall Job</h4>
-                        <p class="padding">
-                            Test Control Tool allows you to deploy your machines and install AppAssure products automatically.
-                        </p>
-                        <p class="padding">
-                            Press 'Add new' -> 'DeployInstall Task'. Specify name, type (DeployInstall - deploy machine and install products, Deploy - only deploy machine, Install - only install product onto machine), Version and select machines to deploy (admit, that you can select both types of the machines - HyperV and VCenter, deploy will be run at the parallel mode)
-                        </p>
-                    </li>
-                    <li>
-                        <h4 id="AddingTestSuite">Adding Test Suite</h4>
-                        <p class="padding">
-                            Test Control Tool supports running tests from WebGuiAutomation for trunk and release versions.
-                        </p>
-                        <p class="padding">
-                            Press 'Add new' -> 'Test Suite for Trunk' or 'Test Suite for Release', depending on your environment. Specify name and virtual machine, on which will be browser run. Admit, that needed files will be copied to the machine's share folder, and all files in it will be deleted
-                        </p>
-                        <p class="padding">
-                            Then add tests to the suit. Admit, that first test must be a 'Initialize browser' and the last - 'Close browser'
-                        </p>
-                    </li>
-                </ol>
+                <h3>Register the VM servers</h3>
+                <p class="paddingText">
+                    The TestControlTool has to know how to reach the VM on a virtualization server, that's why this server has to be registered in the TestControlTool.
+                </p>
+                <p class="paddingText">
+                    To register such servers do the following:
+                    <ul style="list-style-type: square" class="paddingList">
+                        <li>Click on the <i>"VM Servers"</i> link in the upper right part of the TestControlTool web page</li>
+                        <li>Click <i>"Add VM Server"</i> button</li>
+                        <li>Type the server's IP address, choose its type, fill the Userame and Password fields and click <i>"Save Changes"</i> button</li>
+                    </ul>
+                    <p class="paddingText">
+                        <img src="@Url.Content("~/Content/images/AddVMServer.PNG")" alt="Adding VM Server"/>
+                    </p>
+                    <p class="paddingText">
+                        You can add several VM servers.
+                    </p>
+                </p>
             </li>
             <li>
-                <h3 id="Logs">Logs</h3>
+                <h3>Register the virtual machines</h3>
+                <p class="paddingText">
+                    After a successful VM server registration you can register your VMs so they can be used in tests.
+                </p>
+                <p class="paddingText">
+                    For a VM registration do the following:
+                    <ul style="list-style-type: square" class="paddingList">
+                        <li>Click on the <i>"Machines"</i> link in the upper right part of the TestControlTool web page</li>
+                        <li>Click the <i>"Create"</i> button and then click on the VM type you wish to add</li>
+                        <li>Fill in all fields (<i>"Host Name"</i> field is not necessary) and click <i>"Save Changes"</i> button</li>
+                    </ul>
+                    <p class="paddingText">
+                        <img src="@Url.Content("~/Content/images/AddMachine.PNG")" alt="Adding virtual machines"/>
+                    </p>
+                    <p class="paddingText">
+                        Repeat these steps until all VMs are registered in the TestControlTool.
+                    </p>
+                </p>
+            </li>
+            <li>
+                <h3>Create tasks</h3>
+                <p class="paddingText">
+                    The TestControlTool allows you to create tasks which will be executed on registered VMs.
+                </p>
+                <p class="paddingText">
+                    Tasks consist of their child jobs and use a schedule to execute them one by one in the context of the task.
+                </p>
+                <ol class="paddingList">
+                    <li>
+                        <h4>Create a task</h4>
+                        <ul class="paddingList" style="list-style-type: square">
+                            <li>Go to the Tasks section clicking on the <i>"Tasks"</i> link in the upper right part of the TestControlTool web page</li>
+                            <li>Click the <i>"Create"</i> button</li>
+                            <li>Provide:
+                                <ol class="paddingList" style="list-style-type: lower-latin">
+                                    <li>Tasks's name</li>
+                                    <li>Schedule, which allows you run your tasks at the matched time and days of week between <i>"Start Day"</i> and <i>"End Day"</i>. So, after <i>"End Day"</i>, Task will be disabled automatically.
+                                        <p class="paddingText">
+                                            <img src="@Url.Content("~/Content/images/Schedule.PNG")" alt="Schedule"/>
+                                        </p>
+                                        <p class="paddingText">
+                                            This Schedule means, that Task runs on Saturday, Sunday and Monday at 04:34 PM every week, starting from 07/02/2013 to 07/02/2014  
+                                        </p>
+                                        <p class="paddingText">
+                                            Task can be disabled with unchecking special checkbox or at the main Task View, by pressing <i class="icon-off"></i> button. 
+                                            But you always have ability to run it manually by pressing <i class="icon-play"></i> button
+                                        </p>
+                                    </li>
+                                    <li>Child jobs that will be executed one by one in the context of the task</li>
+                                </ol>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h4>Add the child jobs to a task</h4>
+                        <p class="paddingText">There are two main types of child jobs: "Deploy/Install" job and "Test Suite".</p>
+                        <p class="paddingText">Deploy/Install job will prepare your environment for the test suites execution.</p>
+
+                        <p class="paddingText"><h5>To add a Deploy/Install job do the following:</h5></p>
+                        <ul class="paddingList" style="list-style-type: square">
+                            <li>Click on the <i>"Add"</i> button and select <i>"Deploy / Install job"</i></li>
+                            <li>Fill in all fields, choose the type of job this is (Deploy, Install or DeployInstall)</li>
+                            <li>Choose the AppRecovery version for the test suites to be executed on</li>
+                            <li>Leave the <i>"Build"</i> field empty if you want to use the latest available build</li>
+                            <li>Select the VMs you want to have involved in testing</li>
+                            <li>Click the <i>"Add"</i> button, this job will be added to the task</li>
+                        </ul>
+                        <p class="paddingText">
+                            <img class="paddingText" style="margin-top: 10px;" src="@Url.Content("~/Content/images/DeployInstall.PNG")" alt="Schedule"/>
+                        </p>
+
+                        <br />
+
+                        <p class="paddingText"><h5>To add a Test suite do the following:</h5></p>
+                        <ul class="paddingList" style="list-style-type: square">
+                            <li>Click on the <i>"Add"</i> button and select <i>"Test Suite"</i> (UI or Backend) for needed branch</li>
+                            <li>Specify the Test Suite's name</li>
+                            <li>Select a VM on which the testing tool will run
+                                <div class="alert" style="margin-top: 20px;">Admit that all files in the machine's share folder will be removed</div>
+                            </li>
+                            <li>Add tests to the test suite by clicking the <b>"+"</b> button, filling in the test's fields and clicking <i>"Add"</i> for each test</li>
+                            <li>Click the <i>"Add"</i> button, this job will be added to the task</li>
+                        </ul>
+                        <img src="@Url.Content("~/Content/images/Suite.PNG")" alt="Suite"/>
+                        <div class="alert" style="margin-top: 20px;">
+                            <strong>Notice!</strong> UI Suite test suites should have <i>"InitializeBrowser"</i> and <i>"Connection"</i> as first tests, and <i>"CloseBrowser"</i> as last.
+                        </div>
+                    </li>
+                </ol>
+
+            </li>
+            <li>
+                <h3>Additional information</h3>
                 <ol>
+                    <li>
+                        <h4>Managing information</h4>
+                        <p class="paddingText">You can manage created tasks, registered machines and VM servers in the corresponding sections of the TestControlTool web page.</p>
+                    </li>
                     <li>
                         <h4 id="GettingLogs">Getting Logs</h4>
-                        <p class="padding">
+                        <p class="paddingText">
                             Test Control Tool will send you email with all reports and logs generated during the task execution. Admit, that we don't keep logs at the server.
                         </p>
-                        <p class="padding">
-                            Another way - press 'View Logs' link and get the general log in the UI. This log is also available during task execution
+                        <p class="paddingText">
+                            Another way - press 'View Logs' link and get the general log in the UI. This log is also available during the task execution
                         </p>
                     </li>
                 </ol>
             </li>
         </ol>
-    </div>
 </div>

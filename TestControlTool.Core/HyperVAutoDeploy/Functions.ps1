@@ -16,7 +16,7 @@ function RestoreVM($ServerName, $UserName, $Password, $VmName, $SnapshotName)
 			Import-Module HyperV; $($args[0]) | Restore-VMSnapshot -force -wait
 			} -ArgumentList $snapshot | Out-Null}
 	catch {
-		Write-Log "An error has occured while trying to restore '$VmName' to '$SnapshotName' snapshot" -type error
+		Write-Log "An error has occurred while trying to restore '$VmName' to '$SnapshotName' snapshot" -type error
 		Write-Log "Removing remote session for '$UserName' on '$ServerName'"
 		Remove-PSSession $session
 		Write-Log "--- RestoreVM function failed ---"
@@ -45,7 +45,7 @@ function StartVM($ServerName, $UserName, $Password, $VmName)
 			Import-Module HyperV; Start-VM -VM $($args[0]) -force -wait -HeartBeatTimeOut 600
 			} -ArgumentList $VmName | Out-Null}
 	catch {
-		Write-Log "An error has occured while trying to start '$VmName' machine"
+		Write-Log "An error has occurred while trying to start '$VmName' machine"
 		Write-Log "Removing remote session for '$UserName' on '$ServerName'"
 		Remove-PSSession $session
 		Write-Log "--- StartVM function failed ---"
@@ -74,7 +74,7 @@ function StopVM($ServerName, $UserName, $Password, $VmName)
 			Import-Module HyperV; Stop-VM -VM $($args[0]) -force -wait
 			} -ArgumentList $VmName | Out-Null}
 	catch {
-		Write-Log "An error has occured while trying to start '$VmName' machine"
+		Write-Log "An error has occurred while trying to start '$VmName' machine"
 		Write-Log "Removing remote session for '$UserName' on '$ServerName'"
 		Remove-PSSession $session
 		Write-Log "--- StopVM function failed ---"
@@ -98,19 +98,20 @@ function CopyFiles($FileNameWildcards, $SourceFolder, $SourceUserName, $SourcePa
 {
 	Write-Log "=== CopyFiles function started ==="
 	
-	$time = $Timeout
+	$time = $Timeout * 1000
+	$swatch = [System.Diagnostics.Stopwatch]::startNew()
 	
 	Write-Log "Trying to reach source folder '$SourceFolder' using '$SourceUserName' account"
 	while(!(Test-Path $SourceFolder)) {
 		if ((![string]::IsNullOrEmpty($SourceUserName)) -and (![string]::IsNullOrEmpty($SourcePassword))) {
 		net use $SourceFolder $SourcePassword /USER:$SourceUserName | Out-Null}
 		Start-Sleep -Seconds 2
-		$time -= 2
-		if	($time -le 0) {
+		if	($swatch.ElapsedMilliseconds -ge $time) {
 			Write-Log "'$SourceFolder' path was unreachable for $Timeout seconds" -type error
-			Write-Log "--- CopyFiles function falied ---"
+			Write-Log "--- CopyFiles function failed ---"
 			throw "Waiting for source folder to be reachable has timed out"}
 	}
+	
 	Write-Log "Source folder reached"
 	
 	Write-Log "Trying to reach destination folder '$RemoteFolder' using '$RemoteUserName' account"
@@ -118,10 +119,9 @@ function CopyFiles($FileNameWildcards, $SourceFolder, $SourceUserName, $SourcePa
 		if ((![string]::IsNullOrEmpty($RemoteUserName)) -and (![string]::IsNullOrEmpty($RemotePassword))) {
 		net use $RemoteFolder $RemotePassword /USER:$RemoteUserName | Out-Null}
 		Start-Sleep -Seconds 2
-		$time -= 2
-		if	($time -le 0) {
+		if	($swatch.ElapsedMilliseconds -ge $time) {
 			Write-Log "'$RemoteFolder' path was unreachable for $Timeout seconds" -type error
-			Write-Log "--- CopyFiles function falied ---"
+			Write-Log "--- CopyFiles function failed ---"
 			throw "Waiting for destination folder to be reachable has timed out"}
 	}
 	Write-Log "Destination folder reached"
@@ -130,15 +130,15 @@ function CopyFiles($FileNameWildcards, $SourceFolder, $SourceUserName, $SourcePa
 	$files = gci $SourceFolder -Include $FileNameWildcards -Recurse | sort lastwritetime -Descending | select -First 1
 	if (($files | measure).Count -eq 0) {
 		Write-Log "There are no files in '$SourceFolder' folder that match '$FileNameWildcards'" -type error
-		Write-Log "--- CopyFiles function falied ---"
+		Write-Log "--- CopyFiles function failed ---"
 		throw "No files to copy"}
-    Write-Log "Theese files will be copied to '$RemoteFolder':"
+    Write-Log "These files will be copied to '$RemoteFolder':"
 	foreach ($file in $files) {Write-Log "$file"}
     
     Write-Log "Copying files from '$SourceFolder' to '$RemoteFolder'"
 	$success = $false
 	$exception | Out-Null
-	while ($success -ne $true -and $time -ge 0) {
+	while ($success -ne $true -and $swatch.ElapsedMilliseconds -lt $time) {
 	    try	{
 			Copy-Item $files -Destination $RemoteFolder -Force
 			if ($isLinux -ne 0){
@@ -149,8 +149,7 @@ function CopyFiles($FileNameWildcards, $SourceFolder, $SourceUserName, $SourcePa
 			$success = $true}
 		catch {
 			$exception = $_
-			Start-Sleep -Seconds 2
-			$time -= 2}
+			Start-Sleep -Seconds 2}
 	}
 	
 	if ($success -eq $true)	{
@@ -159,11 +158,11 @@ function CopyFiles($FileNameWildcards, $SourceFolder, $SourceUserName, $SourcePa
 		Write-Log ""}
 	else {
 		$exception | fl * -Force
-		if ($time -le 0) {
+		if ($swatch.ElapsedMilliseconds -ge $time) {
 			Write-Log "Waiting for files to be copied has timed out" -type error}
 		else {
 			Write-Log "Unable to copy files to '$RemoteFolder'" -type error}
-		Write-Log "--- CopyFiles function falied ---"
+		Write-Log "--- CopyFiles function failed ---"
 		throw "Files were not copied"}
 }
 
@@ -175,7 +174,6 @@ function LinuxRemoteExecute($MachineName, $UserName, $Password){
 	Write-Log "=== RemoteExecute function started ==="
 	
 	$dt=Get-Date -Format "dd.MM.yyyy"
-	
 	$command = "echo y | C:\plink.exe -ssh -P 22 -pw $Password $UserName@""$MachineName"" exit"
 	
 	Invoke-Expression $command
@@ -195,7 +193,6 @@ function RemoteExecute($MachineName, $UserName, $Password, $FileNameWildcards, $
 	$session, $credentials = CreateRemoteSession $MachineName $UserName $Password
 	
 	$RemoteFolder = Invoke-Command -Session $session -ScriptBlock {Invoke-Expression -Command "(Get-WmiObject Win32_Share -filter `"Name = '$args'`").path"} -ArgumentList $ShareFolder
-	
 	Write-Log "Getting full file path from '$MachineName'"
 	$files = Invoke-Command -Session $session -ScriptBlock {
 		$fullNames = gci $($args[0]) -Include $($args[1]) -Recurse | %{$_.FullName}; $fullNames
@@ -262,26 +259,27 @@ function RemoteExecute($MachineName, $UserName, $Password, $FileNameWildcards, $
 function WaitForServiceToStart($MachineName, $UserName, $Password, $ServiceName, $Timeout = 600)
 {
 	Write-Log "=== WaitForServiceToStart function started ==="
-	$session, $credentials = CreateRemoteSession $MachineName $UserName $Password
+	$time = $Timeout * 1000
+	$swatch = [System.Diagnostics.Stopwatch]::startNew()
+	$session, $credentials = CreateRemoteSession $MachineName $UserName $Password $Timeout
 
 	Write-Log "Waiting for '$ServiceName' service to start"	
 	[string]$status = Invoke-Command -Session $session -ScriptBlock {
 		$time = $($args[0])
+		$swatch = [System.Diagnostics.Stopwatch]::startNew()
 		$service = $null
-		while (($service -eq $null) -and ($time -gt 0)) {
+		while (($service -eq $null) -and ($swatch.ElapsedMilliseconds -lt $time)) {
 			try {
 				$service = Get-Service -Name $($args[1])}
 			catch {
-				Start-Sleep -Seconds 5
-				$time -= 5}}
+				Start-Sleep -Seconds 5}}
 		$serviceStatusString = $service.Status.ToString()
-		while (($serviceStatusString -ne "Running") -and ($time -gt 0)) {
+		while (($serviceStatusString -ne "Running") -and ($swatch.ElapsedMilliseconds -lt $time)) {
 			Start-Service $($args[1])
 			$serviceStatusString = (Get-Service $($args[1])).Status.ToString()
-			Start-Sleep -Seconds 5
-			$time -= 5}
+			Start-Sleep -Seconds 5}
 			return $service.Status.ToString()
-		} -ArgumentList $Timeout, $ServiceName
+		} -ArgumentList $time, $ServiceName
 
 	if ($status -eq $null) {
 		Write-Log "Could not find any service with service name '$ServiceName' for $Timeout seconds" -type error
@@ -332,15 +330,13 @@ function WaitWhileJobsRun ([System.Collections.ArrayList]$Jobs)
 				$jobs[$i] = $null
 			}
 		}
-
-		Write-Log "Waiting..."
 		
+		Write-Log "Waiting..."		
 		Start-Sleep -s 10
-		
 		$Jobs = $Jobs -ne $null
 	}
 	
-	Write-Log "All jobs have finished"
+	Write-Log "All jobs have been finished"
 }
 
 ################################ Secondary Functions ################################
@@ -354,11 +350,14 @@ function CreateRemoteSession ($MachineName, $UserName, $Password, $Timeout = 600
 	$credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $securePass
 	
 	Write-Log "Creating remote session for '$UserName' on '$MachineName'"
-	while($Timeout -gt 0) {
+	
+	$time = $Timeout * 1000
+	$swatch = [System.Diagnostics.Stopwatch]::startNew()
+	
+	while($swatch.ElapsedMilliseconds -lt $time) {
 		$session = New-PSSession $MachineName -Credential $credentials -ErrorAction SilentlyContinue
-		Write-Log " This ssession '$session'"
+		Write-Log "This session: '$session'"
 		if($session -eq $null) {
-			$Timeout -= 5
 			Start-Sleep -Seconds 5}
 		else {
 			Write-Log "Session has been created successfully, returning session"
@@ -366,7 +365,7 @@ function CreateRemoteSession ($MachineName, $UserName, $Password, $Timeout = 600
 			return $session, $credentials}}
 	
 	Write-Log "Failed to connect to '$MachineName'" -type error
-	Write-Log "- CreateRemoteSession function falied -"
+	Write-Log "- CreateRemoteSession function failed -"
 	throw "Script execution failed due to remote session creation error"
 }
 
@@ -411,6 +410,6 @@ function PrepareEnvironment($Server, $ServerUserName, $ServerPassword, $Snapshot
 		else{
 			LinuxRemoteExecute $MachineName $MachineUserName $MachinePassword
 		}
-		WaitForServiceToStart $MachineName $MachineUserName $MachinePassword $ServiceToWait
+		#WaitForServiceToStart $MachineName $MachineUserName $MachinePassword $ServiceToWait
 	}
 }

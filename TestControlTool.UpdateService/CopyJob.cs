@@ -25,7 +25,10 @@ namespace TestControlTool.UpdateService
         /// </summary>
         public void Run()
         {
-            Parallel.ForEach(_folders, pair => CopyDirectory(pair.Key, pair.Value));
+            foreach (var pair in _folders)
+            {
+                CopyDirectory(pair.Key, pair.Value);
+            }
         }
 
         private static void CopyDirectory(string source, string target)

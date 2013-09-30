@@ -12,7 +12,7 @@
 <div class="modal hide fade" id="DeployInstallJobModal" tabindex="-1" role="dialog" aria-labelledby="DeployInstall Job" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="DeployInstallJobLabel">Add DeployInstall Job</h3>
+        <h3 id="DeployInstallJobLabel">Add Deploy / Install Job</h3>
     </div>
     <div class="modal-body">
         <div class="control-group">
@@ -39,6 +39,7 @@
                     <option>5.4.1</option>
                     <option>5.3.3</option>
                     <option>5.3.4</option>
+                    <option>5.3.5</option>
                 </select></label>
         </div>
         <div class="control-group">
@@ -62,7 +63,7 @@
             </ul>
             @if (!Model.Any())
             {
-                <span class="help-inline error">You don't have machines. Please, at first add new machine on the Machines tab</span>
+                <span class="help-inline error">You don't have machines. Please, at first register a machine on the Machines tab</span>
                 addButtonDisabled = "disabled";
                 <script type="text/javascript">
                     $(document).ready(function() {
@@ -152,9 +153,9 @@
 
         machines = machines.replace(/,$/, "");
 
-        if ($('#currentTasks').find("br").length != 0) {
-            $('#currentTasks').text('');
-        }
+        if ($('#currentTasks').find("br").each(function() {
+            $(this).remove();
+        }))
 
         $('#currentTasks').append("<li id='" + $('#DeployInstallJobName').val() + "' type='DeployInstall' deployType='" + $('#DeployInstallJobType').val() + "' version='"
             + $('#DeployInstallJobVersion').val() + "' build='" + $('#DeployInstallJobBuild').val() + "' machines='" + machines +
@@ -217,7 +218,7 @@
         $('ul#DeployInstallJobMachines li').each(function (i) {
             var checkbox = $(this).find('input[type=checkbox]');
             if (checkbox.attr('checked')) {
-                machines += checkbox.attr('id') + ';';
+                machines += checkbox.attr('id') + ',';
             }
         });
 
