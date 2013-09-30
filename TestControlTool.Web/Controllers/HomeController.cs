@@ -63,20 +63,18 @@ namespace TestControlTool.Web.Controllers
             switch (type)
             {
                 case VMServerType.VCenter:
-                    fileName = "ConfigureVCenterMachine.ps1";
+                    fileName = "ConfigureVCenterMachine.zip";
                     break;
                    
                 case VMServerType.HyperV:
-                    fileName = "ConfigureChallengerVM.ps1";
+                    fileName = "ConfigureChallengerVM.zip";
                     break;
 
                 default:
                     throw new ArgumentException("Wrong type");
             }
 
-            var bytes = Encoding.Unicode.GetBytes(System.IO.File.ReadAllText(Server.MapPath("~/App_Data/" + fileName)));
-
-            return File(bytes, "text/plain", fileName);
+            return File(Server.MapPath("~/App_Data/" + fileName), "application/zip", fileName);
         }
     }
 }

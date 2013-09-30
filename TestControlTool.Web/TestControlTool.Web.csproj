@@ -327,8 +327,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="output.config" />
-    <Content Include="App_Data\ConfigureChallengerVM.ps1" />
-    <Content Include="App_Data\ConfigureVCenterMachine.ps1" />
+    <Content Include="App_Data\ConfigureChallengerVM.zip" />
+    <Content Include="App_Data\ConfigureVCenterMachine.zip" />
     <None Include="Properties\PublishProfiles\New.pubxml" />
     <None Include="Properties\PublishProfiles\new2.pubxml" />
     <None Include="Properties\PublishProfiles\new3.pubxml" />
