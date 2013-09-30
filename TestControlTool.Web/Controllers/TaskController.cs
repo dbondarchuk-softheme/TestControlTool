@@ -290,14 +290,14 @@ namespace TestControlTool.Web.Controllers
                     zip.Save(fileName);
 
                     var contentDisposition = new System.Net.Mime.ContentDisposition
-                    {
-                        // for example foo.bak
-                        FileName = fileName,
+                        {
+                            // for example foo.bak
+                            FileName = fileName,
 
-                        // always prompt the user for downloading, set to true if you want 
-                        // the browser to try to show the file inline
-                        Inline = false,
-                    };
+                            // always prompt the user for downloading, set to true if you want 
+                            // the browser to try to show the file inline
+                            Inline = false,
+                        };
 
                     Response.AppendHeader("Content-Disposition", contentDisposition.ToString());
                     return File(fileName, "application/zip");
@@ -425,6 +425,16 @@ namespace TestControlTool.Web.Controllers
             var type = standartType ?? (TestSuiteTypesHelper.GetScriptsTypes(suiteType).SingleOrDefault(x => x.FullName == typeName));
 
             return View("ListItemModal", new Pair<Type, string>(type, parentProperty));
+        }
+
+        public ActionResult DictionaryItemModal(string keyTypeName, string valueTypeName, string parentProperty = "", TaskType suiteType = TaskType.UISuiteTrunk)
+        {
+            var standartType = Type.GetType(keyTypeName);
+
+            var keyType = standartType ?? (TestSuiteTypesHelper.GetScriptsTypes(suiteType).SingleOrDefault(x => x.FullName == keyTypeName));
+            var valueType = standartType ?? (TestSuiteTypesHelper.GetScriptsTypes(suiteType).SingleOrDefault(x => x.FullName == valueTypeName));
+
+            return View("DictionarytemModal", new Pair<Pair<Type, Type>, string>(new Pair<Type, Type>(keyType, valueType), parentProperty));
         }
 
         private void SaveChildsFromJson(string jsonModel)

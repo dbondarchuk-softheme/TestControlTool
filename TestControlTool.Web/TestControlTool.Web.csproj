@@ -39,9 +39,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AppDomainToolkit">
-      <HintPath>..\packages\AppDomainToolkit.1.0.4.1\lib\net\AppDomainToolkit.dll</HintPath>
-    </Reference>
     <Reference Include="AutodeploymentConsole">
       <HintPath>..\TestControlTool.Core\AutoDeploy\AutodeploymentConsole.exe</HintPath>
     </Reference>
@@ -443,6 +440,7 @@
     <Content Include="Views\Server\Details.cshtml" />
     <Content Include="Views\Shared\MachineConfiguratingModal.cshtml" />
     <Content Include="Views\Task\NestedHelperView.cshtml" />
+    <Content Include="Views\Task\DictionarytemModal.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

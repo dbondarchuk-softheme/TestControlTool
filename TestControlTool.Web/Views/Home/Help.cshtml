@@ -31,8 +31,8 @@
                             <ul style="list-style-type: square" class="paddingList">
                                 <li>Revert your VM to a desired snapshot</li>
                                 <li>Turn it on and wait for the OS to boot</li>
-                                <li>Open the PowerShell console as the administrator</li>
-                                <li>Execute this statement in it: <code>Set-ExecutionPolicy remotesigned -Force</code></li>
+                                <li>Logon as administrator and open the PowerShell console</li>
+                                <li>Execute this statement in it: <code>Set-ExecutionPolicy Unrestricted -Force</code></li>
                                 <li>Copy <a href="@Url.Action("ScriptsDownload", "Home", new {type = VMServerType.HyperV})">this PowerShell script</a> to the VM</li>
                                 <li>Execute it as the administrator, answer its questions and wait for it to close</li>
                                 <li>Shut down the VM and create a snapshot of its current state</li>
@@ -45,8 +45,8 @@
                             <ul style="list-style-type: square" class="paddingList">
                                 <li>Convert the desired template to a VM</li>
                                 <li>Turn it on and wait for the OS to boot</li>
-                                <li>Open the PowerShell console as the administrator</li>
-                                <li>Execute this statement in it: <code>Set-ExecutionPolicy remotesigned -Force</code></li>
+                                <li>Logon as administrator and open the PowerShell console</li>
+                                <li>Execute this statement in it: <code>Set-ExecutionPolicy Unrestricted -Force</code></li>
                                 <li>Copy <a href="@Url.Action("ScriptsDownload", "Home", new {type = VMServerType.VCenter})">this PowerShell script</a> to the VM</li>
                                 <li>Execute it as the administrator, answer its questions and wait for it to close</li>
                                 <li>Shut down the VM and convert it back to a template</li>
@@ -57,11 +57,15 @@
                 <p class="paddingText">These operations have to be performed on every virtual machine you want to be controlled by the TestControlTool.</p>
                 <div class="alert">
                     <strong>Important note!</strong>
-                    It's advisable to have a dedicated VM, that has a minimal resources consumption (1 CPU core, 2GB RAM, 30-40GB storage), as a tests executor.
+                   For machines with Windows Vista (or Server 2008) and lower, you should install <a href="http://support.microsoft.com/kb/968929">Windows Management Framework Core</a>
                 </div>
                 <div class="alert alert-danger">
                     <strong>Attention!</strong>
                     If machine is attached to some domain, firewall on the domain controller should be disabled.
+                </div>
+                <div class="alert">
+                    <strong>Important note!</strong>
+                    It's advisable to have a dedicated VM, that has a minimal resources consumption (1 CPU core, 2GB RAM, 30-40GB storage), as a tests executor.
                 </div>
             </li>
             <li>

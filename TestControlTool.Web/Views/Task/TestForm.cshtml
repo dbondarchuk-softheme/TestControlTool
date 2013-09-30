@@ -31,6 +31,17 @@
             </div>
         </div>
     }
+    else if (property.PropertyType.Name.Contains("Dictionary"))
+    {
+        <div class="wellDictionary">
+            <button type="button" id ="AddButton-@property.Name" class="close" aria-hidden="true" onclick="loadDictionaryItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@property.PropertyType.GetGenericArguments()[1].FullName', '@property.Name');" title="Add new item">+</button>
+            @Html.Label("AddButton-" + property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label" })
+            <div class="controls">
+                <ul style="padding-left: 20%;" class="sortable" id="@property.Name" keyType="@property.PropertyType.GetGenericArguments()[0].FullName" valueType="@property.PropertyType.GetGenericArguments()[1].FullName">
+                </ul>
+            </div>
+        </div>
+    }
     else
     {
         Html.RenderPartial("NestedHelperView", new Pair<PropertyInfo, Pair<string, string>>(property, new Pair<string, string>(property.Name, "NewTestModal")));
@@ -42,6 +53,10 @@
     var listName = [];
     var isEditListItem = [];
     var listItemToEdit = [];
+
+    var dictionaryName = [];
+    var isEditDictionaryItem = [];
+    var dictionaryItemToEdit = [];
 
     function editListItem(obj) {
         var ul = $(obj).parent().parent();
@@ -57,7 +72,7 @@
             var singleItem = $("#itemsProperties-" + parentId).find('#newItemEditorBox-' + parentId)[0];
             
             if (singleItem != undefined) {
-                $(singleItem).val(jsonObject);
+                $(singleItem).val(decodeValue(jsonObject));
             } else {
                 fillFormWithObject("itemsProperties-" + parentId, jsonObject);
             }
@@ -76,6 +91,15 @@
             listItemToEdit.push(null);
             isEditListItem.push(false);
             $('#ListItemsModal-' + list).modal('show');
+        });
+    }
+    
+    function loadDictionaryItemsModal(keyType, valueType, list) {
+        $('#DictionaryItemsModalDiv').load('@Url.Action("DictionaryItemModal", "Task")', { keyTypeName: keyType, valueTypeName: valueType, suiteType: suiteType, parentProperty: list }, function () {
+            dictionaryName.push(list);
+            dictionaryItemToEdit.push(null);
+            isEditDictionaryItem.push(false);
+            $('#DictionaryItemsModal-' + list).modal('show');
         });
     }
 
