@@ -43,5 +43,7 @@
     @Html.ActionLink("Back to List", "Servers", "Home")
 </div>
 <script type="text/javascript">
-    ShowMachines();
+    $(document).ready(function() {
+        $('#Type').attr('disabled', true);
+    });
 </script>
