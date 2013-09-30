@@ -1,4 +1,4 @@
-<#
+﻿<#
 .Synopsys
     This PowerShell script is used to perform specific configuration of virtual machines on Challenger.
 .Description
@@ -369,6 +369,7 @@ Write-Log ""
 while ([string]::IsNullOrEmpty($timeZoneName))
 {
 	Write-Log "Invalid time zone has been specified" "error"
+	Write-Log "To get the list of all time zones execute 'tzutil /l' command in PowerShell"
 	$timeZoneName = Read-Host "Enter a Time Zone name (`"Eastern Standard Time`" is by default, use `"FLE Standard Time`" for GMT +2:00)."
 }
 

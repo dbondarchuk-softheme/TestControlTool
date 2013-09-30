@@ -256,7 +256,7 @@ switch ($($R.ReturnValue))
         10 {$returnValue = "Invalid Level"; break}
         21 {$returnValue = "Invalid Parameter"; break}
         22 {$returnValue = "Duplicate Share"; break}
-        23 {$returnValue = "Reedirected Path"; break}
+        23 {$returnValue = "Redirected Path"; break}
         24 {$returnValue = "Unknown Device or Directory"; break}
         25 {$returnValue = "Network Name Not Found"; break}
         default {$returnValue = "*** Unknown Error ***"; break}
@@ -371,9 +371,10 @@ Write-Log ""
 Write-Log "----- Setting the time zone -----"
 Write-Log ""
 
-if ([string]::IsNullOrEmpty($timeZoneName))
+while ([string]::IsNullOrEmpty($timeZoneName))
 {
 	Write-Log "Invalid time zone has been specified" "error"
+	Write-Log "To get the list of all time zones execute 'tzutil /l' command in PowerShell"
 	$timeZoneName = Read-Host "Enter a Time Zone name (`"Eastern Standard Time`" is by default, use `"FLE Standard Time`" for GMT +2:00)."
 }
 
