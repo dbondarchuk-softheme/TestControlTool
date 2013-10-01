@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using BootstrapSupport;
 using TestControlTool.Core;
 using TestControlTool.Core.Contracts;
-using TestControlTool.Web.BootstrapSupport;
+using TestControlTool.Web.App_Start;
 
 namespace TestControlTool.Web.Models
 {
@@ -25,6 +25,7 @@ namespace TestControlTool.Web.Models
         public Guid Server { get; set; }
         
         [Required]
+        [ValidCharachters]
         [Link(Action = "Edit", Controller = "Machine", Title = "Edit Machine")]
         [Remote("ValidateUniqueMachineName", "Validation", ErrorMessage = "Such name is already used", AdditionalFields = "Id")]
         [Help(Title = "Name", Message = "Provide some machine's name for identification")]
@@ -37,7 +38,7 @@ namespace TestControlTool.Web.Models
         public MachineType Type { get; set; }
 
         [Required]
-        [RegularExpression(@"^(([01]?\d\d?|2[0-4]\d|25[0-5])\.){3}([01]?\d\d?|25[0-5]|2[0-4]\d)$", ErrorMessage = "Address doen't match IPv4 standart")]
+        [ValidCharachters]
         [Link(Action = "Edit", Controller = "Machine", Title = "Edit Machine")]
         [Remote("ValidateUniqueMachineAddress", "Validation", ErrorMessage = "Such address is already in use", AdditionalFields = "Id")]
         [Help(Title = "IP Address", Message = "Please specify IP Address of the machine")]
@@ -48,23 +49,27 @@ namespace TestControlTool.Web.Models
         [Display(Name = "Deploy on")]
         public List<SelectListItem> DeployOn { get; set; }
 
+        [ValidCharachters]
         [Display(Name = "Host Name")]
         [Remote("ValidateUniqueMachineHost", "Validation", ErrorMessage = "Such host is already in use", AdditionalFields = "Id")]
         [Help(Title = "Host", Message = "Machine's host. Not required")]
         public string Host { get; set; }
 
         [Required]
+        [ValidCharachters]
         [Display(Name = "Machine's User name")]
         [Help(Title = "Machine's User name", Message = "User name to logon")]
         public string UserName { get; set; }
 
         [Required]
+        [ValidCharachters]
         [DataType(DataType.Password)]
         [Display(Name = "Machine's User password")]
         [Help(Title = "Machine's User name", Message = "User password to logon")]
         public string Password { get; set; }
 
         [Required]
+        [ValidCharachters]
         [Display(Name = "Share folder")]
         [Help(Title = "Share folder", Message = "Share folder on the machine. For example, 'reminst', 'share' etc.")]
         public string Share { get; set; }

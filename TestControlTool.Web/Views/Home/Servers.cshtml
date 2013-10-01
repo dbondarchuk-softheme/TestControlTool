@@ -47,9 +47,14 @@
 <p>
     @Html.ActionLink("Add VM Server", "Create", "Server", null, new {@class = "btn"})
 </p>
+<script src="@Url.Content("~/Scripts/bootbox.min.js")"></script>
 <script type="text/javascript">
     function removeServer(id) {
-        window.location.href = '@Url.Action("Delete", "Server")/' + id;
+        bootbox.confirm("<h4>Are you sure?</h4>", function (result) {
+            if (result) {
+                window.location.href = '@Url.Action("Delete", "Server")/' + id;
+            }
+        });
     }
 
     ShowMachines();

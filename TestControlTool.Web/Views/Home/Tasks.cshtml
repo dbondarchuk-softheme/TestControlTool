@@ -65,7 +65,7 @@
                 }
             </td>
         <td>
-                <button rel="tooltip" type='button' class='close' aria-hidden='true' style="float: none" onclick=" removeTask('@taskModel.Id');" title="Delete task" data-toggle="tooltip">×</button>
+                <button rel="tooltip" type='button' class='close' aria-hidden='true' style="float: none" onclick="removeTask('@taskModel.Id');" title="Delete task" data-toggle="tooltip">×</button>
             </td>
         </tr>
                 index++;
@@ -75,9 +75,14 @@
 <p>
     @Html.ActionLink("Create", "Create", "Task", null, new { @class = "btn" })
 </p>
+<script src="@Url.Content("~/Scripts/bootbox.min.js")"></script>
 <script type="text/javascript">
     function removeTask(id) {
-        window.location.href = '@Url.Action("Delete", "Task")/' + id;
+        bootbox.confirm("<h4>Are you sure?</h4>", function (result) {
+            if (result) {
+                window.location.href = '@Url.Action("Delete", "Task")/' + id;
+            }
+        });
     }
     function RefreshStatuses() {
         $.ajax({

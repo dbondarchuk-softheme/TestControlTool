@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using BootstrapSupport;
 using TestControlTool.Core.Implementations;
+using TestControlTool.Web.App_Start;
 
 namespace TestControlTool.Web.Models
 {
@@ -24,6 +25,7 @@ namespace TestControlTool.Web.Models
         public Guid Owner { get; set; }
 
         [Required]
+        [ValidCharachters]
         [Link(Action = "Edit", Controller = "Server", Title = "Edit server")]
         [Display(Name = "Server Address")]
         [Remote("ValidateUniqueServerAddress", "Validation", ErrorMessage = "Such address is already in use", AdditionalFields = "Id")]
@@ -35,11 +37,13 @@ namespace TestControlTool.Web.Models
         public VMServerType Type { get; set; }
 
         [Required]
+        [ValidCharachters]
         [Link(Action = "Edit", Controller = "Server", Title = "Edit server")]
         [Display(Name = "Server Username")]
         public string ServerUsername { get; set; }
 
         [Required]
+        [ValidCharachters]
         [Link(Action = "Edit", Controller = "Server", Title = "Edit server")]
         [Display(Name = "Server Password")]
         [DataType(DataType.Password)]

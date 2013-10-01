@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using TestControlTool.Core;
 using TestControlTool.Core.Implementations;
+using TestControlTool.Web.App_Start;
 using TestControlTool.Web.BootstrapSupport;
 
 namespace TestControlTool.Web.Models
@@ -19,11 +20,13 @@ namespace TestControlTool.Web.Models
         }*/
 
         [Required]
+        [ValidCharachters]
         [Display(Name = "VM Name")]
         [Help(Title = "VM Name", Message = "Machine's name on the HyperV server, i.e. 'AutomationTesting-Environment3-Core-w7-64-sql8r2-1107'")]
         public string VirtualMachineName { get; set; }
 
         [Required]
+        [ValidCharachters]
         [Display(Name = "Last snapshot")]
         [Help(Title = "Last snapshot", Message = "Snapshot, from which machine will be reverted, i.e. 'prepared'")]
         public string Snapshot { get; set; }
