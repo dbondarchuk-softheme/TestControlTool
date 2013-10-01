@@ -63,7 +63,7 @@ Start-Sleep -s 60
 		
 Write-Log "Executing tests on $Machine"
 $arguments = """Name"" ""$localPath\Reports"" ""//"" ""Load"" ""$localPath\WebGuiAutomationTrunk.Scripts.dll"" ""//"" ""Run"" ""$localPath\$FileName"" ""quiet"""
-RemoteExecute $($Machine) $($UserName) $($Password) "WebGuiAutomation.TestPerformer.exe" $arguments "$localPath" $PsExec 1
+RemoteExecute $($Machine) $($UserName) $($Password) "TestPerformer.exe" $arguments "$localPath" $PsExec 1
 		
 Write-Log "Getting reports and logs"
 CopyFiles "*" $("\\" + $Machine + "\" + $ShareFolder + "\Reports") $($UserName) $($Password) $($LogFolder) $null $null $true $false
