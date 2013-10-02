@@ -31,6 +31,17 @@
             </div>
         </div>
     }
+    else if (property.PropertyType.Name.Contains("Dictionary"))
+    {
+        <div class="wellDictionary">
+            <button type="button" id ="AddButton-@property.Name" class="close" aria-hidden="true" onclick="loadDictionaryItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@property.PropertyType.GetGenericArguments()[1].FullName', '@property.Name');" title="Add new item">+</button>
+            @Html.Label("AddButton-" + property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label" })
+            <div class="controls">
+                <ul style="padding-left: 20%;" class="sortable" id="@property.Name" keyType="@property.PropertyType.GetGenericArguments()[0].FullName" valueType="@property.PropertyType.GetGenericArguments()[1].FullName">
+                </ul>
+            </div>
+        </div>
+    }
     else
     {
         Html.RenderPartial("NestedHelperView", new Pair<PropertyInfo, Pair<string, string>>(property, new Pair<string, string>(property.Name, "NewTestModal")));
@@ -43,6 +54,46 @@
     var isEditListItem = [];
     var listItemToEdit = [];
 
+    var dictionaryName = [];
+    var isEditDictionaryItem = [];
+    var dictionaryItemToEdit = [];
+
+    function editDictionaryItem(obj) {
+        var ul = $(obj).parent().parent();
+        var parentId = ul.attr('id');
+        var keyType = ul.attr('keyType');
+        var valueType = ul.attr('valueType');
+
+        $('#DictionaryItemsModalDiv').load('@Url.Action("DictionaryItemModal", "Task")', { keyTypeName: keyType, valueTypeName: valueType, suiteType: suiteType, parentProperty: parentId }, function () {
+            $('#DictionaryItemsLabel-' + parentId).text($('#DictionaryItemsLabel-' + parentId).text().replace('Add new', 'Edit'));
+            $('#DictionaryItemsButton-' + parentId).val('Apply');
+
+            var jsonKeyObject = JSON.parse($(obj).parent().attr('jsonKey'));
+            var jsonValueObject = JSON.parse($(obj).parent().attr('jsonValue'));
+            
+            var keySingleItem = $("#itemsProperties-" + parentId).find('#newKeyItemEditorBox-' + parentId)[0];
+            var valueSingleItem = $("#itemsProperties-" + parentId).find('#newValueItemEditorBox-' + parentId)[0];
+            
+            if (keySingleItem != undefined) {
+                $(keySingleItem).val(decodeValue(jsonKeyObject));
+            } else {
+                fillFormWithObject("KeyDiv-" + parentId, jsonKeyObject);
+            }
+            
+            if (valueSingleItem != undefined) {
+                $(valueSingleItem).val(decodeValue(jsonValueObject));
+            } else {
+                fillFormWithObject("ValueDiv-" + parentId, jsonValueObject);
+            }
+            
+            dictionaryItemToEdit.push($(obj).parent());
+            isEditDictionaryItem.push(true);
+            dictionaryName.push(null);
+
+            $('#DictionaryItemsModal-' + parentId).modal('show');
+        });
+    }
+    
     function editListItem(obj) {
         var ul = $(obj).parent().parent();
         var parentId = ul.attr('id');
@@ -53,15 +104,15 @@
             $('#ListItemsButton-' + parentId).val('Apply');
 
             var jsonObject = JSON.parse($(obj).parent().attr('json'));
-            
+
             var singleItem = $("#itemsProperties-" + parentId).find('#newItemEditorBox-' + parentId)[0];
-            
+
             if (singleItem != undefined) {
-                $(singleItem).val(jsonObject);
+                $(singleItem).val(decodeValue(jsonObject));
             } else {
                 fillFormWithObject("itemsProperties-" + parentId, jsonObject);
             }
-            
+
             listItemToEdit.push($(obj).parent());
             isEditListItem.push(true);
             listName.push(null);
@@ -76,6 +127,15 @@
             listItemToEdit.push(null);
             isEditListItem.push(false);
             $('#ListItemsModal-' + list).modal('show');
+        });
+    }
+
+    function loadDictionaryItemsModal(keyType, valueType, list) {
+        $('#DictionaryItemsModalDiv').load('/Task/DictionaryItemModal', { keyTypeName: keyType, valueTypeName: valueType, suiteType: suiteType, parentProperty: list }, function () {
+            dictionaryName.push(list);
+            dictionaryItemToEdit.push(null);
+            isEditDictionaryItem.push(false);
+            $('#DictionaryItemsModal-' + list).modal('show');
         });
     }
 

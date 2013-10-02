@@ -20,30 +20,41 @@
 
             if (EditorWithHelp.IsSupportedType(childProperty.PropertyType))
             {
-                <div class="control-group">
-                    @Html.Label(childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label", style = childProperty.PropertyType == typeof(bool) ? "display: inline;" : string.Empty })
-                        
-                    <div class="controls"@(Html.Raw(childProperty.PropertyType == typeof(bool) ? "style='display: inline; margin-left: 1em;'" : string.Empty))>
-                        @Html.Editor(childProperty, "", new { @class = "input-xlarge" }, childPropertyName, "#" + container, propertyName)
-                        @Html.ValidationMessage(property.Name, null, new { @class = "help-inline error" })
-                    </div>
+            <div class="control-group">
+                @Html.Label(childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label", style = childProperty.PropertyType == typeof(bool) ? "display: inline;" : string.Empty })
+
+                <div class="controls"@(Html.Raw(childProperty.PropertyType == typeof(bool) ? "style='display: inline; margin-left: 1em;'" : string.Empty))>
+                    @Html.Editor(childProperty, "", new { @class = "input-xlarge" }, childPropertyName, "#" + container, propertyName)
+                    @Html.ValidationMessage(property.Name, null, new { @class = "help-inline error" })
                 </div>
+            </div>
             }
             else if (childProperty.PropertyType.Name.Contains("List"))
             {
-                <div class="wellList">
-                    <button id="AddButton-@childPropertyName" type="button" class="close" aria-hidden="true" onclick="loadListItemsModal('@childProperty.PropertyType.GetGenericArguments()[0].FullName', '@childPropertyName');" title="Add new item">+</button>
-                    @Html.Label("AddButton-" + childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label" })
-                    <div class="controls">
-                        <ul style="padding-left: 20%;" class="sortable" id="@childPropertyName" type="@childProperty.PropertyType.GetGenericArguments()[0].FullName">
-                        </ul>
-                    </div>
+            <div class="wellList">
+                <button id="AddButton-@childPropertyName" type="button" class="close" aria-hidden="true" onclick="loadListItemsModal('@childProperty.PropertyType.GetGenericArguments()[0].FullName', '@childPropertyName');" title="Add new item">+</button>
+                @Html.Label("AddButton-" + childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label" })
+                <div class="controls">
+                    <ul style="padding-left: 20%;" class="sortable" id="@childPropertyName" type="@childProperty.PropertyType.GetGenericArguments()[0].FullName">
+                    </ul>
                 </div>
+            </div>
+            }
+            else if (childProperty.PropertyType.Name.Contains("Dictionary"))
+            {
+            <div class="wellDictionary">
+                <button type="button" id ="AddButton-@childPropertyName" class="close" aria-hidden="true" onclick="loadDictionaryItemsModal('@childProperty.PropertyType.GetGenericArguments()[0].FullName', '@childProperty.PropertyType.GetGenericArguments()[1].FullName', '@childPropertyName');" title="Add new item">+</button>
+                @Html.Label("AddButton-" + childPropertyName, childProperty.Name.ToSeparatedWords(), new { @class = "control-label" })
+                <div class="controls">
+                    <ul style="padding-left: 20%;" class="sortable" id="@childPropertyName" keyType="@childProperty.PropertyType.GetGenericArguments()[0].FullName" valueType="@childProperty.PropertyType.GetGenericArguments()[1].FullName">
+                    </ul>
+                </div>
+            </div>
             }
             else
             {
                 Html.RenderPartial("NestedHelperView", new Pair<PropertyInfo, Pair<string, string>>(childProperty, new Pair<string, string>(childPropertyName, container)));
-            }  
+            }
         }
     </div>
 </div>

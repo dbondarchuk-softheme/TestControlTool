@@ -269,17 +269,38 @@ function GetNameFromSuiteType(suiteType) {
     return "";
 }
 
+function getJsonForDictionaryForm(formIdSuffix) {
+    var jsonObject = {};
+
+    var keyJsonObject = '';
+    var valueJsonObject = '';
+    
+    if ($('#newKeyItemEditorBox' + formIdSuffix).length != 0) {
+        keyJsonObject += '"' + getInputValue($('[id^=newKeyItemEditorBox]').attr('id')) + '"';
+    }
+    else {
+        keyJsonObject += getJsonForForm('KeyDiv' + formIdSuffix);
+    }
+    
+    if ($('#newValueItemEditorBox' + formIdSuffix).length != 0) {
+        valueJsonObject += '"' + getInputValue($('[id^=newValueItemEditorBox]').attr('id')) + '"';
+    }
+    else {
+        valueJsonObject += getJsonForForm('ValueDiv' + formIdSuffix);
+    }
+
+    jsonObject = { key: keyJsonObject, value: valueJsonObject };
+
+    return jsonObject;
+}
+
 function getJsonForForm(formId) {
     var jsonObject = '{';
     
-    $('#' + formId).children('div').not('.wellHelper').find('input[type!=hidden][type!=checkbox],select').each(function () {
-        jsonObject += ' "' + trimId($(this).attr('id')) + '" : "' + encodeValue($(this).val()) + '",';
+    $('#' + formId).children('div').not('.wellHelper').find('input[type!=hidden],select').each(function () {
+        jsonObject += ' "' + trimId($(this).attr('id')) + '" : "' + getInputValue($(this).attr('id')) + '",';
     });
-
-    $('#' + formId).children('div').not('.wellHelper').find('input[type=checkbox]').each(function () {
-        jsonObject += ' "' + trimId($(this).attr('id')) + '" : "' + $(this).is(':checked') + '",';
-    });
-
+    
     $('#' + formId).children('.wellHelper').children('.collapse').each(function () {
         jsonObject += ' "' + trimId($(this).attr('id')) + '" : ' + getJsonForForm($(this).attr('id')) + ',';
     });
@@ -292,6 +313,16 @@ function getJsonForForm(formId) {
         });
 
         jsonObject = jsonObject.replace(/,$/, "") + ' ],';
+    });
+    
+    $('#' + formId).children('.wellDictionary').find('ul').each(function () {
+        jsonObject += ' "' + trimId($(this).attr('id')) + '" : { ';
+
+        $(this).children('li').each(function () {
+            jsonObject += $(this).attr('jsonKey') + ':' + $(this).attr('jsonValue') + ',';
+        });
+
+        jsonObject = jsonObject.replace(/,$/, "") + ' },';
     });
 
     jsonObject = jsonObject.replace(/,$/, "") + '}';
@@ -320,6 +351,13 @@ function fillFormWithObject(formId, object) {
                 if (!(liItem instanceof Function)) {
                     item.append("<li json='" + JSON.stringify(liItem) + "'><a href='#' onclick='editListItem(this); return false;'>" + findFirstNonObjectParam(liItem) + "</a><button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>");
                 }
+            }
+        }
+        else if (item.parent().parent().is('.wellDictionary')) {
+            for (var key in param) {
+                var value = param[key];
+                
+                item.append("<li jsonKey='" + JSON.stringify(key) + "' jsonValue='" + JSON.stringify(value) + "'><a href='#' onclick='editDictionaryItem(this); return false;'>" + findFirstNonObjectParam(key) + "</a><button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>");
             }
         }
         else {
@@ -370,4 +408,12 @@ function deniedStarts(start) {
     if (start == 'itemsProperties' || start == 'ListItemsModal' || start == 'AddButton') return true;
 
     return false;
+}
+
+function getInputValue(id) {
+    if ($('#' + id).is(':checkbox')) {
+        return $('#' + id).is(':checked').toString();
+    }
+
+    return encodeValue($('#' + id).val());
 }

@@ -59,6 +59,17 @@
                         </div>
                     </div>
                 }
+                else if (property.PropertyType.Name.Contains("Dictionary"))
+                {
+                    <div class="wellDictionary">
+                        <button type="button" id ="AddButton-@property.Name" class="close" aria-hidden="true" onclick="loadDictionaryItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@property.PropertyType.GetGenericArguments()[1].FullName', '@propertyName');" title="Add new item">+</button>
+                        @Html.Label("AddButton-" + property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label" })
+                        <div class="controls">
+                            <ul style="padding-left: 20%;" class="sortable" id="@property.Name" keyType="@property.PropertyType.GetGenericArguments()[0].FullName" valueType="@property.PropertyType.GetGenericArguments()[1].FullName">
+                            </ul>
+                        </div>
+                    </div>
+                }
                 else
                 {
                     Html.RenderPartial("NestedHelperView", new Pair<PropertyInfo, Pair<string, string>>(property, new Pair<string, string>(propertyName, modalWindowId)));
@@ -124,23 +135,17 @@
 
         var jsonObject = "";
 
-        @if (EditorWithHelp.IsSupportedType(Model.Key) && Model.Key != typeof(bool))
+        @if (EditorWithHelp.IsSupportedType(Model.Key))
         {
             <text>
-                jsonObject = '"' + name + '"';
-            </text> 
-        }
-        else if (Model.Key == typeof(bool))
-        {
-            <text>
-                jsonObject =  '"' +obj.is(':checked') + '"';
+                jsonObject = '"' + getInputValue(obj.attr('id')) + '"';
             </text> 
         }
         else
         {
             <text>
                 jsonObject = getJsonForForm('@itemsPropertiesId');
-        </text>
+            </text>
         }
 
         jsonObject = jsonObject.replace("'", "&#39;");

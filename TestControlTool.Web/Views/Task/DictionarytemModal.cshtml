@@ -1,0 +1,263 @@
+﻿@using System.Reflection
+@using BootstrapSupport
+@using TestControlTool.Core.Models
+@using TestControlTool.Web.BootstrapSupport.HtmlHelpers
+@model Pair<Pair<Type, Type>, string>
+@{
+    Layout = null;
+
+    var modelName = string.IsNullOrWhiteSpace(Model.Value) ? "" : "-" + Model.Value;
+    var modalWindowId = "DictionaryItemsModal" + modelName;
+    var itemsPropertiesId = "itemsProperties" + modelName;
+    var functionSuffix = modelName.Replace('-', '_');
+}
+
+<div class="modal hide fade" id="@modalWindowId" tabindex="-1" role="dialog" aria-labelledby="Edit List" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="DictionaryItemsLabel@(string.IsNullOrWhiteSpace(Model.Value) ? "" : "-" + Model.Value)">Add new @Model.Key.Key.Name - @Model.Key.Value.Name pair</h3>
+    </div>
+    <div class="modal-body" id="@itemsPropertiesId">
+        <h4>Key</h4>
+        <div id="@("KeyDiv" + modelName)">
+            @if (EditorWithHelp.IsSupportedType(Model.Key.Key))
+            {
+                <div class="control-group">
+                    <label class="control-label" for="newKeyItemEditorBox">
+                        Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    @Html.Editor(Model.Key.Key, "newKeyItemEditorBox" + modelName, null, new Dictionary<string, object>() { { "class", "input-xlarge" } })
+                    <span class="help-inline error" id="newKeyItemTextBoxValidation"></span>
+                </div>
+            }
+            else
+            {
+                foreach (var property in Model.Key.Key.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead))
+                {
+                    var propertyName = Model.Value + "-" + property.Name;
+
+                    if (EditorWithHelp.IsSupportedType(property.PropertyType))
+                    {
+                        <div class="control-group">
+                            @Html.Label(propertyName, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name, style = property.PropertyType == typeof(bool) ? "display: inline;" : string.Empty })
+                        
+                            <div class="controls"@(Html.Raw(property.PropertyType == typeof(bool) ? "style='display: inline; margin-left: 1em;'" : string.Empty))>
+                                @Html.Editor(property, "", new { @class = "input-xlarge" }, propertyName, null, Model.Value)
+                                @Html.ValidationMessage(property.Name, null, new { @class = "help-inline error" })
+                            </div>
+                        </div>
+                    }
+                    else if (property.PropertyType.Name.Contains("List"))
+                    {
+                        <div class="wellList">
+                            <button id ="AddButton-@propertyName" type="button" class="close" aria-hidden="true" onclick="loadListItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@propertyName');" title="Add new item">+</button>
+                            @Html.Label("AddButton-" + propertyName, property.Name.ToSeparatedWords(), new { @class = "control-label" })
+                            <div class="controls">
+                                <ul style="padding-left: 20%;" class="sortable" id="@propertyName" type="@property.PropertyType.GetGenericArguments()[0].FullName">
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                    else if (property.PropertyType.Name.Contains("Dictionary"))
+                    {
+                        <div class="wellDictionary">
+                            <button type="button" id ="AddButton-@propertyName" class="close" aria-hidden="true" onclick="loadDictionaryItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@property.PropertyType.GetGenericArguments()[1].FullName', '@propertyName');" title="Add new item">+</button>
+                            @Html.Label("AddButton-" + propertyName, property.Name.ToSeparatedWords(), new { @class = "control-label" })
+                            <div class="controls">
+                                <ul style="padding-left: 20%;" class="sortable" id="@propertyName" keyType="@property.PropertyType.GetGenericArguments()[0].FullName" valueType="@property.PropertyType.GetGenericArguments()[1].FullName">
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        Html.RenderPartial("NestedHelperView", new Pair<PropertyInfo, Pair<string, string>>(property, new Pair<string, string>(propertyName, modalWindowId)));
+                    }
+                }
+            }
+        </div>
+
+        <h4>Value</h4>
+        <div id="@("ValueDiv" + modelName)">
+            @if (EditorWithHelp.IsSupportedType(Model.Key.Value))
+            {
+                <div class="control-group">
+                    <label class="control-label" for="newValueItemEditorBox">
+                        Value&nbsp;&nbsp;&nbsp;</label>
+                    @Html.Editor(Model.Key.Value, "newValueItemEditorBox" + modelName, null, new Dictionary<string, object>() { { "class", "input-xlarge" } })
+                    <span class="help-inline error" id="newValueItemTextBoxValidation"></span>
+                </div>
+            }
+            else
+            {
+                foreach (var property in Model.Key.Value.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead))
+                {
+                    var propertyName = Model.Value + "-" + property.Name;
+
+                    if (EditorWithHelp.IsSupportedType(property.PropertyType))
+                    {
+                        <div class="control-group">
+                            @Html.Label(propertyName, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name, style = property.PropertyType == typeof(bool) ? "display: inline;" : string.Empty })
+                        
+                            <div class="controls"@(Html.Raw(property.PropertyType == typeof(bool) ? "style='display: inline; margin-left: 1em;'" : string.Empty))>
+                                @Html.Editor(property, "", new { @class = "input-xlarge" }, propertyName, null, Model.Value)
+                                @Html.ValidationMessage(property.Name, null, new { @class = "help-inline error" })
+                            </div>
+                        </div>
+                    }
+                    else if (property.PropertyType.Name.Contains("List"))
+                    {
+                        <div class="wellList">
+                            <button id ="AddButton-@propertyName" type="button" class="close" aria-hidden="true" onclick="loadListItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@propertyName');" title="Add new item">+</button>
+                            @Html.Label("AddButton-" + propertyName, property.Name.ToSeparatedWords(), new { @class = "control-label" })
+                            <div class="controls">
+                                <ul style="padding-left: 20%;" class="sortable" id="@propertyName" type="@property.PropertyType.GetGenericArguments()[0].FullName">
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                    else if (property.PropertyType.Name.Contains("Dictionary"))
+                    {
+                        <div class="wellDictionary">
+                            <button type="button" id ="AddButton-@propertyName" class="close" aria-hidden="true" onclick="loadDictionaryItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@property.PropertyType.GetGenericArguments()[1].FullName', '@propertyName');" title="Add new item">+</button>
+                            @Html.Label("AddButton-" + propertyName, property.Name.ToSeparatedWords(), new { @class = "control-label" })
+                            <div class="controls">
+                                <ul style="padding-left: 20%;" class="sortable" id="@propertyName" keyType="@property.PropertyType.GetGenericArguments()[0].FullName" valueType="@property.PropertyType.GetGenericArguments()[1].FullName">
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        Html.RenderPartial("NestedHelperView", new Pair<PropertyInfo, Pair<string, string>>(property, new Pair<string, string>(propertyName, modalWindowId)));
+                    }
+                }
+            }
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <input type="submit" class="btn btn-primary" value="Add" id="DictionaryItemsButton@(modelName)" onclick="saveItem@(functionSuffix)();" />
+    </div>
+</div>
+<script type="text/javascript">
+
+    $('#@(modalWindowId)').ready(function() {
+        $('#@(modalWindowId)').find('[rel=popover]').popover();
+        
+        $('#@(modalWindowId)').find('[rel=popover]').on("hidden", function (e) {
+            e.stopPropagation(); //Once popover is hidden stop the event from going to parent
+        });
+    });
+    
+    function saveItem@(functionSuffix)() {
+        if (isEditDictionaryItem.last()) {
+            editItem@(functionSuffix)();
+        } else {
+            addItem@(functionSuffix)();
+        }
+    }
+
+    function editItem@(functionSuffix)() {
+        if (!checkFirstField@(functionSuffix)()) {
+            return;
+        }
+
+        var listItem = dictionaryItemToEdit.last();
+
+        var newItem = generateItemObject@(functionSuffix)();
+        
+        listItem.replaceWith(newItem);
+        
+        $('#@modalWindowId').modal('hide');
+    }
+
+    function addItem@(functionSuffix)() {
+        if (!checkFirstField@(functionSuffix)()) {
+            return;
+        }
+
+        var newItem = generateItemObject@(functionSuffix)();
+        var list = dictionaryName.last();
+
+        $('#' + list).append(newItem);
+        $('#' + list).height('auto');
+        $('#' + list).collapse('show');
+
+        $('#@modalWindowId').modal('hide');
+    }
+    
+    function generateItemObject@(functionSuffix)() {
+        var obj = $('#@itemsPropertiesId').children('div').children('.control-group').find('input[type!=hidden][type!=checkbox],select').first();
+        var name = obj.val();
+
+        var jsonObject = getJsonForDictionaryForm('@modelName');
+        
+        var newItem = $("<li jsonKey='" + jsonObject.key + "' jsonValue='" + jsonObject.value + "'><a href='#' onclick=\"editDictionaryItem(this); return false;\">" + name + "</a><button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>");
+       
+        return newItem;
+    }
+    
+    function checkFirstField@(functionSuffix)() {
+        var first = $('#@itemsPropertiesId').children('div').children('.control-group').find('input[type!=hidden][type!=checkbox],select').first();
+        
+        if (first.val().length == 0) {
+            first.parent().find('span').text('Please, fill the first element. It\'s needed for identification of items');
+            return false;
+        }
+
+        first.parent().find('span').val('');
+        return true;
+    }
+    
+    $('#@(modalWindowId)').ready(function () {
+        //$.support.transition = false;
+
+        //$('#testFormDiv').find('.collapse').collapse('hide');
+
+        $('#@itemsPropertiesId').find('.sortable').each(function () {
+            $(this).sortable();
+            $(this).disableSelection();
+        });
+
+
+        $('#@(modalWindowId)').find("[rel='popover']").popover();
+
+        $('#@(modalWindowId)').find("[rel='popover']").on("hidden", function (e) {
+            e.stopPropagation(); //Once popover is hidden stop the event from going to parent
+        });
+
+        $('#@(modalWindowId)').find("[data-disable-enabled='true']").each(function () {
+            Disable(this);
+        });
+    });
+
+    $('#@itemsPropertiesId').find('.collapse').on('hidden', function (event) {
+        event.stopPropagation();
+    });
+
+    $(document).ready(function () {
+        $('#@itemsPropertiesId').find('.collapse').each(function () {
+            var i = $(this).parent().find('label').find('i');
+
+            $(this).on('show', function () {
+                i.removeClass('icon-chevron-right', 100, function () {
+                    i.addClass('icon-chevron-down', 100);
+                });
+            });
+
+            $(this).on('hide', function () {
+                i.removeClass('icon-chevron-down', 100, function () {
+                    i.addClass('icon-chevron-right', 100);
+                });
+            });
+
+            //$(this).collapse('show');
+        });
+    });
+
+    $("#@modalWindowId").on('hidden', function() {
+        dictionaryName.pop();
+        isEditDictionaryItem.pop();
+        dictionaryItemToEdit.pop();
+    });
+</script>
