@@ -15,7 +15,7 @@
 <div class="modal hide fade" id="@modalWindowId" tabindex="-1" role="dialog" aria-labelledby="Edit List" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="DictionaryItemsLabel@(string.IsNullOrWhiteSpace(Model.Value) ? "" : "-" + Model.Value)">Add new @Model.Key.Key.Name - @Model.Value pair</h3>
+        <h3 id="DictionaryItemsLabel@(string.IsNullOrWhiteSpace(Model.Value) ? "" : "-" + Model.Value)">Add new @Model.Key.Key.Name - @Model.Key.Value.Name pair</h3>
     </div>
     <div class="modal-body" id="@itemsPropertiesId">
         <h4>Key</h4>
@@ -59,11 +59,11 @@
                     }
                     else if (property.PropertyType.Name.Contains("Dictionary"))
                     {
-                        <div class="wellList">
-                            <button type="button" id ="AddButton-@property.Name" class="close" aria-hidden="true" onclick="loadDictionaryItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@property.PropertyType.GetGenericArguments()[1].FullName', '@propertyName');" title="Add new item">+</button>
-                            @Html.Label("AddButton-" + property.Name, property.Name.ToSeparatedWords(), new { @class = "control-label" })
+                        <div class="wellDictionary">
+                            <button type="button" id ="AddButton-@propertyName" class="close" aria-hidden="true" onclick="loadDictionaryItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@property.PropertyType.GetGenericArguments()[1].FullName', '@propertyName');" title="Add new item">+</button>
+                            @Html.Label("AddButton-" + propertyName, property.Name.ToSeparatedWords(), new { @class = "control-label" })
                             <div class="controls">
-                                <ul style="padding-left: 20%;" class="sortable" id="@property.Name" keyType="@property.PropertyType.GetGenericArguments()[0].FullName" valueType="@property.PropertyType.GetGenericArguments()[1].FullName">
+                                <ul style="padding-left: 20%;" class="sortable" id="@propertyName" keyType="@property.PropertyType.GetGenericArguments()[0].FullName" valueType="@property.PropertyType.GetGenericArguments()[1].FullName">
                                 </ul>
                             </div>
                         </div>
@@ -191,10 +191,8 @@
         var name = obj.val();
 
         var jsonObject = getJsonForDictionaryForm('@modelName');
-
-        jsonObject = jsonObject.replace("'", "&#39;");
         
-        var newItem = $("<li jsonKey='" + jsonObject.key + "' jsonValue='" + jsonObject.value + "'><a href='#' onclick=\"editListItem(this); return false;\">" + name + "</a><button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>");
+        var newItem = $("<li jsonKey='" + jsonObject.key + "' jsonValue='" + jsonObject.value + "'><a href='#' onclick=\"editDictionaryItem(this); return false;\">" + name + "</a><button type='button' class='close' aria-hidden='true' onclick='removeItem(this)'>×</button></li>");
        
         return newItem;
     }
@@ -258,8 +256,8 @@
     });
 
     $("#@modalWindowId").on('hidden', function() {
-        listName.pop();
-        isEditListItem.pop();
-        listItemToEdit.pop();
+        dictionaryName.pop();
+        isEditDictionaryItem.pop();
+        dictionaryItemToEdit.pop();
     });
 </script>

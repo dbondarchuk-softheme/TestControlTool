@@ -275,18 +275,18 @@ function getJsonForDictionaryForm(formIdSuffix) {
     var keyJsonObject = '';
     var valueJsonObject = '';
     
-    if ($('#newKeyItemEditorBox').length != 0) {
-        keyJsonObject += '"' + getInputValue('newValueItemEditorBox') + '"';
+    if ($('#newKeyItemEditorBox' + formIdSuffix).length != 0) {
+        keyJsonObject += '"' + getInputValue($('[id^=newKeyItemEditorBox]').attr('id')) + '"';
     }
     else {
-        keyJsonObject += getJsonForForm('KeyDiv-' + formIdSuffix);
+        keyJsonObject += getJsonForForm('KeyDiv' + formIdSuffix);
     }
     
-    if ($('#newValueItemEditorBox').length != 0) {
-        valueJsonObject += '"' + getInputValue('newValueItemEditorBox') + '"';
+    if ($('#newValueItemEditorBox' + formIdSuffix).length != 0) {
+        valueJsonObject += '"' + getInputValue($('[id^=newValueItemEditorBox]').attr('id')) + '"';
     }
     else {
-        valueJsonObject += getJsonForForm('ValueDiv-' + formIdSuffix);
+        valueJsonObject += getJsonForForm('ValueDiv' + formIdSuffix);
     }
 
     jsonObject = { key: keyJsonObject, value: valueJsonObject };
@@ -297,7 +297,7 @@ function getJsonForDictionaryForm(formIdSuffix) {
 function getJsonForForm(formId) {
     var jsonObject = '{';
     
-    $('#' + formId).children('div').not('.wellHelper').find('input[type!=hidden][type!=checkbox],select').each(function () {
+    $('#' + formId).children('div').not('.wellHelper').find('input[type!=hidden],select').each(function () {
         jsonObject += ' "' + trimId($(this).attr('id')) + '" : "' + getInputValue($(this).attr('id')) + '",';
     });
     
@@ -353,7 +353,7 @@ function fillFormWithObject(formId, object) {
                 }
             }
         }
-        else if (item.is('.wellDictionary')) {
+        else if (item.parent().parent().is('.wellDictionary')) {
             for (var key in param) {
                 var value = param[key];
                 
@@ -412,7 +412,7 @@ function deniedStarts(start) {
 
 function getInputValue(id) {
     if ($('#' + id).is(':checkbox')) {
-        return $('#' + id).val();
+        return $('#' + id).is(':checked').toString();
     }
 
     return encodeValue($('#' + id).val());

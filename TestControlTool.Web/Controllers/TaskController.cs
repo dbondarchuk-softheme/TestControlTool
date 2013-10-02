@@ -429,10 +429,11 @@ namespace TestControlTool.Web.Controllers
 
         public ActionResult DictionaryItemModal(string keyTypeName, string valueTypeName, string parentProperty = "", TaskType suiteType = TaskType.UISuiteTrunk)
         {
-            var standartType = Type.GetType(keyTypeName);
+            var keyStandartType = Type.GetType(keyTypeName);
+            var valueStandartType = Type.GetType(valueTypeName);
 
-            var keyType = standartType ?? (TestSuiteTypesHelper.GetScriptsTypes(suiteType).SingleOrDefault(x => x.FullName == keyTypeName));
-            var valueType = standartType ?? (TestSuiteTypesHelper.GetScriptsTypes(suiteType).SingleOrDefault(x => x.FullName == valueTypeName));
+            var keyType = keyStandartType ?? (TestSuiteTypesHelper.GetScriptsTypes(suiteType).SingleOrDefault(x => x.FullName == keyTypeName));
+            var valueType = valueStandartType ?? (TestSuiteTypesHelper.GetScriptsTypes(suiteType).SingleOrDefault(x => x.FullName == valueTypeName));
 
             return View("DictionarytemModal", new Pair<Pair<Type, Type>, string>(new Pair<Type, Type>(keyType, valueType), parentProperty));
         }
