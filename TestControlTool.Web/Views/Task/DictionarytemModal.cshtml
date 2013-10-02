@@ -29,51 +29,6 @@
                     <span class="help-inline error" id="newKeyItemTextBoxValidation"></span>
                 </div>
             }
-            else
-            {
-                foreach (var property in Model.Key.Key.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite && x.CanRead))
-                {
-                    var propertyName = Model.Value + "-" + property.Name;
-
-                    if (EditorWithHelp.IsSupportedType(property.PropertyType))
-                    {
-                        <div class="control-group">
-                            @Html.Label(propertyName, property.Name.ToSeparatedWords(), new { @class = "control-label", @for = property.Name, style = property.PropertyType == typeof(bool) ? "display: inline;" : string.Empty })
-                        
-                            <div class="controls"@(Html.Raw(property.PropertyType == typeof(bool) ? "style='display: inline; margin-left: 1em;'" : string.Empty))>
-                                @Html.Editor(property, "", new { @class = "input-xlarge" }, propertyName, null, Model.Value)
-                                @Html.ValidationMessage(property.Name, null, new { @class = "help-inline error" })
-                            </div>
-                        </div>
-                    }
-                    else if (property.PropertyType.Name.Contains("List"))
-                    {
-                        <div class="wellList">
-                            <button id ="AddButton-@propertyName" type="button" class="close" aria-hidden="true" onclick="loadListItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@propertyName');" title="Add new item">+</button>
-                            @Html.Label("AddButton-" + propertyName, property.Name.ToSeparatedWords(), new { @class = "control-label" })
-                            <div class="controls">
-                                <ul style="padding-left: 20%;" class="sortable" id="@propertyName" type="@property.PropertyType.GetGenericArguments()[0].FullName">
-                                </ul>
-                            </div>
-                        </div>
-                    }
-                    else if (property.PropertyType.Name.Contains("Dictionary"))
-                    {
-                        <div class="wellDictionary">
-                            <button type="button" id ="AddButton-@propertyName" class="close" aria-hidden="true" onclick="loadDictionaryItemsModal('@property.PropertyType.GetGenericArguments()[0].FullName', '@property.PropertyType.GetGenericArguments()[1].FullName', '@propertyName');" title="Add new item">+</button>
-                            @Html.Label("AddButton-" + propertyName, property.Name.ToSeparatedWords(), new { @class = "control-label" })
-                            <div class="controls">
-                                <ul style="padding-left: 20%;" class="sortable" id="@propertyName" keyType="@property.PropertyType.GetGenericArguments()[0].FullName" valueType="@property.PropertyType.GetGenericArguments()[1].FullName">
-                                </ul>
-                            </div>
-                        </div>
-                    }
-                    else
-                    {
-                        Html.RenderPartial("NestedHelperView", new Pair<PropertyInfo, Pair<string, string>>(property, new Pair<string, string>(propertyName, modalWindowId)));
-                    }
-                }
-            }
         </div>
 
         <h4>Value</h4>
